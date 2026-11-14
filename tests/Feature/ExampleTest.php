@@ -12,8 +12,10 @@ class ExampleTest extends TestCase
      */
     public function test_the_application_returns_a_successful_response(): void
     {
+        // '/' is a locale-negotiation entry point: it must redirect to the
+        // default locale, not serve a body. See LocaleRedirectController.
         $response = $this->get('/');
 
-        $response->assertStatus(200);
+        $response->assertRedirect('/en');
     }
 }

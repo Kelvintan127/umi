@@ -3,8 +3,9 @@
 namespace App\Http\Controllers;
 
 use App\Support\Locales;
+use Inertia\Inertia;
 use Illuminate\Http\Request;
-use Illuminate\Http\Response;
+use Symfony\Component\HttpFoundation\Response;
 
 /**
  * Serves the 11 site pages for a validated {locale} segment.
@@ -55,6 +56,16 @@ class PageController extends Controller
             return redirect()->route('site.'.$page, ['locale' => Locales::DEFAULT], 302);
         }
 
-        return response('', 200)->header('Content-Language', $locale);
+        // Page component names are PascalCase to match resources/js/pages.
+        // Inertia\Response has no header() macro in v3: materialise the HTTP
+        // response first, then set the header on it.
+        $response = Inertia::render(ucfirst($page), [
+            'locale' => $locale,
+            'htmlLang' => Locales::htmlLang($locale),
+        ])->toResponse($request);
+
+        $response->headers->set('Content-Language', $locale);
+
+        return $response;
     }
 }
