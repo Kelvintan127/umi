@@ -1,0 +1,27 @@
+{
+  "_comment": "Owner decision, 2026-11-14. Inclusive numeral budget: numeric strings under lang/ COUNT toward the leaf budget. Re-derivation evidence lives in the design artifact directory; this file is the version-controlled source of the decided rule so a later change is a visible diff.",
+  "decided_by": "owner",
+  "decided_at": "2026-11-14",
+  "rule": "inclusive",
+  "numeral_rule_regex": "^[0-9]([0-9.,+\\-\\u2013\\u2014 ]*)$",
+  "per_locale_leaves": {
+    "exclusive_reading": 432,
+    "numerals_added": 8,
+    "inclusive_total": 440
+  },
+  "non_source_locales": ["id", "zh-Hans"],
+  "budget_total": 880,
+  "derivation": {
+    "by_file_exclusive": {"forms.php": 13, "pages.php": 117, "seo.php": 25, "site.php": 277},
+    "by_file_inclusive": {"forms.php": 13, "pages.php": 117, "seo.php": 25, "site.php": 285},
+    "the_8_numerals": [
+      "2013-2015 (customers.N.name/period/testimonial)",
+      "2024 (news.items.N.date/title/excerpt) x3",
+      "25+ (stats.N.value/label)",
+      "3,000 (stats.N.value/label)",
+      "0.10 (stats.N.value/label)",
+      "15-160 (stats.N.value/label)"
+    ]
+  },
+  "_note": "440 x 2 non-source locales = 880. If the inventory is ever re-derived and disagrees with 440/880, report the disagreement rather than forcing the number."
+}
