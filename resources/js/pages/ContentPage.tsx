@@ -26,7 +26,12 @@ export default function ContentPage() {
       <Hero
         hero={content.hero}
         locale={locale}
-        ctaLabels={{ quote: chrome.cta.quote, capabilities: chrome.cta.capabilities }}
+        ctaLabels={{
+          quote: chrome.cta.quote,
+          capabilities: chrome.cta.capabilities,
+          pauseVideo: chrome.aria.pause_video,
+          playVideo: chrome.aria.play_video,
+        }}
         breadcrumbs={breadcrumbs}
         breadcrumbLabel={chrome.aria.breadcrumb}
         variant={pageKey === "home" ? "home" : "page"}

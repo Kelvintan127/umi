@@ -116,7 +116,13 @@ export function SectionRenderer({
             return <Users key={key} users={blocks.users} />;
 
           case "testimonials":
-            return <Testimonials key={key} items={blocks.users.testimonials} />;
+            // Withheld until config/approvals.php clears the quoting company.
+            // Rendering the heading with no quotes under it — in English, on
+            // every locale — reads as a broken page, so the section is dropped
+            // entirely instead.
+            return blocks.users.testimonials.length > 0 ? (
+              <Testimonials key={key} items={blocks.users.testimonials} />
+            ) : null;
 
           case "legal":
             return <Legal key={key} clauses={section.clauses ?? []} />;

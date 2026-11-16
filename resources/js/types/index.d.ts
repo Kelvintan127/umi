@@ -54,6 +54,14 @@ export interface Chrome {
     links: Record<string, Record<string, string>>;
   };
   languages: LanguageOption[];
+  /** Labels for the language block, including the pending-sign-off message. */
+  language: {
+    label: string;
+    en: string;
+    id: string;
+    zh: string;
+    unavailable: string;
+  };
 }
 
 export interface FormLabels {
@@ -97,6 +105,8 @@ export interface Seo {
     url: string;
   };
   alternates: Alternate[];
+  /** Absolute URL for the x-default alternate; always the default locale. */
+  xDefault: string;
   jsonLd: Record<string, unknown>;
 }
 
@@ -192,8 +202,20 @@ export interface ContactBlock {
 
 export interface MetalPartUsers {
   intro: string;
+  /** Cleared for publication. Empty until config/approvals.php approves a name. */
   users: string[];
+  /** Customers UMI invoices directly. */
+  direct: string[];
+  /** End-product brands reached through a contract manufacturer, not direct customers. */
+  indirect: string[];
   testimonials: { name: string; period: string; quote: string }[];
+  customers_heading: string;
+  brands_heading: string;
+  brands_intro: string;
+  withheld_note: string;
+  /** True when the gate is holding names back, so the page can say so. */
+  withheld: boolean;
+  withheld_count: number;
   note: string;
 }
 

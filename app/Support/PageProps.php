@@ -61,10 +61,106 @@ final class PageProps
                 'policy' => trans('site.policy'),
                 'gallery' => trans('site.gallery'),
                 'news' => trans('site.news'),
-                'users' => trans('site.metal_part_users'),
+                'users' => self::approvedUsers(),
                 'contact' => trans('site.contact'),
             ],
         ];
+    }
+
+    /**
+     * The metal-part-users block, with third-party names filtered through the
+     * approval gate in config/approvals.php.
+     *
+     * Everything else in the block (intro, note) is UMI's own copy and renders
+     * as written. The customer names and attributed quotes do not, because
+     * naming a customer publicly needs that customer's permission and the old
+     * site's publication is not that permission. When the approved list is
+     * empty the section states that the list is available on request, which is
+     * both true and better than a section that silently renders nothing.
+     *
+     * @return array<string, mixed>
+     */
+    private static function approvedUsers(): array
+    {
+        $block = (array) trans('site.metal_part_users');
+
+        $customers = Approvals::customers();
+
+        // The English source lists bare names; the config carries the direct /
+        // indirect distinction. Where config is the emptier of the two, publish
+        // nothing rather than fall back to the unfiltered list — failing open
+        // here is the exact bug this gate exists to stop.
+        $block['users'] = array_values(array_map(
+            fn (array $row) => $row['name'],
+            $customers
+        ));
+
+        // Split direct customers from end-product brands reached through a
+        // contract manufacturer. Listing them together implies a commercial
+        // relationship with the brand that UMI may not have.
+        $block['direct'] = array_values(array_map(
+            fn (array $row) => $row['name'],
+            array_filter($customers, fn (array $row) => $row['relationship'] === 'direct')
+        ));
+        $block['indirect'] = array_values(array_map(
+            fn (array $row) => $row['name'],
+            array_filter($customers, fn (array $row) => $row['relationship'] !== 'direct')
+        ));
+
+        $block['testimonials'] = self::approvedTestimonials();
+
+        // Only claim "available on request" when something is genuinely held
+        // back. When nothing is withheld the note would be a false statement.
+        $block['withheld'] = Approvals::hasWithheld('customers');
+        $block['withheld_count'] = Approvals::withheldCount('customers');
+
+        return $block;
+    }
+
+    /**
+     * Approved testimonials, re-joined with their published quote text.
+     *
+     * The gate in Approvals decides which names may appear; the wording of each
+     * quote lives with the other localised copy in the per-locale site.php, so it gets
+     * translated with everything else. A name allowed through by the gate but
+     * with no quote text available is dropped rather than rendered bare.
+     *
+     * @return list<array{name: string, period: string, quote: string}>
+     */
+    private static function approvedTestimonials(): array
+    {
+        $published = (array) trans('site.metal_part_users.testimonials', []);
+
+        // trans() returns the key itself when the path is missing, so guard.
+        if (! is_array($published)) {
+            $published = [];
+        }
+
+        $quotes = [];
+
+        foreach ($published as $row) {
+            if (is_array($row) && isset($row['name'])) {
+                $quotes[(string) $row['name']] = $row;
+            }
+        }
+
+        $out = [];
+
+        foreach (Approvals::testimonials() as $approved) {
+            $source = $quotes[$approved['name']] ?? null;
+
+            if ($source === null || ! isset($source['quote'])) {
+                continue;
+            }
+
+            $out[] = [
+                'name' => $approved['name'],
+                'period' => $source['period'] ?? $approved['period'],
+                'quote' => (string) $source['quote'],
+            ];
+        }
+
+        return $out;
     }
 
     /**
@@ -88,6 +184,7 @@ final class PageProps
             'aria' => trans('site.nav_aria', [], $locale),
             'footer' => trans('site.footer', [], $locale),
             'languages' => Locales::switcher($locale, $pageKey, $path),
+            'language' => trans('site.language', [], $locale),
         ];
     }
 
@@ -113,7 +210,11 @@ final class PageProps
                 'image' => $base.trans('seo.defaults.og_image'),
                 'url' => $canonical,
             ],
-            'alternates' => Locales::alternates($pageKey, $path),
+            'alternates' => array_map(
+                fn (array $alt) => [...$alt, 'url' => $base.$alt['url']],
+                Locales::alternates($pageKey, $path)
+            ),
+            'xDefault' => $base.Locales::xDefault($path),
             'jsonLd' => self::jsonLd($locale, $base, $canonical, $seo),
         ];
     }

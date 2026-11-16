@@ -1,5 +1,5 @@
 import { Link } from "@inertiajs/react";
-import { useEffect, useState } from "react";
+import { useEffect, useRef, useState } from "react";
 import { ArrowUpRight, Menu, X } from "lucide-react";
 import { Container } from "./Container";
 import { DesktopNav, LanguageSwitcher } from "./Nav";
@@ -15,6 +15,8 @@ import { cn } from "@/lib/utils";
  */
 export function Header({ chrome, activeKey, locale }: { chrome: Chrome; activeKey: string; locale: string }) {
   const [open, setOpen] = useState(false);
+  const panelRef = useRef<HTMLDivElement | null>(null);
+  const toggleRef = useRef<HTMLButtonElement | null>(null);
 
   useEffect(() => {
     if (!open) return;
@@ -31,6 +33,27 @@ export function Header({ chrome, activeKey, locale }: { chrome: Chrome; activeKe
       document.body.style.overflow = previous;
       document.removeEventListener("keydown", onKey);
     };
+  }, [open]);
+
+  // Move focus into the panel when it opens and return it to the toggle when it
+  // closes. The panel covers the viewport and locks background scroll, so it
+  // behaves modally; without this a keyboard user tabbing forward walks the page
+  // behind the panel they cannot see, and on close is dumped at the top of the
+  // document instead of where they left off.
+  //
+  // The return trip is keyed off "was open" rather than off where focus sits at
+  // close time: hiding an element blurs whatever is inside it, so by the time
+  // this runs the focused node is already the body and contains() says no.
+  const wasOpen = useRef(false);
+
+  useEffect(() => {
+    if (open) {
+      panelRef.current?.focus();
+    } else if (wasOpen.current) {
+      toggleRef.current?.focus();
+    }
+
+    wasOpen.current = open;
   }, [open]);
 
   useEffect(() => {
@@ -72,7 +95,7 @@ export function Header({ chrome, activeKey, locale }: { chrome: Chrome; activeKe
             <LanguageSwitcher
               languages={chrome.languages}
               ariaLabel={chrome.aria.language}
-              unavailableLabel={chrome.languages.find((l) => !l.available)?.label ?? ""}
+              unavailableLabel={chrome.language.unavailable}
             />
 
             <Link
@@ -88,6 +111,7 @@ export function Header({ chrome, activeKey, locale }: { chrome: Chrome; activeKe
             </Link>
 
             <button
+              ref={toggleRef}
               type="button"
               onClick={() => setOpen((prev) => !prev)}
               aria-label={open ? chrome.aria.close : chrome.aria.open}
@@ -103,8 +127,13 @@ export function Header({ chrome, activeKey, locale }: { chrome: Chrome; activeKe
 
       {/* Mobile panel. Kept mounted so aria-controls always resolves. */}
       <div
+        ref={panelRef}
         id="mobile-menu"
         hidden={!open}
+        tabIndex={-1}
+        role="dialog"
+        aria-modal={open ? "true" : undefined}
+        aria-label={chrome.aria.primary}
         className={cn(
           "border-t border-white/10 bg-ink lg:hidden",
           open ? "block" : "hidden",

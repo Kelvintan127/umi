@@ -71,6 +71,8 @@ return [
         'footer' => 'Footer',
         'breadcrumb' => 'Breadcrumb',
         'language' => 'Language',
+        'pause_video' => 'Pause background video',
+        'play_video' => 'Play background video',
         'skip' => 'Skip to content',
     ],
 
@@ -296,7 +298,7 @@ return [
     ],
 
     'metal_part_users' => [
-        'intro' => 'UMI supplies metal parts to manufacturers across the electrical, electronic and automotive industries. The companies below are carried from the company’s published customer list.',
+        'intro' => 'UMI supplies metal parts to manufacturers across the electrical, electronic and automotive industries.',
         'users' => [
             'Sanyo Energy Batam', 'Panasonic', 'Digi', 'Patlite', 'OrieX',
             'Foster Electric', 'Wellington', 'WIK', 'HW Genting', 'Valeo', 'SIIX',
@@ -306,7 +308,11 @@ return [
             ['name' => 'Foster Electric', 'period' => '2013–2015', 'quote' => '"Zero Reject" and "Zero Claim" for year 2013–2015.'],
             ['name' => 'Sanyo Energy Batam', 'period' => 'Since 2000', 'quote' => 'Service excellence acknowledgment for good quality and excellent support since year 2000.'],
         ],
-        'note' => 'Customer names and quoted testimonials are published at the owner’s discretion; they are reproduced from existing company material and are not independently verified here.',
+        'customers_heading' => 'Customers we supply directly',
+        'brands_heading' => 'End products our parts reach',
+        'brands_intro' => 'Parts supplied to contract manufacturers also reach these end products. UMI does not supply these brands directly.',
+        'withheld_note' => 'Customer names and quoted acknowledgements are withheld pending written permission from each company. The reference list is available on request at info@umistamping.com.',
+        'note' => 'Customer names and quoted acknowledgements are withheld pending written permission from each company. The reference list is available on request at info@umistamping.com.',
     ],
 
     'contact' => [

@@ -18,7 +18,7 @@ export function PageHead({ seo, htmlLang }: { seo: Seo; htmlLang: string }) {
       {seo.alternates.map((alt) => (
         <link key={alt.code} rel="alternate" hrefLang={alt.htmlLang} href={alt.url} />
       ))}
-      <link rel="alternate" hrefLang="x-default" href={seo.alternates[0]?.url ?? "/"} />
+      <link rel="alternate" hrefLang="x-default" href={seo.xDefault} />
 
       <meta property="og:type" content={seo.og.type} />
       <meta property="og:site_name" content={seo.og.site_name} />

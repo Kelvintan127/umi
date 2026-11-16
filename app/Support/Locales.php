@@ -121,9 +121,15 @@ final class Locales
     }
 
     /**
-     * hreflang alternates for SEO. A locale without signed-off copy for this
-     * page points at the locale that actually serves it, so the alternates
-     * never disagree with what a visitor receives.
+     * hreflang alternates for SEO.
+     *
+     * Only locales that actually serve this page are emitted. An alternate for a
+     * locale whose copy is not signed off would have to point somewhere — and
+     * every candidate is wrong: pointing it at the English URL tells a crawler
+     * that the English page *is* the Indonesian version, which is a false claim
+     * about what a visitor receives, and the whole reason the sign-off gate
+     * exists. Omitting the alternate says "this page has no Indonesian version",
+     * which is true. x-default carries the English URL.
      *
      * @return list<array{code: string, htmlLang: string, url: string, available: bool}>
      */
@@ -133,17 +139,27 @@ final class Locales
         $out = [];
 
         foreach (self::CODES as $code) {
-            $available = self::isTranslated($pageKey, $code);
-            $target = $available ? $code : self::DEFAULT;
+            if (! self::isTranslated($pageKey, $code)) {
+                continue;
+            }
 
             $out[] = [
                 'code' => $code,
                 'htmlLang' => self::htmlLang($code),
-                'url' => '/'.$target.$suffix,
-                'available' => $available,
+                'url' => '/'.$code.$suffix,
+                'available' => true,
             ];
         }
 
         return $out;
+    }
+
+    /**
+     * The x-default alternate: the URL a visitor with no language preference
+     * should land on. Always the default locale, which is always served.
+     */
+    public static function xDefault(string $path): string
+    {
+        return '/'.self::DEFAULT.($path === '' ? '' : '/'.$path);
     }
 }

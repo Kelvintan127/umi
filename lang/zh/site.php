@@ -70,6 +70,8 @@ return [
         'footer' => '页脚',
         'breadcrumb' => '面包屑导航',
         'language' => '语言',
+        'pause_video' => '暂停背景视频',
+        'play_video' => '播放背景视频',
         'skip' => '跳转到主要内容',
     ],
 
@@ -295,7 +297,7 @@ return [
     ],
 
     'metal_part_users' => [
-        'intro' => 'UMI 为电气、电子和汽车行业的制造商供应金属零件。以下公司名单摘自公司已发布的客户清单。',
+        'intro' => 'UMI 为电气、电子和汽车行业的制造商供应金属零件。',
         'users' => [
             'Sanyo Energy Batam', 'Panasonic', 'Digi', 'Patlite', 'OrieX',
             'Foster Electric', 'Wellington', 'WIK', 'HW Genting', 'Valeo', 'SIIX',
@@ -305,7 +307,11 @@ return [
             ['name' => 'Foster Electric', 'period' => '2013–2015', 'quote' => '2013–2015 年度实现“零退货”与“零索赔”。'],
             ['name' => 'Sanyo Energy Batam', 'period' => '自 2000 年起', 'quote' => '自 2000 年以来，因品质优良与支持出色而获得的优秀服务表彰。'],
         ],
-        'note' => '客户名称与引述的评价由公司自行决定发布；内容摘自公司现有材料，本页面未对其进行独立核实。',
+        'customers_heading' => '我们直接供货的客户',
+        'brands_heading' => '使用我们零部件的终端产品',
+        'brands_intro' => '供应给代工制造商的零部件同样应用于以下终端产品。UMI 并不直接向这些品牌供货。',
+        'withheld_note' => '客户名称与致谢引文在取得各公司书面许可前不予公布。参考名单可应要求提供，请联系 info@umistamping.com。',
+        'note' => '客户名称与致谢引文在取得各公司书面许可前不予公布。参考名单可应要求提供，请联系 info@umistamping.com。',
     ],
 
     'contact' => [

@@ -74,6 +74,8 @@ return [
         'footer' => 'Kaki halaman',
         'breadcrumb' => 'Remah navigasi',
         'language' => 'Bahasa',
+        'pause_video' => 'Jeda video latar',
+        'play_video' => 'Putar video latar',
         'skip' => 'Lewati ke konten',
     ],
 
@@ -299,7 +301,7 @@ return [
     ],
 
     'metal_part_users' => [
-        'intro' => 'UMI memasok komponen logam kepada produsen di industri kelistrikan, elektronik, dan otomotif. Perusahaan di bawah ini dikutip dari daftar pelanggan yang telah diterbitkan perusahaan.',
+        'intro' => 'UMI memasok komponen logam kepada produsen di industri kelistrikan, elektronik, dan otomotif.',
         'users' => [
             'Sanyo Energy Batam', 'Panasonic', 'Digi', 'Patlite', 'OrieX',
             'Foster Electric', 'Wellington', 'WIK', 'HW Genting', 'Valeo', 'SIIX',
@@ -309,7 +311,11 @@ return [
             ['name' => 'Foster Electric', 'period' => '2013–2015', 'quote' => '“Zero Reject” dan “Zero Claim” untuk tahun 2013–2015.'],
             ['name' => 'Sanyo Energy Batam', 'period' => 'Sejak 2000', 'quote' => 'Pengakuan atas keunggulan layanan berupa mutu yang baik dan dukungan yang sangat baik sejak tahun 2000.'],
         ],
-        'note' => 'Nama pelanggan dan testimoni yang dikutip diterbitkan atas kebijakan pemilik; semuanya dikutip ulang dari materi perusahaan yang ada dan tidak diverifikasi secara independen di sini.',
+        'customers_heading' => 'Pelanggan yang kami pasok langsung',
+        'brands_heading' => 'Produk akhir yang menggunakan komponen kami',
+        'brands_intro' => 'Komponen yang dipasok ke produsen kontrak juga digunakan pada produk akhir berikut. UMI tidak memasok merek-merek ini secara langsung.',
+        'withheld_note' => 'Nama pelanggan dan kutipan penghargaan ditahan sampai ada izin tertulis dari masing-masing perusahaan. Daftar referensi tersedia atas permintaan di info@umistamping.com.',
+        'note' => 'Nama pelanggan dan kutipan penghargaan ditahan sampai ada izin tertulis dari masing-masing perusahaan. Daftar referensi tersedia atas permintaan di info@umistamping.com.',
     ],
 
     'contact' => [

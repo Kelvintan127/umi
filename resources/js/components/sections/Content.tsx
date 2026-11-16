@@ -4,25 +4,72 @@ import { Band, SectionHeading } from "./Band";
 import type { MetalPartUsers } from "@/types";
 
 /**
- * "Our Metal Part Users" — the company's published customer list plus the two
- * quoted acknowledgements. Both are carried verbatim, with the source note
- * rendered so no reader mistakes them for claims this site has verified.
+ * "Our Metal Part Users" — the customer list, gated by config/approvals.php.
+ *
+ * Naming a customer publicly needs that customer's permission. Until someone
+ * confirms it, `users`, `direct` and `indirect` arrive empty and the section
+ * says the list is available on request rather than rendering an empty grid
+ * that reads as a design fault. Direct customers and end-product brands are
+ * rendered as separate groups: a part supplied to a contract manufacturer
+ * reaches a brand UMI does not sell to, and merging the two implies a
+ * relationship that does not exist.
  */
 export function Users({ users }: { users: MetalPartUsers }) {
+  const hasAny = users.users.length > 0;
+
+  // The intro is now a single sentence, so the old split-into-heading-and-body
+  // trick would leave an empty paragraph behind.
+  const sentences = users.intro.split(".").map((s) => s.trim()).filter(Boolean);
+  const heading = sentences.length > 0 ? `${sentences[0]}.` : "";
+  const body = sentences.slice(1).join(". ");
+
   return (
     <Band tone="white" ariaLabelledBy="users-heading">
-      <SectionHeading eyebrow="Our metal part users" title={users.intro.split(".")[0] + "."} id="users-heading" />
-      <p className="mt-6 max-w-3xl text-base leading-7 text-ink/60">
-        {users.intro.split(".").slice(1).join(".").trim()}
-      </p>
+      <SectionHeading eyebrow="Our metal part users" title={heading} id="users-heading" />
+      {body ? (
+        <p className="mt-6 max-w-3xl text-base leading-7 text-ink/60">{body}</p>
+      ) : null}
 
-      <ul className="mt-12 grid gap-px border border-ink/10 bg-ink/10 sm:grid-cols-2 lg:grid-cols-3">
-        {users.users.map((name) => (
-          <li key={name} className="bg-white px-6 py-5 text-sm font-semibold tracking-tight">
-            {name}
-          </li>
-        ))}
-      </ul>
+      {hasAny ? (
+        <>
+          {users.direct.length > 0 ? (
+            <>
+              <h3 className="mt-14 text-xs font-semibold uppercase tracking-[0.2em] text-ink/50">
+                {users.customers_heading}
+              </h3>
+              <ul className="mt-5 grid gap-px border border-ink/10 bg-ink/10 sm:grid-cols-2 lg:grid-cols-3">
+                {users.direct.map((name) => (
+                  <li key={name} className="bg-white px-6 py-5 text-sm font-semibold tracking-tight">
+                    {name}
+                  </li>
+                ))}
+              </ul>
+            </>
+          ) : null}
+
+          {users.indirect.length > 0 ? (
+            <>
+              <h3 className="mt-14 text-xs font-semibold uppercase tracking-[0.2em] text-ink/50">
+                {users.brands_heading}
+              </h3>
+              {users.brands_intro ? (
+                <p className="mt-4 max-w-3xl text-sm leading-6 text-ink/60">{users.brands_intro}</p>
+              ) : null}
+              <ul className="mt-5 grid gap-px border border-ink/10 bg-ink/10 sm:grid-cols-2 lg:grid-cols-3">
+                {users.indirect.map((name) => (
+                  <li key={name} className="bg-white px-6 py-5 text-sm font-semibold tracking-tight">
+                    {name}
+                  </li>
+                ))}
+              </ul>
+            </>
+          ) : null}
+        </>
+      ) : (
+        <p className="mt-12 max-w-3xl text-base leading-7 text-ink/60">
+          {users.withheld_note}
+        </p>
+      )}
 
       {users.note ? (
         <p className="mt-10 max-w-3xl border-l-2 border-red pl-5 text-sm leading-6 text-ink/60">

@@ -6,10 +6,12 @@ import { cn } from "@/lib/utils";
  * Language switcher.
  *
  * A locale without signed-off copy for the current page is rendered as a
- * disabled control with a visible "pending" title rather than as a link to a
- * page that would silently serve English under a foreign lang attribute. The
- * URL in that case still points at the /en/ equivalent, so the control is
- * honest about where it goes if it ever becomes enabled.
+ * disabled control carrying its own language name plus the pending-sign-off
+ * message, rather than as a link to a page that would silently serve English
+ * under a foreign lang attribute. The switcher's `url` field still resolves to
+ * the /en/ equivalent so the data is complete, but it is never rendered as an
+ * href — linking a visitor to a URL that redirects them back is worse than
+ * telling them the translation is not ready.
  */
 export function LanguageSwitcher({
   languages,
@@ -48,7 +50,8 @@ export function LanguageSwitcher({
             <span
               key={lang.code}
               lang={lang.htmlLang}
-              title={unavailableLabel}
+              title={`${lang.label} — ${unavailableLabel}`}
+              aria-label={`${lang.code} — ${unavailableLabel}`}
               aria-disabled="true"
               className={cn(base, "cursor-not-allowed text-white/25")}
             >
