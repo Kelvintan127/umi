@@ -23,6 +23,35 @@ export function Header({ chrome, activeKey, locale }: { chrome: Chrome; activeKe
 
     const onKey = (event: KeyboardEvent) => {
       if (event.key === "Escape") setOpen(false);
+
+      if (event.key !== "Tab") return;
+
+      // Trap Tab inside the panel. aria-modal="true" tells a screen reader that
+      // nothing outside the dialog is reachable; leaving Tab free to walk into
+      // the page behind the overlay makes that a lie, and a sighted keyboard user
+      // ends up tabbing through content they cannot see. The panel is the only
+      // focusable region, so wrap at both ends.
+      const panel = panelRef.current;
+      if (!panel) return;
+
+      const focusable = panel.querySelectorAll<HTMLElement>(
+        'a[href], button:not([disabled]), input, select, textarea, [tabindex]:not([tabindex="-1"])',
+      );
+      if (focusable.length === 0) return;
+
+      const first = focusable[0];
+      const last = focusable[focusable.length - 1];
+      const active = document.activeElement as HTMLElement | null;
+
+      // Focus on the panel container itself (where we put it on open) counts as
+      // "before the first item", so Shift+Tab from there goes to the end.
+      if (event.shiftKey && (active === first || active === panel)) {
+        event.preventDefault();
+        last.focus();
+      } else if (!event.shiftKey && active === last) {
+        event.preventDefault();
+        first.focus();
+      }
     };
 
     const previous = document.body.style.overflow;

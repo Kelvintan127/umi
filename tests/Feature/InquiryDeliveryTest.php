@@ -1,0 +1,162 @@
+<?php
+
+namespace Tests\Feature;
+
+use App\Mail\InquiryReceived;
+use App\Models\Inquiry;
+use Illuminate\Foundation\Testing\RefreshDatabase;
+use Illuminate\Support\Facades\Log;
+use Illuminate\Support\Facades\Mail;
+use Tests\TestCase;
+
+/**
+ * Email delivery behaviour.
+ *
+ * The important property is not "email works" — that depends on a relay this test
+ * cannot reach. It is that a mail failure never costs the business the inquiry and
+ * never lets the site claim an email went out when it did not. Those are the two
+ * ways a contact form loses real work, and both are testable here.
+ */
+class InquiryDeliveryTest extends TestCase
+{
+    use RefreshDatabase;
+
+    private function payload(array $overrides = []): array
+    {
+        return array_merge([
+            'name' => 'Delivery Test',
+            'company' => 'Testco',
+            'email' => 'delivery@umistamping.com',
+            'phone' => '+62 778 000111',
+            'inquiry_type' => array_key_first((array) trans('forms.inquiry_types', [], 'en')),
+            'message' => 'Automated delivery test message, long enough to pass validation.',
+            'consent' => true,
+            'elapsed_ms' => 5000,
+            'website' => '',
+        ], $overrides);
+    }
+
+    public function test_a_successful_send_marks_the_inquiry_as_notified(): void
+    {
+        Mail::fake();
+        config()->set('mail.inquiry_to', 'office@umistamping.com');
+
+        $this->postJson('/en/contact', $this->payload())
+            ->assertStatus(201)
+            ->assertJson(['ok' => true, 'queued' => true]);
+
+        $inquiry = Inquiry::latest('id')->first();
+
+        $this->assertNotNull($inquiry, 'the inquiry must be persisted');
+        // The column exists to answer "was anyone told"; leaving it null on a
+        // successful send makes it decorative.
+        $this->assertNotNull($inquiry->mail_sent_at);
+
+        Mail::assertSent(InquiryReceived::class, 2);
+    }
+
+    public function test_a_failed_send_still_persists_the_inquiry_and_reports_no_send(): void
+    {
+        config()->set('mail.inquiry_to', 'office@umistamping.com');
+
+        // Simulate the relay refusing everything.
+        Mail::shouldReceive('to')->andThrow(new \RuntimeException('relay refused'));
+        Mail::shouldReceive('purge')->andReturnNull();
+        Mail::shouldReceive('fake')->andReturnSelf();
+
+        $response = $this->postJson('/en/contact', $this->payload(['name' => 'Relay Down']));
+        $response->assertStatus(201);
+
+        // The honest answer: we have it, nobody was emailed.
+        $response->assertJson(['ok' => true, 'queued' => false]);
+
+        $inquiry = Inquiry::latest('id')->first();
+
+        $this->assertNotNull($inquiry, 'a mail failure must never discard the inquiry');
+        $this->assertSame('Relay Down', $inquiry->name);
+        $this->assertNull($inquiry->mail_sent_at, 'no send means no timestamp');
+    }
+
+    public function test_the_office_notification_is_retried_before_giving_up(): void
+    {
+        config()->set('mail.inquiry_to', 'office@umistamping.com');
+        config()->set('mail.inquiry_retries', 3);
+        config()->set('mail.inquiry_retry_backoff_ms', 1);
+
+        Log::spy();
+
+        Mail::shouldReceive('to')->andThrow(new \RuntimeException('smtp down'));
+        Mail::shouldReceive('purge')->andReturnNull();
+
+        $this->postJson('/en/contact', $this->payload())->assertStatus(201);
+
+        // Three attempts, each logged with its position, so a slow relay is
+        // distinguishable from a wrong one in the log after the fact.
+        Log::shouldHaveReceived('error')
+            ->withArgs(fn ($message, $context = []) => $message === 'contact.mail_failed'
+                && ($context['attempt'] ?? null) === 3
+                && ($context['of'] ?? null) === 3)
+            ->once();
+    }
+
+    public function test_the_acknowledgement_uses_message_locale_not_locale(): void
+    {
+        // A regression guard. Illuminate\Mail\Mailable declares a public $locale,
+        // and the mailable deliberately takes `messageLocale` to avoid shadowing
+        // it. Passing `locale:` produced "Unknown named parameter $locale" — which
+        // only surfaced once a real transport was configured, because with the log
+        // mailer nobody ever constructed the mailable.
+        $inquiry = Inquiry::create([
+            'locale' => 'en',
+            'name' => 'Ack Test',
+            'email' => 'ack@umistamping.com',
+            'inquiry_type' => 'engineering',
+            'message' => 'Checking the acknowledgement constructor signature.',
+        ]);
+
+        $mail = new InquiryReceived($inquiry, acknowledgement: true, messageLocale: 'id');
+
+        $this->assertSame('id', $mailable = $mail->locale, 'the mailable must carry the requested locale');
+    }
+
+    public function test_both_notifications_are_independent(): void
+    {
+        // The office notification failing must not stop the acknowledgement being
+        // attempted, and an acknowledgement failure must not make the site claim
+        // the inquiry was undelivered — the business already has it.
+        Mail::fake();
+        config()->set('mail.inquiry_to', 'office@umistamping.com');
+        config()->set('mail.inquiry_acknowledge', true);
+
+        $this->postJson('/en/contact', $this->payload())->assertStatus(201);
+
+        Mail::assertSent(InquiryReceived::class, fn (InquiryReceived $mail) => $mail->acknowledgement === false);
+        Mail::assertSent(InquiryReceived::class, fn (InquiryReceived $mail) => $mail->acknowledgement === true);
+    }
+
+    public function test_an_unconfigured_recipient_sends_nothing_and_says_so(): void
+    {
+        Mail::fake();
+        config()->set('mail.inquiry_to', '');
+
+        $this->postJson('/en/contact', $this->payload())
+            ->assertStatus(201)
+            ->assertJson(['ok' => true, 'queued' => false]);
+
+        Mail::assertNothingSent();
+
+        $this->assertNotNull(Inquiry::latest('id')->first());
+    }
+
+    public function test_the_acknowledgement_can_be_switched_off(): void
+    {
+        Mail::fake();
+        config()->set('mail.inquiry_to', 'office@umistamping.com');
+        config()->set('mail.inquiry_acknowledge', false);
+
+        $this->postJson('/en/contact', $this->payload())->assertStatus(201);
+
+        Mail::assertSent(InquiryReceived::class, 1);
+        Mail::assertNotSent(InquiryReceived::class, fn (InquiryReceived $m) => $m->acknowledgement === true);
+    }
+}

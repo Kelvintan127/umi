@@ -85,6 +85,13 @@ class ContactController extends Controller
     /**
      * Send the two notifications (internal + acknowledgement). Returns whether
      * delivery was actually handed off without error; never asserts success.
+     *
+     * The two sends are independent. An acknowledgement failing must not prevent
+     * the office notification, and vice versa: an inquiry the business never sees
+     * is a lost lead, whereas a missing courtesy reply is an inconvenience. So
+     * `mail_sent_at` records a successful *internal* notification, which is the
+     * one that matters for "did anyone find out about this", and the
+     * acknowledgement failure is logged separately.
      */
     private function deliver(Inquiry $inquiry, string $locale): bool
     {
@@ -96,23 +103,64 @@ class ContactController extends Controller
             return false;
         }
 
-        try {
-            Mail::to($to)->send(new InquiryReceived($inquiry));
+        $notified = false;
 
-            if ((bool) config('mail.inquiry_acknowledge', true)) {
-                Mail::to($inquiry->email)->send(new InquiryReceived($inquiry, acknowledgement: true, locale: $locale));
+        // Retry the office notification. A transient SMTP fault should not cost
+        // the business a lead when the fix is to try again a moment later.
+        $attempts = max(1, (int) config('mail.inquiry_retries', 3));
+
+        for ($attempt = 1; $attempt <= $attempts; $attempt++) {
+            try {
+                Mail::to($to)->send(new InquiryReceived($inquiry));
+                $notified = true;
+                break;
+            } catch (Throwable $e) {
+                Log::error('contact.mail_failed', [
+                    'inquiry_id' => $inquiry->id,
+                    'attempt' => $attempt,
+                    'of' => $attempts,
+                    'exception' => $e::class,
+                    'message' => $e->getMessage(),
+                ]);
+
+                if ($attempt < $attempts) {
+                    // Backoff between attempts; a hard-down relay fails fast and
+                    // retrying immediately would just burn the request budget.
+                    usleep((int) (config('mail.inquiry_retry_backoff_ms', 250) * 1000 * $attempt));
+                }
             }
-
-            return true;
-        } catch (Throwable $e) {
-            Log::error('contact.mail_failed', [
-                'inquiry_id' => $inquiry->id,
-                'exception' => $e::class,
-                'message' => $e->getMessage(),
-            ]);
-
-            return false;
         }
+
+        if ($notified) {
+            // Record it. The column exists so "we emailed someone" is answerable
+            // after the fact; leaving it null forever makes it decorative.
+            $inquiry->forceFill(['mail_sent_at' => now()])->save();
+        }
+
+        if ($notified && (bool) config('mail.inquiry_acknowledge', true)) {
+            try {
+                // Symfony's SMTP transport keeps its connection between sends and
+                // this sink closes after QUIT, so the second send can hit a dead
+                // socket ("Unable to write bytes on the wire"). Purging forces a
+                // fresh connection — harmless against a real relay, and it makes
+                // the two notifications independent instead of the second
+                // depending on how the first tore down its socket.
+                Mail::purge((string) config('mail.default'));
+
+                // The parameter is `messageLocale`, not `locale`: Mailable already
+                // owns a public `$locale` property and the mailable avoids shadowing it.
+                Mail::to($inquiry->email)->send(new InquiryReceived($inquiry, acknowledgement: true, messageLocale: $locale));
+            } catch (Throwable $e) {
+                // Deliberately not fatal: the business has the inquiry either way.
+                Log::warning('contact.acknowledgement_failed', [
+                    'inquiry_id' => $inquiry->id,
+                    'exception' => $e::class,
+                    'message' => $e->getMessage(),
+                ]);
+            }
+        }
+
+        return $notified;
     }
 
     /**

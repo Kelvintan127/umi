@@ -134,4 +134,15 @@ return [
 
     'inquiry_acknowledge' => (bool) env('MAIL_INQUIRY_ACKNOWLEDGE', true),
 
+    /*
+    | Office-notification retries. The inquiry is already safely in the database
+    | by this point, so retrying costs a second and can save a lead. Attempts are
+    | synchronous, so keep the total small — three attempts at 250ms linear
+    | backoff adds well under a second to a slow submission.
+    */
+
+    'inquiry_retries' => (int) env('MAIL_INQUIRY_RETRIES', 3),
+
+    'inquiry_retry_backoff_ms' => (int) env('MAIL_INQUIRY_RETRY_BACKOFF_MS', 250),
+
 ];
