@@ -26,10 +26,25 @@ class Inquiry extends Model
         'mail_sent_at',
     ];
 
+    /** True once the office has actually been told. Drives exactly-once send. */
+    public function officeNotified(): bool
+    {
+        return $this->office_notified_at !== null;
+    }
+
+    /** True once the enquirer has their confirmation. Independent of the above. */
+    public function acknowledged(): bool
+    {
+        return $this->acknowledged_at !== null;
+    }
+
     protected function casts(): array
     {
         return [
             'mail_sent_at' => 'datetime',
+            'office_notified_at' => 'datetime',
+            'acknowledged_at' => 'datetime',
+            'office_notify_attempts' => 'integer',
         ];
     }
 }

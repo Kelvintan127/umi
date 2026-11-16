@@ -103,17 +103,41 @@ class ContactController extends Controller
             return false;
         }
 
-        $notified = false;
+        $officeNotified = $this->notifyOffice($inquiry, $to);
+        $this->acknowledge($inquiry, $locale);
 
-        // Retry the office notification. A transient SMTP fault should not cost
-        // the business a lead when the fix is to try again a moment later.
+        return $officeNotified;
+    }
+
+    /**
+     * Tell the office. Exactly once, per inquiry.
+     *
+     * This is the notification that must not be duplicated — a lead mailed twice
+     * wastes the sales team's time and looks broken. The guard is the persisted
+     * office_notified_at, not a local flag, so a retried job or a double-submitted
+     * form cannot send a second copy.
+     */
+    private function notifyOffice(Inquiry $inquiry, string $to): bool
+    {
+        if ($inquiry->officeNotified()) {
+            return true;
+        }
+
         $attempts = max(1, (int) config('mail.inquiry_retries', 3));
 
         for ($attempt = 1; $attempt <= $attempts; $attempt++) {
             try {
                 Mail::to($to)->send(new InquiryReceived($inquiry));
-                $notified = true;
-                break;
+
+                // mail_sent_at is kept in step for anything already reading it;
+                // office_notified_at is the authoritative field.
+                $inquiry->forceFill([
+                    'mail_sent_at' => now(),
+                    'office_notified_at' => now(),
+                    'office_notify_attempts' => $inquiry->office_notify_attempts + $attempt,
+                ])->save();
+
+                return true;
             } catch (Throwable $e) {
                 Log::error('contact.mail_failed', [
                     'inquiry_id' => $inquiry->id,
@@ -131,36 +155,54 @@ class ContactController extends Controller
             }
         }
 
-        if ($notified) {
-            // Record it. The column exists so "we emailed someone" is answerable
-            // after the fact; leaving it null forever makes it decorative.
-            $inquiry->forceFill(['mail_sent_at' => now()])->save();
+        // Record the failure so the attempt count survives, but leave
+        // office_notified_at null — that field means delivered, not tried.
+        $inquiry->forceFill([
+            'office_notify_attempts' => min(255, $inquiry->office_notify_attempts + $attempts),
+        ])->save();
+
+        return false;
+    }
+
+    /**
+     * Send the enquirer their confirmation.
+     *
+     * Deliberately NOT gated on the office notification having succeeded. The two
+     * fail for unrelated reasons, and the enquirer's reply is a courtesy that
+     * should still go out if the internal relay is misconfigured — the earlier
+     * `if ($notified && ...)` meant a broken office address silently suppressed
+     * every acknowledgement, which is the wrong way round.
+     *
+     * The enquiry is already persisted either way, so a failure here loses nothing.
+     */
+    private function acknowledge(Inquiry $inquiry, string $locale): void
+    {
+        if (! (bool) config('mail.inquiry_acknowledge', true) || $inquiry->acknowledged()) {
+            return;
         }
 
-        if ($notified && (bool) config('mail.inquiry_acknowledge', true)) {
-            try {
-                // Symfony's SMTP transport keeps its connection between sends and
-                // this sink closes after QUIT, so the second send can hit a dead
-                // socket ("Unable to write bytes on the wire"). Purging forces a
-                // fresh connection — harmless against a real relay, and it makes
-                // the two notifications independent instead of the second
-                // depending on how the first tore down its socket.
-                Mail::purge((string) config('mail.default'));
+        try {
+            // Symfony's SMTP transport keeps its connection between sends and a
+            // relay may close after the first, so the second send can hit a dead
+            // socket ("Unable to write bytes on the wire"). Purging forces a
+            // fresh connection — harmless against a real relay, and it makes the
+            // two notifications independent instead of the second depending on
+            // how the first tore down its socket.
+            Mail::purge((string) config('mail.default'));
 
-                // The parameter is `messageLocale`, not `locale`: Mailable already
-                // owns a public `$locale` property and the mailable avoids shadowing it.
-                Mail::to($inquiry->email)->send(new InquiryReceived($inquiry, acknowledgement: true, messageLocale: $locale));
-            } catch (Throwable $e) {
-                // Deliberately not fatal: the business has the inquiry either way.
-                Log::warning('contact.acknowledgement_failed', [
-                    'inquiry_id' => $inquiry->id,
-                    'exception' => $e::class,
-                    'message' => $e->getMessage(),
-                ]);
-            }
+            // The parameter is `messageLocale`, not `locale`: Mailable already
+            // owns a public `$locale` property and the mailable avoids shadowing it.
+            Mail::to($inquiry->email)->send(new InquiryReceived($inquiry, acknowledgement: true, messageLocale: $locale));
+
+            $inquiry->forceFill(['acknowledged_at' => now()])->save();
+        } catch (Throwable $e) {
+            // Deliberately not fatal: the business has the inquiry either way.
+            Log::warning('contact.acknowledgement_failed', [
+                'inquiry_id' => $inquiry->id,
+                'exception' => $e::class,
+                'message' => $e->getMessage(),
+            ]);
         }
-
-        return $notified;
     }
 
     /**

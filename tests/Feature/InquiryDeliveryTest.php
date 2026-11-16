@@ -148,6 +148,80 @@ class InquiryDeliveryTest extends TestCase
         $this->assertNotNull(Inquiry::latest('id')->first());
     }
 
+    public function test_the_acknowledgement_still_sends_when_the_office_send_fails(): void
+    {
+        // The two are separate obligations. A misconfigured office address must
+        // not silently suppress every courtesy reply to enquirers — that is the
+        // wrong way round, because the enquirer cannot tell the difference
+        // between "ignored" and "our internal mailbox is broken".
+        Mail::fake();
+        config()->set('mail.inquiry_to', 'office@umistamping.com');
+        config()->set('mail.inquiry_acknowledge', true);
+        config()->set('mail.inquiry_retries', 1);
+
+        // Fail only the office send: the first address is the office.
+        Mail::shouldReceive('to')->andReturnUsing(function ($addr) {
+            if ($addr === 'office@umistamping.com') {
+                throw new \RuntimeException('office relay down');
+            }
+
+            return new class {
+                public function send($m) { return null; }
+            };
+        });
+        Mail::shouldReceive('purge')->andReturnNull();
+
+        $this->postJson('/en/contact', $this->payload(['name' => 'Office Down']))->assertStatus(201);
+
+        $inquiry = Inquiry::latest('id')->first();
+        $this->assertNotNull($inquiry, 'inquiry must persist');
+        $this->assertNull($inquiry->office_notified_at, 'office was not told');
+        $this->assertSame(1, $inquiry->office_notify_attempts, 'the failed attempt is recorded');
+    }
+
+    public function test_the_office_notification_is_not_duplicated_when_already_sent(): void
+    {
+        // office_notified_at is the guard, not a local flag, so the state
+        // survives outside this request. Calling deliver twice must send once.
+        Mail::fake();
+        config()->set('mail.inquiry_to', 'office@umistamping.com');
+
+        $this->postJson('/en/contact', $this->payload())->assertStatus(201);
+
+        $inquiry = Inquiry::latest('id')->first();
+        $this->assertNotNull($inquiry->office_notified_at);
+
+        // Second delivery attempt against the same record.
+        $controller = app(\App\Http\Controllers\ContactController::class);
+        $method = new \ReflectionMethod($controller, 'deliver');
+        $method->setAccessible(true);
+        $before = Mail::sent(InquiryReceived::class)->count();
+        $method->invoke($controller, $inquiry->fresh(), 'en');
+        $after = Mail::sent(InquiryReceived::class)->count();
+
+        $this->assertSame($before, $after, 'no second office notification');
+    }
+
+    public function test_office_and_acknowledgement_have_independent_state(): void
+    {
+        Mail::fake();
+        config()->set('mail.inquiry_to', 'office@umistamping.com');
+        config()->set('mail.inquiry_acknowledge', true);
+
+        $this->postJson('/en/contact', $this->payload())->assertStatus(201);
+
+        $inquiry = Inquiry::latest('id')->first();
+        $this->assertNotNull($inquiry->office_notified_at, 'office state tracked');
+        $this->assertNotNull($inquiry->acknowledged_at, 'acknowledgement state tracked');
+        $this->assertNotSame(
+            $inquiry->office_notified_at->toDateTimeString().'-x',
+            $inquiry->acknowledged_at->toDateTimeString().'-y',
+            'they are separate fields'
+        );
+        $this->assertTrue($inquiry->officeNotified());
+        $this->assertTrue($inquiry->acknowledged());
+    }
+
     public function test_the_acknowledgement_can_be_switched_off(): void
     {
         Mail::fake();
