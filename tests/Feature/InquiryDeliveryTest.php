@@ -222,6 +222,79 @@ class InquiryDeliveryTest extends TestCase
         $this->assertTrue($inquiry->acknowledged());
     }
 
+    public function test_a_concurrent_second_delivery_cannot_send_the_office_a_second_copy(): void
+    {
+        // Simulates two requests racing on the same record. Both reach
+        // notifyOffice() with office_notified_at still null in their own copy of
+        // the model; the conditional UPDATE must let only one through.
+        Mail::fake();
+        config()->set('mail.inquiry_to', 'office@umistamping.com');
+
+        $this->postJson('/en/contact', $this->payload(['name' => 'Race']))->assertStatus(201);
+        $inquiry = Inquiry::latest('id')->first();
+
+        $stale1 = Inquiry::find($inquiry->id);
+        $stale2 = Inquiry::find($inquiry->id);
+
+        // Both stale copies think nobody has been told.
+        $this->assertTrue($stale1->officeNotified());
+        $this->assertTrue($stale2->officeNotified());
+
+        // Clear it so the race is real, then let two stale models compete.
+        Inquiry::whereKey($inquiry->id)->update(['office_notified_at' => null]);
+        $a = Inquiry::find($inquiry->id);
+        $b = Inquiry::find($inquiry->id);
+        $this->assertFalse($a->officeNotified());
+        $this->assertFalse($b->officeNotified());
+
+        $controller = app(\App\Http\Controllers\ContactController::class);
+        $m = new \ReflectionMethod($controller, 'notifyOffice');
+        $m->setAccessible(true);
+
+        $first = $m->invoke($controller, $a, 'office@umistamping.com');
+        $sentAfterFirst = Mail::sent(InquiryReceived::class)->count();
+
+        $second = $m->invoke($controller, $b, 'office@umistamping.com');
+        $sentAfterSecond = Mail::sent(InquiryReceived::class)->count();
+
+        $this->assertTrue($first, 'the first caller sends');
+        $this->assertTrue($second, 'the second caller reports already-notified, not a failure');
+        $this->assertSame(
+            $sentAfterFirst,
+            $sentAfterSecond,
+            'the second caller must not send another office copy'
+        );
+    }
+
+    public function test_a_failed_office_send_releases_the_claim_for_a_later_retry(): void
+    {
+        // If the relay is down, the claim must not persist — otherwise one
+        // outage marks the lead as un-notifiable forever.
+        Mail::fake();
+        config()->set('mail.inquiry_to', 'office@umistamping.com');
+        config()->set('mail.inquiry_retries', 1);
+
+        $inquiry = Inquiry::create([
+            'locale' => 'en', 'name' => 'Claim Release',
+            'email' => 'claim@umistamping.com', 'inquiry_type' => 'engineering',
+            'message' => 'Checking that a failed send frees the claim.',
+        ]);
+
+        Mail::shouldReceive('to')->andThrow(new \RuntimeException('relay down'));
+        Mail::shouldReceive('purge')->andReturnNull();
+
+        $controller = app(\App\Http\Controllers\ContactController::class);
+        $m = new \ReflectionMethod($controller, 'notifyOffice');
+        $m->setAccessible(true);
+
+        $result = $m->invoke($controller, $inquiry, 'office@umistamping.com');
+        $fresh = $inquiry->fresh();
+
+        $this->assertFalse($result);
+        $this->assertNull($fresh->office_notified_at, 'claim released after total failure');
+        $this->assertGreaterThan(0, $fresh->office_notify_attempts, 'the attempts are still recorded');
+    }
+
     public function test_the_acknowledgement_can_be_switched_off(): void
     {
         Mail::fake();

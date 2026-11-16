@@ -123,6 +123,23 @@ class ContactController extends Controller
             return true;
         }
 
+        // Claim the send atomically. Two requests can reach this point at once —
+        // a double-submitted form, a retried queue job, or two PHP workers on the
+        // same record. Both would pass the officeNotified() check above and both
+        // would email the office, which is exactly the duplicate we are avoiding.
+        // The conditional UPDATE is the arbitration: the database decides, and
+        // only the winner sees a non-zero row count.
+        $claimed = Inquiry::whereKey($inquiry->getKey())
+            ->whereNull('office_notified_at')
+            ->update(['office_notified_at' => now()]);
+
+        if ($claimed === 0) {
+            // Someone else already claimed it. Re-read so the caller sees truth.
+            $inquiry->refresh();
+
+            return $inquiry->officeNotified();
+        }
+
         $attempts = max(1, (int) config('mail.inquiry_retries', 3));
 
         for ($attempt = 1; $attempt <= $attempts; $attempt++) {
@@ -130,10 +147,9 @@ class ContactController extends Controller
                 Mail::to($to)->send(new InquiryReceived($inquiry));
 
                 // mail_sent_at is kept in step for anything already reading it;
-                // office_notified_at is the authoritative field.
+                // office_notified_at is the authoritative field and the claim.
                 $inquiry->forceFill([
                     'mail_sent_at' => now(),
-                    'office_notified_at' => now(),
                     'office_notify_attempts' => $inquiry->office_notify_attempts + $attempt,
                 ])->save();
 
@@ -155,9 +171,11 @@ class ContactController extends Controller
             }
         }
 
-        // Record the failure so the attempt count survives, but leave
-        // office_notified_at null — that field means delivered, not tried.
+        // Nothing got through. Release the claim so a later retry can try again
+        // — otherwise a single relay outage would mark the lead permanently
+        // un-notifiable. Attempt count survives so the operator can see it.
         $inquiry->forceFill([
+            'office_notified_at' => null,
             'office_notify_attempts' => min(255, $inquiry->office_notify_attempts + $attempts),
         ])->save();
 
