@@ -3,6 +3,7 @@
 namespace Tests\Feature;
 
 use App\Support\Locales;
+use App\Support\Pages;
 use Tests\TestCase;
 
 /**
@@ -98,6 +99,48 @@ class HreflangTest extends TestCase
             }
 
             $this->assertFalse($lang['available'], "{$lang['code']} must be unavailable until signed off");
+        }
+    }
+
+    public function test_dotted_page_keys_are_read_flat_not_by_dot_traversal(): void
+    {
+        // config('locales.translated.products.battery-contacts') splits on every
+        // dot, so a signed-off child page read that way silently resolves to
+        // nothing and redirects to /en forever. The failure is invisible: the
+        // page returns 302, which looks exactly like "not signed off yet".
+        $key = 'products.battery-contacts';
+
+        config()->set('locales.translated', array_merge(
+            (array) config('locales.translated'),
+            [$key => ['en', 'id']]
+        ));
+
+        $this->assertTrue(Locales::isTranslated($key, 'id'));
+        $this->assertSame(['en', 'id'], Locales::translated($key));
+
+        // And the route agrees with the policy.
+        $this->get('/id/products/battery-contacts')->assertOk();
+    }
+
+    public function test_a_signed_off_dotted_page_is_not_redirected(): void
+    {
+        // Every child page carries a dotted key, so this covers all of them.
+        $dotted = array_values(array_filter(
+            Pages::keys(),
+            fn (string $key) => str_contains($key, '.')
+        ));
+
+        $this->assertNotEmpty($dotted, 'registry is expected to contain dotted child keys');
+
+        $registry = (array) config('locales.translated');
+        foreach ($dotted as $key) {
+            $registry[$key] = ['en', 'id'];
+        }
+        config()->set('locales.translated', $registry);
+
+        foreach ($dotted as $key) {
+            $path = Pages::path($key);
+            $this->get('/id/'.$path)->assertOk();
         }
     }
 

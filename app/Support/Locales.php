@@ -19,11 +19,19 @@ final class Locales
     /**
      * Locale codes whose copy for a page has been signed off.
      *
+     * The registry is read as a flat lookup rather than via
+     * config('locales.translated.'.$page), because Laravel's dot traversal would
+     * split a dotted page key — 'products.battery-contacts' becomes
+     * ['products']['battery-contacts'] — and silently return the default for
+     * every product and facility child page. They would then redirect to /en
+     * forever, even after the company signed them off, with no error anywhere.
+     *
      * @return non-empty-list<string>
      */
     public static function translated(string $page): array
     {
-        $registered = (array) config('locales.translated.'.$page, []);
+        $registry = (array) config('locales.translated', []);
+        $registered = (array) ($registry[$page] ?? []);
         $default = (string) config('locales.default', self::DEFAULT);
 
         return array_values(array_unique(array_merge([$default], $registered)));
