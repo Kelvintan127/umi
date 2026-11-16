@@ -141,7 +141,7 @@ export function Hero({
         ) : null}
 
         {hero.eyebrow ? (
-          <p className="text-xs font-semibold uppercase tracking-[0.22em] text-red">{hero.eyebrow}</p>
+          <p className="text-xs font-semibold uppercase tracking-[0.22em] text-red-on-dark">{hero.eyebrow}</p>
         ) : null}
 
         {hero.title ? (

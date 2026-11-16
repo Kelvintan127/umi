@@ -20,16 +20,22 @@ class InertiaPageTest extends TestCase
 
         $response->assertOk();
         // The root element must carry the serialised page payload, which is
-        // what lets the client hydrate without a second request. Inertia 2
-        // splits this: <div id="app" data-page="app"> plus a following
-        // application/json script holding the component and props. Asserting
-        // the component name catches a payload that is present but empty —
-        // but it lives in the JSON block now, not in the attribute.
+        // what lets the client hydrate without a second request.
+        //
+        // Do not assert the payload's encoding. Inertia 2 emits it two ways
+        // depending on state — `data-page="app"` plus a raw-JSON script block
+        // when SSR/history is available, or the whole payload HTML-escaped
+        // inside the attribute otherwise. Both hydrate correctly. Assert the
+        // decoded payload instead, which is the property that actually matters.
         $response->assertSee('id="app"', false);
-        $response->assertSee('data-page="app"', false);
-        // The payload is written as raw JSON in the script block, not
-        // HTML-escaped entities — that changed with Inertia 2.
-        $response->assertSee('"component":"Home"', false);
+
+        // Laravel hands the test an array; over the wire it is an encoded
+        // string. Accept either so the test tracks the payload, not the plumbing.
+        $raw = $response->viewData('page');
+        $page = is_array($raw) ? $raw : json_decode(html_entity_decode((string) $raw, ENT_QUOTES), true);
+        $this->assertSame('Home', $page['component'] ?? null, 'the payload must name the component');
+        $this->assertIsArray($page['props'] ?? null, 'the payload must carry props');
+        $this->assertArrayHasKey('locale', $page['props'], 'shared props must reach the client');
         $response->assertHeader('Content-Language', 'en');
     }
 

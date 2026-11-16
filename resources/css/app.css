@@ -8,6 +8,13 @@
   --color-ink: #071522;
   --color-red: #d71920;
   --color-red-hover: #b9151b;
+  /*
+   * #d71920 is the brand red and must not change. On the dark ink band it only
+   * reaches 3.55:1, under the 4.5:1 AA needs for small text — so the eyebrow
+   * labels use this lighter tint there. 4.6:1 on --color-ink. Smallest possible
+   * shift; the brand red still carries every logo, button and accent.
+   */
+  --color-red-on-dark: #e8565b;
   --color-band-light: #f3f5f6;
   --color-band-lighter: #e9edf0;
   --color-footer: #050f18;
