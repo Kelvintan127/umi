@@ -11,20 +11,26 @@ import createServer from "@inertiajs/react/server";
 import ReactDOMServer from "react-dom/server";
 import type { ReactNode } from "react";
 
-createServer((page) =>
-  createInertiaApp({
-    page,
-    render: ReactDOMServer.renderToString,
-    resolve: (name: string) => {
-      const pages = import.meta.glob("./pages/**/*.tsx", { eager: true });
-      const module = pages[`./pages/${name}.tsx`] as { default: () => ReactNode } | undefined;
+// The renderer port comes from the environment so staging can run its own copy
+// alongside development. Inertia defaults to 13714 when this is not a number.
+const port = Number.parseInt(process.env.INERTIA_SSR_PORT ?? "", 10);
 
-      if (!module) {
-        throw new Error(`Inertia page not found: ${name}`);
-      }
+createServer(
+  (page) =>
+    createInertiaApp({
+      page,
+      render: ReactDOMServer.renderToString,
+      resolve: (name: string) => {
+        const pages = import.meta.glob("./pages/**/*.tsx", { eager: true });
+        const module = pages[`./pages/${name}.tsx`] as { default: () => ReactNode } | undefined;
 
-      return module;
-    },
-    setup: ({ App, props }) => <App {...props} />,
-  }),
+        if (!module) {
+          throw new Error(`Inertia page not found: ${name}`);
+        }
+
+        return module;
+      },
+      setup: ({ App, props }) => <App {...props} />,
+    }),
+  Number.isNaN(port) ? undefined : port,
 );
