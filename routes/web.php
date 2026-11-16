@@ -6,6 +6,7 @@ use App\Http\Controllers\PageController;
 use App\Http\Controllers\SitemapController;
 use App\Http\Middleware\SetLocale;
 use App\Support\Locales;
+use App\Support\Pages;
 use Illuminate\Support\Facades\Route;
 
 /*
@@ -23,19 +24,18 @@ Route::prefix('{locale}')
     ->middleware(SetLocale::class)
     ->name('site.')
     ->group(function () {
-        Route::get('/',             [PageController::class, 'home'])->name('home');
-        Route::get('/about',        [PageController::class, 'about'])->name('about');
-        Route::get('/capabilities', [PageController::class, 'capabilities'])->name('capabilities');
-        Route::get('/products',     [PageController::class, 'products'])->name('products');
-        Route::get('/industries',   [PageController::class, 'industries'])->name('industries');
-        Route::get('/quality',      [PageController::class, 'quality'])->name('quality');
-        Route::get('/gallery',      [PageController::class, 'gallery'])->name('gallery');
-        Route::get('/news',         [PageController::class, 'news'])->name('news');
-        Route::get('/contact',      [PageController::class, 'contact'])->name('contact');
-        Route::post('/contact',     [ContactController::class, 'store'])
-             ->middleware('throttle:5,1')->name('contact.store');
-        Route::get('/privacy',      [PageController::class, 'privacy'])->name('privacy');
-        Route::get('/terms',        [PageController::class, 'terms'])->name('terms');
+        // One route per registry entry, generated from the registry itself, so a
+        // page cannot exist in the sitemap without a route (or the reverse).
+        foreach (Pages::REGISTRY as $key => $meta) {
+            $uri = $meta['path'] === '' ? '/' : '/'.$meta['path'];
+
+            Route::get($uri, [PageController::class, $meta['action']])
+                ->defaults('pageKey', $key)
+                ->name($key);
+        }
+
+        Route::post('/contact', [ContactController::class, 'store'])
+            ->middleware('throttle:5,1')->name('contact.store');
     });
 
 Route::get('/sitemap.xml', [SitemapController::class, 'index'])->name('site.sitemap');

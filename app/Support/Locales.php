@@ -40,11 +40,110 @@ final class Locales
     }
 
     /**
+     * Locales that actually serve their own URLs.
+     *
+     * A locale is published only once every registry page is signed off: the
+     * router is per-locale, not per-page, so a locale with partial coverage
+     * would either 404 on the gaps or serve English under a foreign
+     * <html lang>. Until sign-off, nothing in the locale is published and the
+     * redirect to the default stays in force.
+     *
+     * @return non-empty-list<string>
+     */
+    public static function published(): array
+    {
+        $out = [];
+
+        foreach (self::CODES as $code) {
+            if ($code === self::DEFAULT) {
+                $out[] = $code;
+
+                continue;
+            }
+
+            $signedOff = true;
+            foreach (array_keys(Pages::REGISTRY) as $pageKey) {
+                if (! self::isTranslated((string) $pageKey, $code)) {
+                    $signedOff = false;
+
+                    break;
+                }
+            }
+
+            if ($signedOff) {
+                $out[] = $code;
+            }
+        }
+
+        return $out;
+    }
+
+    /**
      * Value for <html lang>. The URL segment stays two letters so the route
      * regex constraint holds; only the document attribute expands zh -> zh-Hans.
      */
     public static function htmlLang(string $locale): string
     {
         return $locale === 'zh' ? 'zh-Hans' : $locale;
+    }
+
+    /**
+     * The language switcher. A locale whose copy for this page is not signed
+     * off is still listed, but marked unavailable and pointing at the /en/
+     * equivalent, so the UI never offers a link that would silently serve an
+     * English body under a foreign lang attribute.
+     *
+     * @return list<array{code: string, label: string, htmlLang: string, url: string, available: bool, current: bool}>
+     */
+    public static function switcher(string $locale, ?string $pageKey = null, ?string $path = null): array
+    {
+        $pageKey ??= 'home';
+        $path ??= Pages::exists($pageKey) ? Pages::path($pageKey) : '';
+        $suffix = $path === '' ? '' : '/'.$path;
+
+        $out = [];
+
+        foreach (self::CODES as $code) {
+            $available = self::isTranslated($pageKey, $code);
+            $target = $available ? $code : self::DEFAULT;
+
+            $out[] = [
+                'code' => $code,
+                'label' => (string) trans('site.language.'.$code, [], self::DEFAULT),
+                'htmlLang' => self::htmlLang($code),
+                'url' => '/'.$target.$suffix,
+                'available' => $available,
+                'current' => $code === $locale,
+            ];
+        }
+
+        return $out;
+    }
+
+    /**
+     * hreflang alternates for SEO. A locale without signed-off copy for this
+     * page points at the locale that actually serves it, so the alternates
+     * never disagree with what a visitor receives.
+     *
+     * @return list<array{code: string, htmlLang: string, url: string, available: bool}>
+     */
+    public static function alternates(string $pageKey, string $path): array
+    {
+        $suffix = $path === '' ? '' : '/'.$path;
+        $out = [];
+
+        foreach (self::CODES as $code) {
+            $available = self::isTranslated($pageKey, $code);
+            $target = $available ? $code : self::DEFAULT;
+
+            $out[] = [
+                'code' => $code,
+                'htmlLang' => self::htmlLang($code),
+                'url' => '/'.$target.$suffix,
+                'available' => $available,
+            ];
+        }
+
+        return $out;
     }
 }

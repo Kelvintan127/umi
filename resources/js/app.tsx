@@ -1,5 +1,8 @@
 /**
  * Inertia entry point.
+ *
+ * The resolver globs eagerly, matching ssr.tsx, so the client hydrates the same
+ * module graph the server rendered.
  */
 import "../css/app.css";
 
@@ -9,12 +12,14 @@ import type { ReactNode } from "react";
 
 createInertiaApp({
   resolve: (name: string) => {
-    const pages = import.meta.glob("./pages/**/*.tsx");
-    const page = pages[`./pages/${name}.tsx`];
-    if (!page) {
+    const pages = import.meta.glob("./pages/**/*.tsx", { eager: true });
+    const module = pages[`./pages/${name}.tsx`] as { default: () => ReactNode } | undefined;
+
+    if (!module) {
       throw new Error(`Inertia page not found: ${name}`);
     }
-    return page();
+
+    return module;
   },
   setup({ el, App, props }) {
     createRoot(el as HTMLElement).render(<App {...props} /> as ReactNode);

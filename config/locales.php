@@ -31,6 +31,13 @@ return [
     | attribute (AC-16, AC-40, Q-10, Q-11). No sign-off means no redirect
     | exemption: silence fails closed.
     |
+    | COMPLETE DRAFTS EXIST FOR id AND zh (lang/id, lang/zh) — see
+    | docs/translation-signoff.md. They are deliberately NOT listed here. A
+    | draft becomes servable only when the company signs it off and its locale
+    | code is added to the page's list below, which is a one-line, reviewable
+    | diff. tests/Feature/TranslationCompletenessTest.php fails if a registered
+    | locale's draft is incomplete, so a sign-off cannot outrun the copy.
+    |
     */
 
     'translated' => [

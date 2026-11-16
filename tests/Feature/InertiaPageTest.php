@@ -19,7 +19,13 @@ class InertiaPageTest extends TestCase
         $response = $this->get('/en');
 
         $response->assertOk();
-        $response->assertSee('data-page="app"', false);
+        // The root element must carry the serialised page payload, which is
+        // what lets the client hydrate without a second request. Asserting the
+        // component name (not just the attribute) catches a payload that is
+        // present but empty.
+        $response->assertSee('id="app"', false);
+        $response->assertSee('data-page="', false);
+        $response->assertSee('&quot;component&quot;:&quot;Home&quot;', false);
         $response->assertHeader('Content-Language', 'en');
     }
 

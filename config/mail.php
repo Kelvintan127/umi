@@ -115,4 +115,23 @@ return [
         'name' => env('MAIL_FROM_NAME', env('APP_NAME', 'Laravel')),
     ],
 
+    /*
+    |--------------------------------------------------------------------------
+    | Inquiry Notifications
+    |--------------------------------------------------------------------------
+    |
+    | Where a contact-form inquiry is delivered. Empty means "not configured":
+    | ContactController still persists the inquiry and logs a warning, but
+    | sends nothing and reports queued=false, so the site never claims an email
+    | went out when it did not.
+    |
+    | inquiry_acknowledge additionally sends the enquirer a confirmation in
+    | their own locale.
+    |
+    */
+
+    'inquiry_to' => env('MAIL_INQUIRY_TO', ''),
+
+    'inquiry_acknowledge' => (bool) env('MAIL_INQUIRY_ACKNOWLEDGE', true),
+
 ];
