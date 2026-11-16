@@ -20,12 +20,16 @@ class InertiaPageTest extends TestCase
 
         $response->assertOk();
         // The root element must carry the serialised page payload, which is
-        // what lets the client hydrate without a second request. Asserting the
-        // component name (not just the attribute) catches a payload that is
-        // present but empty.
+        // what lets the client hydrate without a second request. Inertia 2
+        // splits this: <div id="app" data-page="app"> plus a following
+        // application/json script holding the component and props. Asserting
+        // the component name catches a payload that is present but empty —
+        // but it lives in the JSON block now, not in the attribute.
         $response->assertSee('id="app"', false);
-        $response->assertSee('data-page="', false);
-        $response->assertSee('&quot;component&quot;:&quot;Home&quot;', false);
+        $response->assertSee('data-page="app"', false);
+        // The payload is written as raw JSON in the script block, not
+        // HTML-escaped entities — that changed with Inertia 2.
+        $response->assertSee('"component":"Home"', false);
         $response->assertHeader('Content-Language', 'en');
     }
 
