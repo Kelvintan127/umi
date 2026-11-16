@@ -1,5 +1,5 @@
 import { Link } from "@inertiajs/react";
-import { ArrowRight } from "lucide-react";
+import { ArrowRight, ArrowUpRight } from "lucide-react";
 import { Band, SectionHeading } from "./Band";
 import type { Capability, ContactBlock, Product } from "@/types";
 import { cn } from "@/lib/utils";
@@ -82,52 +82,47 @@ export function Cards({
 export function ContactDetails({
   contact,
   labels,
+  locale,
+  ctaLabel,
 }: {
   contact: ContactBlock;
   labels: { email: string; phone: string; location: string; map: string };
+  locale: string;
+  ctaLabel: string;
 }) {
-  const offices = [
-    { key: "batam", data: contact.batam },
-    { key: "jakarta", data: contact.jakarta },
-  ] as const;
-
   return (
     <div className="grid gap-10 md:grid-cols-2">
-      {offices.map(({ key, data }) => (
-        <section key={key} aria-labelledby={`office-${key}`}>
-          <h2 id={`office-${key}`} className="text-sm font-semibold uppercase tracking-[0.16em] text-red">
-            {data.label}
-          </h2>
+      <section aria-labelledby="office-batam">
+        <h2 id="office-batam" className="text-sm font-semibold uppercase tracking-[0.16em] text-red">
+          {contact.batam.label}
+        </h2>
 
-          <address className="mt-4 not-italic text-sm leading-6 text-ink/70">
-            {data.lines.map((line) => (
-              <span key={line} className="block">
-                {line}
-              </span>
-            ))}
+        <address className="mt-4 not-italic text-sm leading-6 text-ink/70">
+          {contact.batam.lines.map((line) => (
+            <span key={line} className="block">
+              {line}
+            </span>
+          ))}
 
-            {"phone" in data && data.phone ? (
-              <a href={`tel:${data.phone.replace(/\s/g, "")}`} className="mt-3 block hover:text-red">
-                {labels.phone}: {data.phone}
-              </a>
-            ) : null}
-
-            {"fax" in data && data.fax ? <span className="block">Fax: {data.fax}</span> : null}
-          </address>
-
-          <a
-            href={data.map}
-            target="_blank"
-            rel="noreferrer noopener"
-            className="mt-4 inline-flex items-center gap-2 text-sm font-semibold text-ink transition-colors hover:text-red"
-          >
-            {labels.map}
-            <span className="sr-only">({data.label})</span>
+          <a href={`tel:${contact.batam.phone.replace(/\s/g, "")}`} className="mt-3 block hover:text-red">
+            {labels.phone}: {contact.batam.phone}
           </a>
-        </section>
-      ))}
 
-      <section aria-labelledby="contact-direct">
+          <span className="block">Fax: {contact.batam.fax}</span>
+        </address>
+
+        <a
+          href={contact.batam.map}
+          target="_blank"
+          rel="noreferrer noopener"
+          className="mt-4 inline-flex items-center gap-2 text-sm font-semibold text-ink transition-colors hover:text-red"
+        >
+          {labels.map}
+          <span className="sr-only">({contact.batam.label})</span>
+        </a>
+      </section>
+
+      <section aria-labelledby="contact-direct" className="flex flex-col items-start">
         <h2 id="contact-direct" className="text-sm font-semibold uppercase tracking-[0.16em] text-red">
           {labels.email}
         </h2>
@@ -138,6 +133,13 @@ export function ContactDetails({
           {contact.phone}
         </a>
         <p className="mt-2 text-sm text-ink/60">{contact.location}</p>
+        <Link
+          href={`/${locale}/contact`}
+          className="mt-6 inline-flex items-center gap-2 bg-red px-6 py-3 text-sm font-semibold text-white transition-colors hover:bg-red-hover"
+        >
+          {ctaLabel}
+          <ArrowUpRight size={16} aria-hidden="true" />
+        </Link>
       </section>
     </div>
   );

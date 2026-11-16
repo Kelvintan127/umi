@@ -107,10 +107,11 @@ export function Header({ chrome, activeKey, locale }: { chrome: Chrome; activeKe
             className="text-2xl font-black tracking-tight text-white"
             aria-label={`${chrome.brand.company} — ${chrome.brand.short}`}
           >
-            {chrome.brand.mark}
-            <span className="text-red" aria-hidden="true">
-              .
-            </span>
+            <img
+              src="/images/logo.jpg"
+              alt={chrome.brand.company}
+              className="h-14 w-14 object-contain"
+            />
           </Link>
 
           <DesktopNav

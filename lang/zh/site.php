@@ -85,7 +85,6 @@ return [
         'links' => [
             'company_section' => [
                 'about' => '关于我们',
-                'company-profile' => '公司简介',
                 'capabilities' => '制造能力',
                 'products' => '产品',
             ],
@@ -253,7 +252,7 @@ return [
                 '自动切割、攻丝及 reverting 设备',
                 '手动冲床',
             ],
-            'image' => '/images/facilities/production-machines.jpg',
+            'image' => '/images/gallery/machine-01.jpg',
         ],
         [
             'key' => 'supporting-machines',
@@ -267,7 +266,7 @@ return [
                 'CNC 铣床：Hurco',
                 'LX-A1 便携式激光打标机',
             ],
-            'image' => '/images/facilities/supporting-machines.jpg',
+            'image' => '/images/gallery/factory-01.jpg',
         ],
         [
             'key' => 'tools-design-storage',
@@ -279,7 +278,7 @@ return [
                 '规范的工装存放与维护',
                 '高端工装模具由新加坡和马来西亚采购',
             ],
-            'image' => '/images/facilities/tools-design-storage.jpg',
+            'image' => '/images/gallery/team-01.jpg',
         ],
         [
             'key' => 'measurement-equipment',
@@ -292,7 +291,7 @@ return [
                 '销规、块规',
                 '游标卡尺、千分尺',
             ],
-            'image' => '/images/facilities/measurement-equipment.jpg',
+            'image' => '',
         ],
     ],
 
@@ -325,16 +324,6 @@ return [
             'phone' => '+62 778 464141',
             'fax' => '+62 778 464143',
             'map' => 'https://maps.google.com/maps?q=1.109035+104.046600&hl=en&z=16',
-        ],
-        'jakarta' => [
-            'label' => '销售代表处（Jakarta）',
-            'lines' => [
-                'Ruko Central Business District (CBD)',
-                'Jalan Niaga Raya Block E No. 7',
-                'Jababeka 2 - Cikarang, Bekasi',
-                'Jawa Barat - Indonesia',
-            ],
-            'map' => 'https://maps.google.com/maps?q=-6.299956+107.151841&hl=en&z=17',
         ],
         'email' => 'info@umistamping.com',
         'phone' => '+62 778 464141',

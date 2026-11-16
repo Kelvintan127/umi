@@ -44,6 +44,7 @@ export function SectionRenderer({
                 heading={section.heading}
                 paragraphs={section.paragraphs ?? []}
                 image={section.image}
+                video={section.video}
                 note={section.note}
               />
             );

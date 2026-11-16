@@ -192,11 +192,13 @@ export function Prose({
   heading,
   paragraphs,
   image,
+  video,
   note,
 }: {
   heading?: string;
   paragraphs: string[];
   image?: string;
+  video?: string;
   note?: string;
 }) {
   return (
@@ -217,7 +219,18 @@ export function Prose({
           ) : null}
         </div>
 
-        {image ? (
+        {video ? (
+          <div className="aspect-[4/3] overflow-hidden bg-band-lighter lg:aspect-auto lg:min-h-[22rem]">
+            <video
+              controls
+              preload="metadata"
+              className="h-full w-full object-cover"
+              aria-label={heading}
+            >
+              <source src={video} type="video/mp4" />
+            </video>
+          </div>
+        ) : image ? (
           <div className="aspect-[4/3] overflow-hidden bg-band-lighter lg:aspect-auto lg:min-h-[22rem]">
             <img
               src={image}

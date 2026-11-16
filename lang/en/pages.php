@@ -46,7 +46,7 @@ return [
             [
                 'type' => 'prose',
                 'heading' => 'Precision metal stamping, engineered in Batam',
-                'image' => '/images/about/factory.jpg',
+                'video' => '/videos/company-profile.mp4',
                 'paragraphs' => [
                     'PT. Uni-Metaltech Industry (UMI) is a precision metal stamping company incorporated in the year 2000 in Batam, Indonesia. Our factory sits in Kara Industrial Park, Batam Center, with a Jakarta Sales Office in Jababeka Industrial Park established in 2014.',
                     'We manufacture battery contacts, wire harnesses and cable terminals, ODS DVD drive parts, mechanical assemblies, and electrical and other metal parts for electrical, electronic and automotive manufacturers.',
@@ -68,19 +68,21 @@ return [
             'description' => 'PT. Uni-Metaltech Industry is a precision metal stamping company incorporated in 2000 in Batam, Indonesia, with a Jakarta sales office in Jababeka since 2014.',
         ],
         'hero' => [
-            'eyebrow' => 'About UMI',
-            'title' => 'Precision stamping since 2000.',
-            'lead' => 'PT. Uni-Metaltech Industry (UMI) is a precision metal stamping company incorporated in the year 2000 in Batam, Indonesia.',
+            'eyebrow' => 'About Us',
+            'title' => 'Precision metal parts for leading manufacturers.',
+            'lead' => 'Our company produces many kinds of custom-made metal parts and supports world’s leading manufacturers in electrical, electronic and automotive industries.',
         ],
         'sections' => [
             [
                 'type' => 'prose',
-                'heading' => 'A strategic manufacturing location',
-                'image' => '/images/about/factory.jpg',
+                'heading' => 'Our Company',
+                'video' => '/videos/company-profile.mp4',
                 'paragraphs' => [
-                    'Our factory is located in Kara Industrial Park, Batam Center — a short distance from Singapore Batamindo Industrial Park and the International Ferry Terminal.',
-                    'Batam Island is a Free Trade Zone, considered one of the best manufacturing locations in Indonesia for export-oriented production. We benefit from both the competitive cost advantages of Indonesia and the high-skill, fast support from Singapore.',
-                    'Our factory space is approximately 3,000 m², consisting of production, warehouse and office areas. A Jakarta Sales Office was established in 2014 in Jababeka Industrial Park.',
+                    'Our Company produces many kinds of custom-made metal parts and supports world’s leading Manufactures in Electrical, Electronic and Automotive Industries. The metal parts are used in various products such as Battery pack & applied, Cable terminal, Audio System, Weighing System, Audible Warning Devices, etc.',
+                    'PT. UNI METALTECH INDUSTRY (UMI) is a precision metal stamping company and incorporated in year 2000 in Batam - Indonesia. It is located at Kara Industrial Park - Batam center.',
+                    'Our factory in Batam Island which is a Free Trade Zone and it is considered as the best manufacturing location compared to other places in Indonesia especially for export oriented manufacturing base.',
+                    'Our factory space is about 3,000 m2, consist of production, warehouse and office area.',
+                    'We have gain experiences over the time and we are capable to stamp material as thin as 0.10 mm which required high precision tooling and skilled engineers.',
                 ],
             ],
             ['type' => 'stats'],
@@ -89,46 +91,10 @@ return [
         ],
     ],
 
-    'company-profile' => [
-        'seo' => [
-            'title' => 'Company Profile — UMI Stamping',
-            'description' => 'Company profile of PT. Uni-Metaltech Industry: incorporated 2000 in Batam, Indonesia, approximately 3,000 m² of factory space, serving electrical, electronic and automotive manufacturers.',
-        ],
-        'hero' => [
-            'eyebrow' => 'Company profile',
-            'title' => 'A precision metal stamping partner.',
-            'lead' => 'UMI produces custom-made metal parts and supports leading manufacturers in the electrical, electronic and automotive industries.',
-        ],
-        'sections' => [
-            [
-                'type' => 'prose',
-                'heading' => 'Who we are',
-                'image' => '/images/about/factory.jpg',
-                'paragraphs' => [
-                    'PT. UNI METALTECH INDUSTRY (UMI) is a precision metal stamping company incorporated in the year 2000 in Batam, Indonesia, located at Kara Industrial Park, Batam Center.',
-                    'Our company produces many kinds of custom-made metal parts and supports leading manufacturers in the electrical, electronic and automotive industries. The metal parts are used in products such as battery packs and applications, cable terminals, audio systems, weighing systems and audible warning devices.',
-                    'We have gained experience over time and are capable of stamping material as thin as 0.10 mm, which requires high-precision tooling and skilled engineers.',
-                ],
-            ],
-            [
-                'type' => 'specs',
-                'heading' => 'Company facts',
-                'items' => [
-                    ['title' => 'Established', 'summary' => 'Incorporated in the year 2000 in Batam, Indonesia.', 'specs' => []],
-                    ['title' => 'Factory', 'summary' => 'Approximately 3,000 m² of production, warehouse and office space in Kara Industrial Park, Batam Center.', 'specs' => []],
-                    ['title' => 'Sales office', 'summary' => 'Jakarta sales representative office in Jababeka Industrial Park, established 2014.', 'specs' => []],
-                    ['title' => 'Capability', 'summary' => 'Stamping of material as thin as 0.10 mm, with press capacity from 15 to 160 ton.', 'specs' => []],
-                ],
-            ],
-            ['type' => 'process'],
-            ['type' => 'cta'],
-        ],
-    ],
-
     'certifications' => [
         'seo' => [
             'title' => 'Certifications — UMI Stamping',
-            'description' => 'UMI Stamping management system certifications: ISO 9001:2015 quality management and ISO 14001:2015 environmental management, with SMETA ethical trade audit.',
+            'description' => 'PT. UMI has been certified according to International Standard ISO 9001:2015 Edition and ISO 14000:2015.',
         ],
         'hero' => [
             'eyebrow' => 'Certifications',
@@ -141,9 +107,9 @@ return [
                 'type' => 'prose',
                 'heading' => 'Management systems',
                 'paragraphs' => [
-                    'To conform with customer requirements and as a commitment to good management systems, PT. UMI has been certified since 2000 according to the international standards ISO 9001:2015 edition and ISO 14001:2015.',
-                    'Internal audits and audits conducted by external, independent, accredited assessment and certification bodies ensure that our manufacturing management system is periodically reviewed, audited and updated to sustain operational competency, compliance to specification, and continual product quality and performance improvements.',
-                    'All raw materials are tested to comply with government rules and various customer requirements such as RoHS and REACH.',
+                    'To confirm with our customer requirements and commitment of good management systems, PT. UMI has been certified since 2000 according to International Standard ISO 9001 : 2015 Edition and ISO 14000 : 2015.',
+                    'Internal audit and audits conducted by an external, independent, accredited assessment and certification bodies ensure that our manufacturing management system is periodically reviewed, audited and updated to sustain operational competency, compliance to specification as well as continual product quality and performance improvements.',
+                    'In addition, all Raw material are tested to comply with government rules and various customer requirements such as RoHS, REACH, etc.',
                 ],
             ],
             ['type' => 'certifications'],
@@ -188,14 +154,22 @@ return [
     'products' => [
         'seo' => [
             'title' => 'Products and Services — UMI Stamping',
-            'description' => 'UMI product range: battery contacts, wire harnessing and cable terminals, ODS DVD drive parts, mechanical assembly, and electrical and other metal parts.',
+            'description' => 'UMI produces custom-made battery contacts, cable terminals, other metal parts and in-house mechanical assembly services.',
         ],
         'hero' => [
             'eyebrow' => 'Products and services',
-            'title' => 'Custom metal components.',
-            'lead' => 'UMI produces various kinds of metal parts, mostly customized to specific project needs. We are capable of stamping material as thin as 0.10 mm, which requires high-precision tooling and skilled engineers.',
+            'title' => 'Product & Services.',
+            'lead' => 'UMI produces various kinds of metal parts and mostly are customized to specific project needs. Our products and services capability includes battery contacts, cable terminals, other metal parts applications and in-house mechanical assembly.',
         ],
         'sections' => [
+            [
+                'type' => 'prose',
+                'heading' => 'Product Range',
+                'paragraphs' => [
+                    'UMI produces various kinds of metal parts and mostly are customized to specific project needs. Our products and services capability are:',
+                    'We have gain experiences over the time and we are capable to stamp material as thin as 0.10 mm which required high precision tooling and skilled engineers.',
+                ],
+            ],
             ['type' => 'cards', 'heading' => 'Product range', 'source' => 'products', 'link_base' => '/products/'],
             ['type' => 'cta'],
         ],
@@ -209,13 +183,13 @@ return [
         'hero' => [
             'eyebrow' => 'Products',
             'title' => 'Battery contacts.',
-            'lead' => 'Battery contacts widely used in electronic appliances, battery packs and portable electronic devices.',
+            'lead' => 'Battery Contact products are widely used in electronic appliances, battery packs and portable electronic devices.',
         ],
         'sections' => [
             [
                 'type' => 'prose',
                 'heading' => 'Application',
-                'image' => '/images/products/battery-contacts.jpg',
+                'image' => '/images/products/assorted-precision-metal-stamping-parts.png',
                 'paragraphs' => [
                     'Battery contacts are stamped from strip material to the dimensional and contact-resistance requirements of the battery pack or device they serve.',
                     'Typical applications include battery packs and portable electronic devices, where contact geometry and material selection determine both electrical performance and cycle life.',
@@ -239,7 +213,7 @@ return [
             [
                 'type' => 'prose',
                 'heading' => 'Application',
-                'image' => '/images/products/wire-harnessing.jpg',
+                'image' => '/images/products/precision-metal-bar-assembly.png',
                 'paragraphs' => [
                     'UMI stamps cable terminals for wire-harnessing applications in the electrical and automotive industries.',
                     'Terminal parts are produced in-house and can be combined with secondary operations such as tapping, reverting and spot welding when a project requires an assembled component.',
@@ -263,7 +237,7 @@ return [
             [
                 'type' => 'prose',
                 'heading' => 'Application',
-                'image' => '/images/products/ods-dvd-drive.jpg',
+                'image' => '/images/products/black-coated-sheet-metal-panel-assembly.png',
                 'paragraphs' => [
                     'Optical disc drive assemblies use stamped metal components where flatness, dimensional accuracy and surface condition affect the movement of the drive mechanism.',
                     'These parts are produced with progressive tooling and verified with the measurement equipment described in our facilities section.',
@@ -288,7 +262,7 @@ return [
             [
                 'type' => 'prose',
                 'heading' => 'Secondary operations, in house',
-                'image' => '/images/products/mechanical-assembly.jpg',
+                'image' => '/images/products/black-coated-sheet-metal-panel-assembly.png',
                 'paragraphs' => [
                     'Value-added services such as tapping, reverting and spot welding are provided in-house to give a more comprehensive service to our customers.',
                 ],
@@ -320,7 +294,7 @@ return [
             [
                 'type' => 'prose',
                 'heading' => 'Application',
-                'image' => '/images/products/electrical-metal-parts.jpg',
+                'image' => '/images/products/formed-steel-mounting-plate.png',
                 'paragraphs' => [
                     'UMI produces a broad range of custom metal parts for electrical and electronic applications, mostly customized to specific project needs.',
                     'Applications include computer, printer, telephone, miniature circuit breaker (MCB), power supply, lighting device and UPS products.',
@@ -401,7 +375,7 @@ return [
         ],
         'hero' => [
             'eyebrow' => 'Facilities',
-            'title' => 'Measurement equipment.',
+            'title' => 'Measurement machine.',
             'lead' => 'High-precision QA equipment keeps the commitment that only high-quality parts are delivered; calibration is carried out internally and externally.',
         ],
         'sections' => [

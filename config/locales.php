@@ -41,6 +41,10 @@ return [
     */
 
     'translated' => [
+        // Indonesian and Chinese drafts are now published for the language
+        // switcher. Their page files provide the localized content served at
+        // /id and /zh.
+        '*' => ['id', 'zh'],
         'privacy' => ['en'],
         'terms' => ['en'],
         // all other pages are added here as their translation lands

@@ -28,31 +28,35 @@ export default function Contact() {
         breadcrumbLabel={chrome.aria.breadcrumb}
       />
 
-      <Band tone="white" ariaLabelledBy="locations-heading">
-        <SectionHeading
-          eyebrow={chrome.contactPage.locationsEyebrow}
-          title={chrome.contactPage.locationsTitle}
-          id="locations-heading"
-        />
-        <div className="mt-14">
-          <ContactDetails
-            contact={contact}
-            labels={{
-              email: chrome.contactPage.email,
-              phone: chrome.contactPage.phone,
-              location: chrome.contactPage.location,
-              map: chrome.contactPage.viewMap,
-            }}
+      <div className="grid lg:grid-cols-2">
+        <Band tone="white" ariaLabelledBy="locations-heading">
+          <SectionHeading
+            eyebrow={chrome.contactPage.locationsEyebrow}
+            title={chrome.contactPage.locationsTitle}
+            id="locations-heading"
           />
-        </div>
-      </Band>
+          <div className="mt-14">
+            <ContactDetails
+              contact={contact}
+              locale={locale}
+              ctaLabel={chrome.cta.quote}
+              labels={{
+                email: chrome.contactPage.email,
+                phone: chrome.contactPage.phone,
+                location: chrome.contactPage.location,
+                map: chrome.contactPage.viewMap,
+              }}
+            />
+          </div>
+        </Band>
 
-      <ContactForm
-        locale={locale}
-        labels={form}
-        contact={contact}
-        flash={flash}
-      />
+        <ContactForm
+          locale={locale}
+          labels={form}
+          contact={contact}
+          flash={flash}
+        />
+      </div>
     </AppShell>
   );
 }

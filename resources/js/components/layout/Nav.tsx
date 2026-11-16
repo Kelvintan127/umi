@@ -24,55 +24,72 @@ export function LanguageSwitcher({
   unavailableLabel: string;
   compact?: boolean;
 }) {
+  const current = languages.find((lang) => lang.current) ?? languages[0];
+  const flags: Record<string, string> = { en: "🇬🇧", id: "🇮🇩", zh: "🇨🇳" };
+
   return (
-    <nav aria-label={ariaLabel} className="flex items-center gap-1">
-      {languages.map((lang) => {
-        const base = cn(
-          "text-xs font-semibold uppercase tracking-widest transition-colors",
+    <details className="relative" aria-label={ariaLabel}>
+      <summary
+        className={cn(
+          "flex cursor-pointer list-none items-center justify-center gap-2 text-xs font-semibold uppercase tracking-widest text-white [&::-webkit-details-marker]:hidden",
           compact ? "px-2 py-1" : "px-2.5 py-1.5",
-        );
+        )}
+      >
+        <span aria-hidden="true" className="text-base leading-none">
+          {flags[current.code] ?? "🌐"}
+        </span>
+        <span>{current.code}</span>
+        <span aria-hidden="true" className="text-white/50">⌄</span>
+      </summary>
 
-        if (lang.current) {
-          return (
-            <span
-              key={lang.code}
-              aria-current="true"
-              lang={lang.htmlLang}
-              className={cn(base, "text-white")}
-            >
-              {lang.code}
-            </span>
+      <div className="absolute left-1/2 top-full z-50 mt-2 min-w-40 -translate-x-1/2 border border-white/15 bg-ink p-1 shadow-xl">
+        {languages.map((lang) => {
+          const itemClass = cn(
+            "flex items-center justify-center gap-3 px-3 py-2 text-xs font-semibold uppercase tracking-widest",
+            lang.current
+              ? "bg-white/10 text-white"
+              : lang.available
+                ? "text-white/65 transition-colors hover:bg-white/10 hover:text-white"
+                : "cursor-not-allowed text-white/25",
           );
-        }
+          const content = (
+            <>
+              <span aria-hidden="true" className="text-base leading-none">
+                {flags[lang.code] ?? "🌐"}
+              </span>
+              <span>{lang.code}</span>
+              <span className="normal-case tracking-normal text-white/45">
+                {lang.available ? lang.label : unavailableLabel}
+              </span>
+            </>
+          );
 
-        if (!lang.available) {
-          return (
+          return lang.available ? (
+            <Link
+              key={lang.code}
+              href={lang.url}
+              lang={lang.htmlLang}
+              hrefLang={lang.htmlLang}
+              aria-current={lang.current ? "true" : undefined}
+              title={lang.label}
+              className={itemClass}
+            >
+              {content}
+            </Link>
+          ) : (
             <span
               key={lang.code}
               lang={lang.htmlLang}
-              title={`${lang.label} — ${unavailableLabel}`}
-              aria-label={`${lang.code} — ${unavailableLabel}`}
               aria-disabled="true"
-              className={cn(base, "cursor-not-allowed text-white/25")}
+              title={`${lang.label} — ${unavailableLabel}`}
+              className={itemClass}
             >
-              {lang.code}
+              {content}
             </span>
           );
-        }
-
-        return (
-          <Link
-            key={lang.code}
-            href={lang.url}
-            lang={lang.htmlLang}
-            hrefLang={lang.htmlLang}
-            className={cn(base, "text-white/45 hover:text-white")}
-          >
-            {lang.code}
-          </Link>
-        );
-      })}
-    </nav>
+        })}
+      </div>
+    </details>
   );
 }
 

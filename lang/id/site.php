@@ -89,7 +89,6 @@ return [
         'links' => [
             'company_section' => [
                 'about' => 'Tentang',
-                'company-profile' => 'Profil Perusahaan',
                 'capabilities' => 'Kapabilitas',
                 'products' => 'Produk',
             ],
@@ -257,7 +256,7 @@ return [
                 'Mesin pemotong, pengetap, dan reverting otomatis',
                 'Mesin pres manual',
             ],
-            'image' => '/images/facilities/production-machines.jpg',
+            'image' => '/images/gallery/machine-01.jpg',
         ],
         [
             'key' => 'supporting-machines',
@@ -271,7 +270,7 @@ return [
                 'Frais CNC: Hurco',
                 'Pengukiran laser portabel LX-A1',
             ],
-            'image' => '/images/facilities/supporting-machines.jpg',
+            'image' => '/images/gallery/factory-01.jpg',
         ],
         [
             'key' => 'tools-design-storage',
@@ -283,7 +282,7 @@ return [
                 'Penyimpanan dan pemeliharaan perkakas yang tertata',
                 'Pengadaan set cetakan dari Singapura dan Malaysia untuk perkakas kelas atas',
             ],
-            'image' => '/images/facilities/tools-design-storage.jpg',
+            'image' => '/images/gallery/team-01.jpg',
         ],
         [
             'key' => 'measurement-equipment',
@@ -296,7 +295,7 @@ return [
                 'Pin gauge, block gauge',
                 'Jangka sorong, mikrometer',
             ],
-            'image' => '/images/facilities/measurement-equipment.jpg',
+            'image' => '',
         ],
     ],
 
@@ -329,16 +328,6 @@ return [
             'phone' => '+62 778 464141',
             'fax' => '+62 778 464143',
             'map' => 'https://maps.google.com/maps?q=1.109035+104.046600&hl=en&z=16',
-        ],
-        'jakarta' => [
-            'label' => 'Perwakilan Penjualan (Jakarta)',
-            'lines' => [
-                'Ruko Central Business District (CBD)',
-                'Jalan Niaga Raya Block E No. 7',
-                'Jababeka 2 - Cikarang, Bekasi',
-                'Jawa Barat - Indonesia',
-            ],
-            'map' => 'https://maps.google.com/maps?q=-6.299956+107.151841&hl=en&z=17',
         ],
         'email' => 'info@umistamping.com',
         'phone' => '+62 778 464141',

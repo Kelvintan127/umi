@@ -12,6 +12,7 @@
 
     <link rel="icon" href="/favicon.ico" sizes="any">
 
+    @viteReactRefresh
     @vite(['resources/js/app.tsx'])
     @inertiaHead
 </head>

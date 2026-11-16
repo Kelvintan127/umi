@@ -151,7 +151,7 @@ export interface Certification {
   name: string;
   title: string;
   description: string;
-  image: string;
+  document: string;
 }
 
 export interface Stat {
@@ -194,7 +194,6 @@ export interface ContactBlock {
     fax: string;
     map: string;
   };
-  jakarta: { label: string; lines: string[]; map: string };
   email: string;
   phone: string;
   location: string;
@@ -252,6 +251,7 @@ export interface Section {
   heading?: string;
   paragraphs?: string[];
   image?: string;
+  video?: string;
   note?: string;
   /** Name of a ContentBlocks entry a section renders from. */
   source?: string;

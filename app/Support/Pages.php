@@ -22,7 +22,6 @@ final class Pages
     public const REGISTRY = [
         'home' => ['path' => '', 'component' => 'Home', 'action' => 'page', 'priority' => '1.0', 'nav' => false],
         'about' => ['path' => 'about', 'component' => 'ContentPage', 'action' => 'page', 'priority' => '0.9', 'nav' => true],
-        'company-profile' => ['path' => 'company-profile', 'component' => 'ContentPage', 'action' => 'page', 'priority' => '0.7', 'nav' => false],
         'certifications' => ['path' => 'certifications', 'component' => 'ContentPage', 'action' => 'page', 'priority' => '0.8', 'nav' => false],
         'policy' => ['path' => 'policy', 'component' => 'ContentPage', 'action' => 'page', 'priority' => '0.6', 'nav' => false],
         'capabilities' => ['path' => 'capabilities', 'component' => 'ContentPage', 'action' => 'page', 'priority' => '0.9', 'nav' => true],

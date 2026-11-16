@@ -21,11 +21,12 @@ export function Footer({ chrome, locale, year }: { chrome: Chrome; locale: strin
     <footer className="bg-footer text-white">
       <Container className="grid gap-14 py-20 lg:grid-cols-[1.5fr_1fr_1fr]">
         <div>
-          <Link href={`/${locale}`} className="text-3xl font-black tracking-tight">
-            {chrome.brand.mark}
-            <span className="text-red" aria-hidden="true">
-              .
-            </span>
+          <Link href={`/${locale}`} className="inline-flex" aria-label={chrome.brand.company}>
+            <img
+              src="/images/logo.jpg"
+              alt={chrome.brand.company}
+              className="h-20 w-20 object-contain"
+            />
           </Link>
 
           <p className="mt-6 max-w-sm text-sm leading-6 text-white/50">{chrome.footer.blurb}</p>

@@ -1,3 +1,5 @@
+import { useEffect, useState } from "react";
+import { X } from "lucide-react";
 import { Band, SectionHeading } from "./Band";
 import type {
   Certification,
@@ -121,6 +123,24 @@ export function Certifications({
   heading?: string;
 }) {
   const headingId = "certifications-heading";
+  const [selected, setSelected] = useState<Certification | null>(null);
+
+  useEffect(() => {
+    if (!selected) return;
+
+    const onKeyDown = (event: KeyboardEvent) => {
+      if (event.key === "Escape") setSelected(null);
+    };
+
+    document.addEventListener("keydown", onKeyDown);
+    const previousOverflow = document.body.style.overflow;
+    document.body.style.overflow = "hidden";
+
+    return () => {
+      document.removeEventListener("keydown", onKeyDown);
+      document.body.style.overflow = previousOverflow;
+    };
+  }, [selected]);
 
   return (
     <Band tone="white" ariaLabelledBy={heading ? headingId : undefined}>
@@ -133,27 +153,26 @@ export function Certifications({
             <h3 className="mt-4 text-lg font-bold tracking-tight">{cert.title}</h3>
             <p className="mt-3 flex-1 text-sm leading-6 text-ink/60">{cert.description}</p>
 
-            {cert.image ? (
-              <a
-                href={cert.image}
-                className="group mt-6 block"
-                target="_blank"
-                rel="noreferrer"
+            {cert.document ? (
+              <button
+                type="button"
+                onClick={() => setSelected(cert)}
+                className="group mt-6 block w-full text-left"
+                aria-haspopup="dialog"
               >
-                <span className="block aspect-[3/4] overflow-hidden border border-ink/10 bg-band-lighter">
-                  <img
-                    src={cert.image}
-                    alt={`${cert.name} certificate`}
-                    loading="lazy"
-                    decoding="async"
-                    className="h-full w-full object-contain transition-transform duration-500 group-hover:scale-[1.02]"
+                <span className="relative block aspect-[3/4] overflow-hidden border border-ink/10 bg-band-lighter transition-colors group-hover:border-red">
+                  <iframe
+                    src={`${cert.document}#toolbar=0&navpanes=0&view=FitH`}
+                    title={`${cert.name} certificate preview`}
+                    tabIndex={-1}
+                    className="pointer-events-none h-full w-full bg-white"
                   />
+                  <span className="absolute inset-x-0 bottom-0 bg-ink/75 px-3 py-2 text-center text-xs font-semibold text-white">
+                    View certificate
+                  </span>
                 </span>
-                <span className="mt-3 inline-block text-sm font-semibold text-ink underline decoration-red decoration-2 underline-offset-4 group-hover:text-red">
-                  View certificate
-                  <span className="sr-only"> — {cert.name}</span>
-                </span>
-              </a>
+                <span className="sr-only">View certificate — {cert.name}</span>
+              </button>
             ) : null}
           </li>
         ))}
@@ -163,6 +182,39 @@ export function Certifications({
         <p className="mt-10 max-w-3xl border-l-2 border-red pl-5 text-sm leading-6 text-ink/60">
           {labelling}
         </p>
+      ) : null}
+
+      {selected ? (
+        <div
+          className="fixed inset-0 z-[100] flex items-center justify-center bg-ink/80 p-4 backdrop-blur-sm"
+          role="dialog"
+          aria-modal="true"
+          aria-labelledby="certificate-dialog-title"
+          onMouseDown={(event) => {
+            if (event.target === event.currentTarget) setSelected(null);
+          }}
+        >
+          <div className="flex h-[min(90vh,900px)] w-full max-w-5xl flex-col bg-white shadow-2xl">
+            <div className="flex items-center justify-between border-b border-ink/10 px-5 py-4">
+              <h2 id="certificate-dialog-title" className="text-sm font-bold">
+                {selected.name} — {selected.title}
+              </h2>
+              <button
+                type="button"
+                onClick={() => setSelected(null)}
+                aria-label="Close certificate preview"
+                className="flex h-9 w-9 items-center justify-center text-ink/60 transition-colors hover:bg-ink/5 hover:text-ink"
+              >
+                <X size={20} aria-hidden="true" />
+              </button>
+            </div>
+            <iframe
+              src={selected.document}
+              title={`${selected.name} certificate`}
+              className="min-h-0 flex-1"
+            />
+          </div>
+        </div>
       ) : null}
     </Band>
   );

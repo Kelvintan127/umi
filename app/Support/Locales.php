@@ -31,7 +31,10 @@ final class Locales
     public static function translated(string $page): array
     {
         $registry = (array) config('locales.translated', []);
-        $registered = (array) ($registry[$page] ?? []);
+        $registered = array_merge(
+            (array) ($registry['*'] ?? []),
+            (array) ($registry[$page] ?? []),
+        );
         $default = (string) config('locales.default', self::DEFAULT);
 
         return array_values(array_unique(array_merge([$default], $registered)));
