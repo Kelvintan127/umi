@@ -1,6 +1,6 @@
 import { Link, useForm, usePage } from "@inertiajs/react";
 import { useEffect, useRef, useState } from "react";
-import { ArrowUpRight, CheckCircle2 } from "lucide-react";
+import { ArrowDown, ArrowUpRight, CheckCircle2 } from "lucide-react";
 import { Band, SectionHeading } from "../sections/Band";
 import type { ContactBlock, FormLabels, PageProps } from "@/types";
 
@@ -202,20 +202,28 @@ export function ContactForm({
             <label htmlFor="inquiry_type" className="text-sm font-medium">
               {labels.fields.inquiryType} <span className="text-red">*</span>
             </label>
-            <select
-              id="inquiry_type"
-              name="inquiry_type"
-              required
-              className={fieldClass}
-              value={form.data.inquiry_type}
-              onChange={(e) => form.setData("inquiry_type", e.target.value)}
-            >
-              {Object.entries(labels.inquiryTypes).map(([value, label]) => (
-                <option key={value} value={value}>
-                  {label}
-                </option>
-              ))}
-            </select>
+            <div className="group relative">
+              <select
+                id="inquiry_type"
+                name="inquiry_type"
+                required
+                className={`${fieldClass} appearance-none pr-12 transition-[border-color,box-shadow] duration-300 group-hover:border-ink/35`}
+                value={form.data.inquiry_type}
+                onChange={(e) => form.setData("inquiry_type", e.target.value)}
+              >
+                {Object.entries(labels.inquiryTypes).map(([value, label]) => (
+                  <option key={value} value={value}>
+                    {label}
+                  </option>
+                ))}
+              </select>
+              <span
+                aria-hidden="true"
+                className="pointer-events-none absolute right-3 top-1/2 flex h-7 w-7 -translate-y-1/2 items-center justify-center rounded-full border border-ink/15 text-ink/45 transition-[background-color,border-color,color,transform] duration-300 group-focus-within:border-red group-focus-within:bg-red group-focus-within:text-white"
+              >
+                <ArrowDown size={15} strokeWidth={2.5} />
+              </span>
+            </div>
             {errorText("inquiry_type")}
           </div>
 

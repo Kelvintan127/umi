@@ -1,4 +1,6 @@
 import { Link } from "@inertiajs/react";
+import { useEffect, useRef, useState } from "react";
+import { ChevronDown } from "lucide-react";
 import type { LanguageOption, NavItem } from "@/types";
 import { cn } from "@/lib/utils";
 
@@ -26,30 +28,77 @@ export function LanguageSwitcher({
 }) {
   const current = languages.find((lang) => lang.current) ?? languages[0];
   const flags: Record<string, string> = { en: "🇬🇧", id: "🇮🇩", zh: "🇨🇳" };
+  const [open, setOpen] = useState(false);
+  const menuRef = useRef<HTMLDivElement | null>(null);
+  const triggerRef = useRef<HTMLButtonElement | null>(null);
+
+  useEffect(() => {
+    if (!open) return;
+
+    const onPointerDown = (event: PointerEvent) => {
+      if (!menuRef.current?.contains(event.target as Node)) setOpen(false);
+    };
+    const onKeyDown = (event: KeyboardEvent) => {
+      if (event.key === "Escape") {
+        setOpen(false);
+        triggerRef.current?.focus();
+      }
+    };
+
+    document.addEventListener("pointerdown", onPointerDown);
+    document.addEventListener("keydown", onKeyDown);
+    return () => {
+      document.removeEventListener("pointerdown", onPointerDown);
+      document.removeEventListener("keydown", onKeyDown);
+    };
+  }, [open]);
 
   return (
-    <details className="relative" aria-label={ariaLabel}>
-      <summary
+    <div ref={menuRef} className="relative" aria-label={ariaLabel}>
+      <button
+        ref={triggerRef}
+        type="button"
+        aria-haspopup="menu"
+        aria-expanded={open}
+        onClick={() => setOpen((value) => !value)}
         className={cn(
-          "flex cursor-pointer list-none items-center justify-center gap-2 text-xs font-semibold uppercase tracking-widest text-white [&::-webkit-details-marker]:hidden",
+          "group flex cursor-pointer list-none items-center justify-center gap-2 rounded-full text-xs font-semibold uppercase tracking-widest text-white transition-[background-color,color] duration-300 hover:bg-white/10 hover:text-white focus-visible:text-white",
           compact ? "px-2 py-1" : "px-2.5 py-1.5",
+          open && "bg-white/10",
         )}
       >
         <span aria-hidden="true" className="text-base leading-none">
           {flags[current.code] ?? "🌐"}
         </span>
         <span>{current.code}</span>
-        <span aria-hidden="true" className="text-white/50">⌄</span>
-      </summary>
+        <span
+          aria-hidden="true"
+          className={cn(
+            "flex h-5 w-5 items-center justify-center rounded-full border border-white/20 text-white/55 transition-[background-color,border-color,color,transform] duration-300 group-hover:border-white/45 group-hover:text-white",
+            open && "rotate-180 border-red bg-red text-white",
+          )}
+        >
+          <ChevronDown size={12} strokeWidth={2.5} />
+        </span>
+      </button>
 
-      <div className="absolute left-1/2 top-full z-50 mt-2 min-w-40 -translate-x-1/2 border border-white/15 bg-ink p-1 shadow-xl">
+      <div
+        role="menu"
+        aria-hidden={!open}
+        className={cn(
+          "absolute left-1/2 top-full z-50 mt-3 min-w-52 -translate-x-1/2 origin-top border border-white/15 bg-ink p-1.5 shadow-2xl shadow-black/30 transition-[opacity,transform,visibility] duration-200",
+          open
+            ? "visible scale-100 opacity-100"
+            : "invisible pointer-events-none scale-95 opacity-0",
+        )}
+      >
         {languages.map((lang) => {
           const itemClass = cn(
-            "flex items-center justify-center gap-3 px-3 py-2 text-xs font-semibold uppercase tracking-widest",
+            "flex w-full items-center gap-3 px-3 py-2.5 text-left text-xs font-semibold uppercase tracking-widest transition-colors",
             lang.current
               ? "bg-white/10 text-white"
               : lang.available
-                ? "text-white/65 transition-colors hover:bg-white/10 hover:text-white"
+                ? "text-white/65 hover:bg-white/10 hover:text-white"
                 : "cursor-not-allowed text-white/25",
           );
           const content = (
@@ -57,10 +106,18 @@ export function LanguageSwitcher({
               <span aria-hidden="true" className="text-base leading-none">
                 {flags[lang.code] ?? "🌐"}
               </span>
-              <span>{lang.code}</span>
-              <span className="normal-case tracking-normal text-white/45">
-                {lang.available ? lang.label : unavailableLabel}
+              <span className="flex-1">
+                <span className="block">{lang.code}</span>
+                <span className="mt-0.5 block normal-case tracking-normal text-white/45">
+                  {lang.available ? lang.label : unavailableLabel}
+                </span>
               </span>
+              {lang.current ? (
+                <span
+                  aria-hidden="true"
+                  className="h-1.5 w-1.5 rounded-full bg-red shadow-[0_0_0_3px_rgba(215,25,32,0.15)]"
+                />
+              ) : null}
             </>
           );
 
@@ -71,7 +128,9 @@ export function LanguageSwitcher({
               lang={lang.htmlLang}
               hrefLang={lang.htmlLang}
               aria-current={lang.current ? "true" : undefined}
+              role="menuitem"
               title={lang.label}
+              onClick={() => setOpen(false)}
               className={itemClass}
             >
               {content}
@@ -81,6 +140,7 @@ export function LanguageSwitcher({
               key={lang.code}
               lang={lang.htmlLang}
               aria-disabled="true"
+              role="menuitem"
               title={`${lang.label} — ${unavailableLabel}`}
               className={itemClass}
             >
@@ -89,7 +149,7 @@ export function LanguageSwitcher({
           );
         })}
       </div>
-    </details>
+    </div>
   );
 }
 

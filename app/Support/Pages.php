@@ -23,7 +23,7 @@ final class Pages
         'home' => ['path' => '', 'component' => 'Home', 'action' => 'page', 'priority' => '1.0', 'nav' => false],
         'about' => ['path' => 'about', 'component' => 'ContentPage', 'action' => 'page', 'priority' => '0.9', 'nav' => true],
         'certifications' => ['path' => 'certifications', 'component' => 'ContentPage', 'action' => 'page', 'priority' => '0.8', 'nav' => false],
-        'policy' => ['path' => 'policy', 'component' => 'ContentPage', 'action' => 'page', 'priority' => '0.6', 'nav' => false],
+        'policy' => ['path' => 'policy', 'component' => 'ContentPage', 'action' => 'page', 'priority' => '0.8', 'nav' => true],
         'capabilities' => ['path' => 'capabilities', 'component' => 'ContentPage', 'action' => 'page', 'priority' => '0.9', 'nav' => true],
         'products' => ['path' => 'products', 'component' => 'ContentPage', 'action' => 'page', 'priority' => '0.9', 'nav' => true],
         'products.battery-contacts' => ['path' => 'products/battery-contacts', 'component' => 'ContentPage', 'action' => 'page', 'priority' => '0.7', 'nav' => false],
@@ -37,7 +37,7 @@ final class Pages
         'facilities.tools-design-storage' => ['path' => 'facilities/tools-design-storage', 'component' => 'ContentPage', 'action' => 'page', 'priority' => '0.7', 'nav' => false],
         'facilities.measurement-equipment' => ['path' => 'facilities/measurement-equipment', 'component' => 'ContentPage', 'action' => 'page', 'priority' => '0.7', 'nav' => false],
         'metal-part-users' => ['path' => 'metal-part-users', 'component' => 'ContentPage', 'action' => 'page', 'priority' => '0.6', 'nav' => false],
-        'industries' => ['path' => 'industries', 'component' => 'ContentPage', 'action' => 'page', 'priority' => '0.8', 'nav' => true],
+        'industries' => ['path' => 'industries', 'component' => 'ContentPage', 'action' => 'page', 'priority' => '0.8', 'nav' => false],
         'quality' => ['path' => 'quality', 'component' => 'ContentPage', 'action' => 'page', 'priority' => '0.8', 'nav' => true],
         'gallery' => ['path' => 'gallery', 'component' => 'ContentPage', 'action' => 'page', 'priority' => '0.6', 'nav' => false],
         'news' => ['path' => 'news', 'component' => 'ContentPage', 'action' => 'page', 'priority' => '0.5', 'nav' => false],
@@ -115,7 +115,10 @@ final class Pages
     public static function navigation(?string $locale = null): array
     {
         $out = [];
-        foreach (self::REGISTRY as $key => $meta) {
+        $order = ['about', 'capabilities', 'products', 'facilities', 'quality', 'policy', 'contact'];
+
+        foreach ($order as $key) {
+            $meta = self::REGISTRY[$key];
             if (! $meta['nav']) {
                 continue;
             }

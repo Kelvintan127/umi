@@ -125,7 +125,9 @@ export function ContactCta({
 }) {
   return (
     <Band tone="ink">
-      <div className="grid gap-10 lg:grid-cols-[1.4fr_1fr] lg:items-end">
+      <div className="relative grid gap-10 overflow-hidden lg:grid-cols-[1.4fr_1fr] lg:items-end">
+        <span aria-hidden="true" className="pointer-events-none absolute -right-20 -top-32 h-72 w-72 rounded-full border border-white/10" />
+        <span aria-hidden="true" className="pointer-events-none absolute -right-8 -top-20 h-48 w-48 rounded-full border border-red/30" />
         <div>
           <h2 className="text-3xl font-black leading-[1.05] tracking-tight text-white sm:text-4xl lg:text-5xl">
             {title}
@@ -220,25 +222,27 @@ export function Prose({
         </div>
 
         {video ? (
-          <div className="aspect-[4/3] overflow-hidden bg-band-lighter lg:aspect-auto lg:min-h-[22rem]">
+          <div className="group relative aspect-[4/3] overflow-hidden border border-ink/10 bg-band-lighter shadow-sm lg:aspect-auto lg:min-h-[22rem]">
             <video
               controls
               preload="metadata"
-              className="h-full w-full object-cover"
+              className="h-full w-full object-cover transition-transform duration-700 ease-[var(--ease-out-quint)] group-hover:scale-[1.03]"
               aria-label={heading}
             >
               <source src={video} type="video/mp4" />
             </video>
           </div>
         ) : image ? (
-          <div className="aspect-[4/3] overflow-hidden bg-band-lighter lg:aspect-auto lg:min-h-[22rem]">
+          <div className="group relative aspect-[4/3] overflow-hidden border border-ink/10 bg-band-lighter shadow-sm lg:aspect-auto lg:min-h-[22rem]">
             <img
               src={image}
               alt={heading}
               loading="lazy"
               decoding="async"
-              className="h-full w-full object-cover"
+              data-gsap-parallax="true"
+              className="h-full w-full object-cover transition-transform duration-700 ease-[var(--ease-out-quint)] group-hover:scale-[1.03]"
             />
+            <span aria-hidden="true" className="pointer-events-none absolute inset-0 bg-gradient-to-tr from-ink/25 via-transparent to-transparent opacity-60" />
           </div>
         ) : null}
       </div>

@@ -23,7 +23,7 @@ export function Footer({ chrome, locale, year }: { chrome: Chrome; locale: strin
         <div>
           <Link href={`/${locale}`} className="inline-flex" aria-label={chrome.brand.company}>
             <img
-              src="/images/logo.jpg"
+              src="/images/logo.png"
               alt={chrome.brand.company}
               className="h-20 w-20 object-contain"
             />

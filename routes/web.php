@@ -2,6 +2,7 @@
 
 use App\Http\Controllers\ContactController;
 use App\Http\Controllers\LocaleRedirectController;
+use App\Http\Controllers\MediaController;
 use App\Http\Controllers\PageController;
 use App\Http\Controllers\SitemapController;
 use App\Http\Middleware\SetLocale;
@@ -15,6 +16,8 @@ use Illuminate\Support\Facades\Route;
  */
 
 Route::get('/', LocaleRedirectController::class)->name('site.root');
+Route::get('/media/company-profile.mp4', [MediaController::class, 'companyProfile'])
+    ->name('media.company-profile');
 
 Route::prefix('{locale}')
     // whereIn() is a real trait method on RouteRegistrar, not a dynamic attribute.

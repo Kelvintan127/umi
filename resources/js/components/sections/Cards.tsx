@@ -26,6 +26,7 @@ export function Cards({
         className={cn(
           "mt-14 grid gap-6 sm:grid-cols-2",
           items.length > 2 && "lg:grid-cols-2",
+          "motion-stagger",
         )}
       >
         {items.map((item, index) => {
@@ -35,27 +36,40 @@ export function Cards({
 
           return (
             <li key={`${item.title}-${index}`}>
-              <article className="group flex h-full flex-col border border-ink/10 bg-white">
+              <article className="group relative flex h-full flex-col border border-ink/10 bg-white transition-[border-color,box-shadow,transform] duration-500 ease-[var(--ease-out-quint)] hover:-translate-y-1 hover:border-red/35 hover:shadow-xl">
+                <span aria-hidden="true" className="absolute inset-x-0 top-0 z-10 h-1 origin-left scale-x-0 bg-red transition-transform duration-500 ease-[var(--ease-out-quint)] group-hover:scale-x-100" />
                 {image ? (
-                  <div className="relative aspect-[16/10] overflow-hidden bg-band-lighter">
+                  <div className="relative aspect-[4/3] overflow-hidden bg-white p-4 sm:p-6">
                     <img
                       src={image}
                       alt={item.title}
                       loading="lazy"
                       decoding="async"
-                      className="h-full w-full object-cover transition-transform duration-500 group-hover:scale-[1.03]"
+                      data-gsap-parallax="true"
+                      className="h-full w-full object-contain transition-transform duration-700 ease-[var(--ease-out-quint)] group-hover:scale-[1.06]"
+                    />
+                    <span
+                      aria-hidden="true"
+                      className="pointer-events-none absolute inset-0 bg-gradient-to-t from-ink/10 via-transparent to-transparent opacity-0 transition-opacity duration-500 group-hover:opacity-100"
                     />
                   </div>
                 ) : null}
 
-                <div className="flex flex-1 flex-col p-7">
+                <div className="flex flex-1 flex-col p-7 sm:p-8">
                   {category ? (
                     <p className="text-xs font-semibold uppercase tracking-[0.18em] text-red">
                       {category}
                     </p>
                   ) : null}
 
-                  <h3 className="mt-3 text-xl font-bold tracking-tight">{item.title}</h3>
+                  <div className="flex items-start justify-between gap-4">
+                    <h3 className="mt-3 text-xl font-bold tracking-tight transition-colors duration-300 group-hover:text-red">
+                    {item.title}
+                    </h3>
+                    <span aria-hidden="true" className="mt-3 flex h-9 w-9 shrink-0 items-center justify-center rounded-full border border-ink/10 text-ink/40 transition-[background-color,border-color,color,transform] duration-300 group-hover:translate-x-1 group-hover:border-red group-hover:bg-red group-hover:text-white">
+                      <ArrowUpRight size={16} />
+                    </span>
+                  </div>
                   <p className="mt-3 flex-1 text-sm leading-6 text-ink/60">{item.description}</p>
 
                   {linkBase && slug ? (

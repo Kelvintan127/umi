@@ -116,7 +116,7 @@ export function Hero({
 
       <Container className={isHome ? "py-32 md:py-44" : "py-24 md:py-32"}>
         {breadcrumbs && breadcrumbs.length > 0 ? (
-          <nav aria-label={breadcrumbLabel ?? "Breadcrumb"} className="mb-8">
+          <nav aria-label={breadcrumbLabel ?? "Breadcrumb"} className="hero-motion mb-8">
             <ol className="flex flex-wrap items-center gap-2 text-xs text-white/50">
               {breadcrumbs.map((crumb, index) => (
                 <li key={crumb.url} className="flex items-center gap-2">
@@ -141,35 +141,37 @@ export function Hero({
         ) : null}
 
         {hero.eyebrow ? (
-          <p className="text-xs font-semibold uppercase tracking-[0.22em] text-red-on-dark">{hero.eyebrow}</p>
+          <p className="hero-motion hero-motion-delay-1 text-xs font-semibold uppercase tracking-[0.22em] text-red-on-dark">
+            {hero.eyebrow}
+          </p>
         ) : null}
 
         {hero.title ? (
           <h1
-            className={
+            className={`hero-motion hero-motion-delay-1 ${
               isHome
                 ? "mt-5 max-w-4xl text-4xl font-black leading-[1.02] tracking-tight sm:text-6xl lg:text-7xl"
                 : "mt-5 max-w-4xl text-3xl font-black leading-[1.05] tracking-tight sm:text-5xl lg:text-6xl"
-            }
+            }`}
           >
             {hero.title}
           </h1>
         ) : null}
 
         {hero.lead ? (
-          <p className="mt-7 max-w-2xl text-base leading-7 text-white/65 sm:text-lg sm:leading-8">
+          <p className="hero-motion hero-motion-delay-2 mt-7 max-w-2xl text-base leading-7 text-white/65 sm:text-lg sm:leading-8">
             {hero.lead}
           </p>
         ) : null}
 
         {hero.note ? (
-          <p className="mt-6 max-w-2xl border-l-2 border-red pl-4 text-sm leading-6 text-white/55">
+          <p className="hero-motion hero-motion-delay-2 mt-6 max-w-2xl border-l-2 border-red pl-4 text-sm leading-6 text-white/55">
             {hero.note}
           </p>
         ) : null}
 
         {isHome ? (
-          <div className="mt-10 flex flex-wrap items-center gap-4">
+          <div className="hero-motion hero-motion-delay-3 mt-10 flex flex-wrap items-center gap-4">
             <Link
               href={`/${locale}/contact`}
               className="group inline-flex items-center gap-2 bg-red px-7 py-4 text-sm font-semibold text-white transition-colors hover:bg-red-hover"
@@ -192,7 +194,7 @@ export function Hero({
         ) : null}
 
         {isHome ? (
-          <div className="mt-20 flex items-center gap-3 text-xs uppercase tracking-[0.2em] text-white/40">
+          <div className="hero-motion hero-motion-delay-3 scroll-indicator-motion mt-20 flex items-center gap-3 text-xs uppercase tracking-[0.2em] text-white/40">
             <ArrowDown size={14} aria-hidden="true" />
             <span>Scroll to explore</span>
           </div>

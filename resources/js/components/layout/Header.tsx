@@ -15,6 +15,7 @@ import { cn } from "@/lib/utils";
  */
 export function Header({ chrome, activeKey, locale }: { chrome: Chrome; activeKey: string; locale: string }) {
   const [open, setOpen] = useState(false);
+  const [scrolled, setScrolled] = useState(false);
   const panelRef = useRef<HTMLDivElement | null>(null);
   const toggleRef = useRef<HTMLButtonElement | null>(null);
 
@@ -95,22 +96,34 @@ export function Header({ chrome, activeKey, locale }: { chrome: Chrome; activeKe
     return () => mq.removeEventListener("change", onChange);
   }, []);
 
+  useEffect(() => {
+    const onScroll = () => setScrolled(window.scrollY > 24);
+    onScroll();
+    window.addEventListener("scroll", onScroll, { passive: true });
+    return () => window.removeEventListener("scroll", onScroll);
+  }, []);
+
   const contactHref = `/${locale}/contact`;
 
   return (
-    <header className="sticky top-0 z-50 border-b border-white/10 bg-ink/95 backdrop-blur-xl">
+    <header
+      className={cn(
+        "sticky top-0 z-50 border-b border-white/10 bg-ink/95 backdrop-blur-xl transition-shadow duration-300",
+        scrolled && "shadow-lg shadow-black/20",
+      )}
+    >
       <Container as="div">
         <div className="flex h-20 items-center justify-between gap-6">
           <Link
             href={`/${locale}`}
             onClick={() => setOpen(false)}
-            className="text-2xl font-black tracking-tight text-white"
+            className="group text-2xl font-black tracking-tight text-white"
             aria-label={`${chrome.brand.company} — ${chrome.brand.short}`}
           >
             <img
-              src="/images/logo.jpg"
+              src="/images/logo.png"
               alt={chrome.brand.company}
-              className="h-14 w-14 object-contain"
+              className="h-14 w-14 object-contain transition-transform duration-300 group-hover:scale-105"
             />
           </Link>
 
@@ -147,7 +160,7 @@ export function Header({ chrome, activeKey, locale }: { chrome: Chrome; activeKe
               aria-label={open ? chrome.aria.close : chrome.aria.open}
               aria-expanded={open}
               aria-controls="mobile-menu"
-              className="flex h-10 w-10 items-center justify-center text-white lg:hidden"
+              className="flex h-10 w-10 items-center justify-center text-white transition-colors hover:text-red lg:hidden"
             >
               {open ? <X size={26} aria-hidden="true" /> : <Menu size={26} aria-hidden="true" />}
             </button>

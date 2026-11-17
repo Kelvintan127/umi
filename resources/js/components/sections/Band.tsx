@@ -1,6 +1,7 @@
 import type { ReactNode } from "react";
 import { Container } from "../layout/Container";
 import { useReveal } from "@/hooks/useReveal";
+import { useGsapScrollMotion } from "@/hooks/useGsapScrollMotion";
 import { cn } from "@/lib/utils";
 
 /**
@@ -26,6 +27,7 @@ export function Band({
   as?: "section" | "div";
 }) {
   const { ref, props } = useReveal<HTMLDivElement>();
+  const motionRef = useGsapScrollMotion<HTMLDivElement>();
 
   const tones = {
     white: "bg-white text-ink",
@@ -40,7 +42,14 @@ export function Band({
       className={cn("py-20 md:py-28", tones[tone], className)}
     >
       <Container>
-        <div ref={reveal ? ref : undefined} {...(reveal ? props : {})} className={reveal ? "reveal" : undefined}>
+        <div
+          ref={(node) => {
+            if (reveal) ref.current = node;
+            motionRef.current = node;
+          }}
+          {...(reveal ? props : {})}
+          className={reveal ? "reveal" : undefined}
+        >
           {children}
         </div>
       </Container>
@@ -69,26 +78,31 @@ export function SectionHeading({
   return (
     <div className={cn("max-w-3xl", align === "center" && "mx-auto text-center")}>
       {eyebrow ? (
-        <p
-          className={cn(
-            "text-xs font-semibold uppercase tracking-[0.2em]",
-            tone === "white" ? "text-red" : "text-red",
-          )}
-        >
-          {eyebrow}
-        </p>
+        <div className="flex items-center gap-3">
+          <span aria-hidden="true" className="h-px w-8 bg-red" />
+          <p className="text-xs font-semibold uppercase tracking-[0.2em] text-red">{eyebrow}</p>
+        </div>
       ) : null}
 
       {title ? (
-        <h2
-          id={id}
-          className={cn(
-            "mt-4 text-3xl font-black leading-[1.05] tracking-tight sm:text-4xl lg:text-5xl",
-            tone === "white" ? "text-white" : "text-ink",
-          )}
-        >
-          {title}
-        </h2>
+        <>
+          <h2
+            id={id}
+            className={cn(
+              "mt-4 text-3xl font-black leading-[1.05] tracking-tight sm:text-4xl lg:text-5xl",
+              tone === "white" ? "text-white" : "text-ink",
+            )}
+          >
+            {title}
+          </h2>
+          <span
+            aria-hidden="true"
+            className={cn(
+              "mt-6 block h-1 w-14 bg-red transition-[width] duration-500 ease-[var(--ease-out-quint)] hover:w-24",
+              align === "center" && "mx-auto",
+            )}
+          />
+        </>
       ) : null}
 
       {lead ? (

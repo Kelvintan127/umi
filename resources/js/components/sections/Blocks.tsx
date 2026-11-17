@@ -26,15 +26,25 @@ export interface SpecItem {
 export function Stats({ stats }: { stats: Stat[] }) {
   return (
     <Band tone="ink">
-      <dl className="grid gap-10 sm:grid-cols-2 lg:grid-cols-4">
-        {stats.map((stat) => (
-          <div key={stat.label}>
+      <dl className="grid gap-px overflow-hidden border border-white/10 bg-white/10 sm:grid-cols-2 lg:grid-cols-4">
+        {stats.map((stat, index) => (
+          <div
+            key={stat.label}
+            className="group relative bg-ink p-7 transition-colors duration-300 hover:bg-white/[0.07] sm:p-8"
+          >
+            <span
+              aria-hidden="true"
+              className="absolute left-0 top-0 h-1 w-10 bg-red transition-[width] duration-500 ease-[var(--ease-out-quint)] group-hover:w-full"
+            />
             <dt className="sr-only">{stat.label}</dt>
             <dd>
-              <span className="block text-4xl font-black tracking-tight text-white sm:text-5xl">
+              <span className="mb-8 block text-xs font-semibold tabular-nums tracking-[0.2em] text-white/35">
+                {String(index + 1).padStart(2, "0")}
+              </span>
+              <span className="block text-4xl font-black tracking-tight text-white transition-transform duration-500 ease-[var(--ease-out-quint)] group-hover:translate-x-1 sm:text-5xl">
                 {stat.value}
               </span>
-              <span className="mt-3 block text-sm leading-6 text-white/60">{stat.label}</span>
+              <span className="mt-3 block max-w-[14rem] text-sm leading-6 text-white/60">{stat.label}</span>
             </dd>
           </div>
         ))}
@@ -48,14 +58,18 @@ export function Process({ stages, heading }: { stages: ProcessStage[]; heading?:
   return (
     <Band tone="white">
       <SectionHeading title={heading} />
-      <ol className="mt-14 grid gap-px overflow-hidden border border-ink/10 bg-ink/10 sm:grid-cols-2 lg:grid-cols-3">
+      <ol className="motion-stagger mt-14 grid gap-px overflow-hidden border border-ink/10 bg-ink/10 sm:grid-cols-2 lg:grid-cols-3">
         {stages.map((stage, index) => (
-          <li key={stage.title} className="bg-white p-8">
-            <span className="text-xs font-semibold tabular-nums tracking-[0.2em] text-red">
+          <li
+            key={stage.title}
+            className="group relative bg-white p-8 transition-colors duration-300 hover:bg-band-light"
+          >
+            <span className="flex h-9 w-9 items-center justify-center rounded-full border border-red/30 text-xs font-semibold tabular-nums tracking-[0.1em] text-red transition-colors duration-300 group-hover:bg-red group-hover:text-white">
               {String(index + 1).padStart(2, "0")}
             </span>
-            <h3 className="mt-4 text-lg font-bold tracking-tight">{stage.title}</h3>
+            <h3 className="mt-6 text-lg font-bold tracking-tight transition-colors duration-300 group-hover:text-red">{stage.title}</h3>
             <p className="mt-3 text-sm leading-6 text-ink/60">{stage.description}</p>
+            <span aria-hidden="true" className="mt-8 block h-px w-8 bg-red transition-[width] duration-500 ease-[var(--ease-out-quint)] group-hover:w-16" />
           </li>
         ))}
       </ol>
@@ -71,12 +85,19 @@ export function Specs({ items, heading }: { items: SpecItem[]; heading?: string 
     <Band tone="light" ariaLabelledBy={heading ? headingId : undefined}>
       <SectionHeading title={heading} id={headingId} />
 
-      <div className="mt-14 space-y-16">
+      <div className="motion-stagger mt-14 space-y-16">
         {items.map((facility) => (
-          <section key={facility.key} aria-labelledby={`facility-${facility.key}`}>
+          <section
+            key={facility.key}
+            aria-labelledby={`facility-${facility.key}`}
+            className="group/facility"
+          >
             <div className="grid gap-8 lg:grid-cols-2 lg:gap-14">
               <div>
-                <h3 id={`facility-${facility.key}`} className="text-2xl font-black tracking-tight">
+                <h3
+                  id={`facility-${facility.key}`}
+                  className="text-2xl font-black tracking-tight transition-colors duration-300 group-hover/facility:text-red"
+                >
                   {facility.title}
                 </h3>
                 <p className="mt-4 text-sm leading-7 text-ink/60">{facility.summary}</p>
@@ -94,13 +115,18 @@ export function Specs({ items, heading }: { items: SpecItem[]; heading?: string 
               </div>
 
               {facility.image ? (
-                <div className="aspect-[4/3] overflow-hidden bg-band-lighter">
+                <div className="relative aspect-[4/3] overflow-hidden border border-ink/10 bg-white p-5 transition-[border-color,box-shadow,transform] duration-500 ease-[var(--ease-out-quint)] group-hover/facility:-translate-y-1 group-hover/facility:border-red/35 group-hover/facility:shadow-xl sm:p-8">
                   <img
                     src={facility.image}
                     alt={facility.title}
                     loading="lazy"
                     decoding="async"
-                    className="h-full w-full object-cover"
+                    data-gsap-parallax="true"
+                    className="h-full w-full object-contain transition-transform duration-700 ease-[var(--ease-out-quint)] group-hover/facility:scale-[1.05]"
+                  />
+                  <span
+                    aria-hidden="true"
+                    className="pointer-events-none absolute inset-0 bg-gradient-to-t from-ink/10 via-transparent to-transparent opacity-0 transition-opacity duration-500 group-hover/facility:opacity-100"
                   />
                 </div>
               ) : null}
@@ -148,9 +174,9 @@ export function Certifications({
 
       <ul className="mt-14 grid gap-6 lg:grid-cols-3">
         {items.map((cert) => (
-          <li key={cert.name} className="flex flex-col border border-ink/10 p-8">
+          <li key={cert.name} className="group flex flex-col border border-ink/10 p-8 transition-[border-color,box-shadow,transform] duration-500 ease-[var(--ease-out-quint)] hover:-translate-y-1 hover:border-red/35 hover:shadow-xl">
             <p className="text-xs font-semibold uppercase tracking-[0.2em] text-red">{cert.name}</p>
-            <h3 className="mt-4 text-lg font-bold tracking-tight">{cert.title}</h3>
+            <h3 className="mt-4 text-lg font-bold tracking-tight transition-colors duration-300 group-hover:text-red">{cert.title}</h3>
             <p className="mt-3 flex-1 text-sm leading-6 text-ink/60">{cert.description}</p>
 
             {cert.document ? (
@@ -235,11 +261,11 @@ export function Policy({
 
       <ol className="mt-10 grid gap-px border border-ink/10 bg-ink/10 md:grid-cols-2">
         {policy.items.map((item, index) => (
-          <li key={item} className="flex gap-5 bg-white p-7">
-            <span className="text-sm font-semibold tabular-nums text-red">
+          <li key={item} className="group flex gap-5 bg-white p-7 transition-colors duration-300 hover:bg-band-light">
+          <span className="flex h-8 w-8 shrink-0 items-center justify-center rounded-full bg-red/10 text-sm font-semibold tabular-nums text-red transition-colors duration-300 group-hover:bg-red group-hover:text-white">
               {String(index + 1).padStart(2, "0")}
             </span>
-            <p className="text-sm leading-6 text-ink/75">{item}</p>
+          <p className="text-sm leading-6 text-ink/75 transition-colors duration-300 group-hover:text-ink">{item}</p>
           </li>
         ))}
       </ol>
@@ -262,6 +288,7 @@ export function Gallery({ items, heading }: { items: GalleryItem[]; heading?: st
                 alt={item.title}
                 loading="lazy"
                 decoding="async"
+                data-gsap-parallax="true"
                 className={`w-full object-cover transition-transform duration-500 group-hover:scale-[1.03] ${
                   index === 0 ? "aspect-[21/9]" : "aspect-[4/3]"
                 }`}
