@@ -81,7 +81,7 @@ return [
             [
                 'type' => 'prose',
                 'heading' => 'Lokasi manufaktur yang strategis',
-                'image' => '/images/about/factory.jpg',
+                'video' => '/media/company-profile.mp4',
                 'paragraphs' => [
                     'Pabrik kami berlokasi di Kara Industrial Park, Batam Center — berjarak dekat dari Singapore Batamindo Industrial Park dan International Ferry Terminal.',
                     'Pulau Batam merupakan Kawasan Perdagangan Bebas (Free Trade Zone) dan dianggap sebagai salah satu lokasi manufaktur terbaik di Indonesia untuk produksi berorientasi ekspor. Kami memperoleh manfaat dari keunggulan biaya yang kompetitif di Indonesia sekaligus dukungan tenaga kerja terampil dan respons cepat dari Singapura.',

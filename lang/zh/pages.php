@@ -74,7 +74,7 @@ return [
             [
                 'type' => 'prose',
                 'heading' => '具战略意义的制造区位',
-                'image' => '/images/about/factory.jpg',
+                'video' => '/media/company-profile.mp4',
                 'paragraphs' => [
                     '我们的工厂位于 Batam Center 的 Kara Industrial Park，距离 Singapore Batamindo Industrial Park 与国际渡轮码头不远。',
                     'Batam 岛是自由贸易区，被视为印度尼西亚最佳的出口导向型生产基地之一。我们同时受益于印度尼西亚具竞争力的成本优势，以及新加坡高技能、快速的支持。',
