@@ -72,6 +72,9 @@ return [
         'language' => '语言',
         'pause_video' => '暂停背景视频',
         'play_video' => '播放背景视频',
+        'profile_play' => '播放公司简介视频',
+        'profile_loading' => '正在加载视频...',
+        'profile_error' => '无法加载视频。',
         'skip' => '跳转到主要内容',
     ],
 

@@ -73,6 +73,9 @@ return [
         'language' => 'Language',
         'pause_video' => 'Pause background video',
         'play_video' => 'Play background video',
+        'profile_play' => 'Play company profile video',
+        'profile_loading' => 'Loading video...',
+        'profile_error' => 'The video could not be loaded.',
         'skip' => 'Skip to content',
     ],
 

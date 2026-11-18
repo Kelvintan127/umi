@@ -1,5 +1,6 @@
-import { Link } from "@inertiajs/react";
-import { ArrowUpRight } from "lucide-react";
+import { Link, usePage } from "@inertiajs/react";
+import { AlertCircle, ArrowUpRight, LoaderCircle, Play } from "lucide-react";
+import { useState } from "react";
 import { Band, SectionHeading } from "./Band";
 import type { MetalPartUsers } from "@/types";
 
@@ -203,49 +204,111 @@ export function Prose({
   video?: string;
   note?: string;
 }) {
+  const { chrome } = usePage<{ chrome: { aria: Record<string, string> } }>().props;
+  const [playing, setPlaying] = useState(false);
+  const [loading, setLoading] = useState(true);
+  const [error, setError] = useState(false);
+
+  const startVideo = () => {
+    setLoading(true);
+    setError(false);
+    setPlaying(true);
+  };
+
   return (
-    <Band tone="white" ariaLabelledBy={heading ? "prose-heading" : undefined}>
-      <div className="grid gap-10 lg:grid-cols-2 lg:gap-16">
-        <div>
-          <SectionHeading title={heading} id="prose-heading" />
-          <div className="mt-8 space-y-5">
-            {paragraphs.map((paragraph) => (
-              <p key={paragraph} className="text-base leading-8 text-ink/70">
-                {paragraph}
-              </p>
-            ))}
+    <>
+      <Band tone="white" ariaLabelledBy={heading ? "prose-heading" : undefined}>
+        <div className="grid gap-10 lg:grid-cols-2 lg:gap-16">
+          <div>
+            <SectionHeading title={heading} id="prose-heading" />
+            <div className="mt-8 space-y-5">
+              {paragraphs.map((paragraph) => (
+                <p key={paragraph} className="text-base leading-8 text-ink/70">
+                  {paragraph}
+                </p>
+              ))}
+            </div>
+
+            {note ? (
+              <p className="mt-8 border-l-2 border-red pl-5 text-sm leading-6 text-ink/60">{note}</p>
+            ) : null}
           </div>
 
-          {note ? (
-            <p className="mt-8 border-l-2 border-red pl-5 text-sm leading-6 text-ink/60">{note}</p>
+          {video ? (
+            <div className="group relative aspect-[4/3] overflow-hidden border border-ink/10 bg-band-lighter shadow-sm lg:aspect-auto lg:min-h-[22rem]">
+              {!playing ? (
+                <>
+                  <img
+                    src="/images/video/company-profile-poster.jpg"
+                    alt={heading}
+                    loading="lazy"
+                    decoding="async"
+                    data-gsap-parallax="true"
+                    className="h-full w-full object-cover transition-transform duration-700 ease-[var(--ease-out-quint)] group-hover:scale-[1.03]"
+                  />
+                  <span aria-hidden="true" className="pointer-events-none absolute inset-0 bg-gradient-to-t from-ink/70 via-ink/10 to-transparent" />
+                  <button
+                    type="button"
+                    onClick={startVideo}
+                    aria-label={chrome.aria.profile_play}
+                    className="absolute inset-0 z-10 flex items-center justify-center focus-visible:outline-offset-[-6px]"
+                  >
+                    <span className="flex h-16 w-16 items-center justify-center rounded-full border border-white/50 bg-ink/80 text-white shadow-lg backdrop-blur transition-[transform,background-color,border-color] duration-300 group-hover:scale-105 group-hover:border-red group-hover:bg-red sm:h-20 sm:w-20">
+                      <Play size={26} fill="currentColor" aria-hidden="true" className="ml-1" />
+                    </span>
+                  </button>
+                </>
+              ) : (
+                <>
+                  {loading && !error ? (
+                    <div className="pointer-events-none absolute inset-0 z-10 flex items-center justify-center bg-ink/25 text-white">
+                      <span className="flex items-center gap-2 rounded-full bg-ink/80 px-4 py-2 text-sm backdrop-blur">
+                        <LoaderCircle size={18} className="animate-spin" aria-hidden="true" />
+                        {chrome.aria.profile_loading}
+                      </span>
+                    </div>
+                  ) : null}
+                  {error ? (
+                    <div className="absolute inset-0 z-10 flex flex-col items-center justify-center gap-3 bg-ink px-6 text-center text-white">
+                      <AlertCircle size={30} aria-hidden="true" />
+                      <p className="text-sm">{chrome.aria.profile_error}</p>
+                    </div>
+                  ) : null}
+                  <video
+                    controls
+                    autoPlay
+                    playsInline
+                    preload="metadata"
+                    poster="/images/video/company-profile-poster.jpg"
+                    className="h-full w-full bg-black object-contain"
+                    aria-label={heading}
+                    onLoadedMetadata={() => setLoading(false)}
+                    onCanPlay={() => setLoading(false)}
+                    onError={() => {
+                      setLoading(false);
+                      setError(true);
+                    }}
+                  >
+                    <source src={video} type="video/mp4" />
+                  </video>
+                </>
+              )}
+            </div>
+          ) : image ? (
+            <div className="group relative aspect-[4/3] overflow-hidden border border-ink/10 bg-band-lighter shadow-sm lg:aspect-auto lg:min-h-[22rem]">
+              <img
+                src={image}
+                alt={heading}
+                loading="lazy"
+                decoding="async"
+                data-gsap-parallax="true"
+                className="h-full w-full object-cover transition-transform duration-700 ease-[var(--ease-out-quint)] group-hover:scale-[1.03]"
+              />
+              <span aria-hidden="true" className="pointer-events-none absolute inset-0 bg-gradient-to-tr from-ink/25 via-transparent to-transparent opacity-60" />
+            </div>
           ) : null}
         </div>
-
-        {video ? (
-          <div className="group relative aspect-[4/3] overflow-hidden border border-ink/10 bg-band-lighter shadow-sm lg:aspect-auto lg:min-h-[22rem]">
-            <video
-              controls
-              preload="metadata"
-              className="h-full w-full object-cover transition-transform duration-700 ease-[var(--ease-out-quint)] group-hover:scale-[1.03]"
-              aria-label={heading}
-            >
-              <source src={video} type="video/mp4" />
-            </video>
-          </div>
-        ) : image ? (
-          <div className="group relative aspect-[4/3] overflow-hidden border border-ink/10 bg-band-lighter shadow-sm lg:aspect-auto lg:min-h-[22rem]">
-            <img
-              src={image}
-              alt={heading}
-              loading="lazy"
-              decoding="async"
-              data-gsap-parallax="true"
-              className="h-full w-full object-cover transition-transform duration-700 ease-[var(--ease-out-quint)] group-hover:scale-[1.03]"
-            />
-            <span aria-hidden="true" className="pointer-events-none absolute inset-0 bg-gradient-to-tr from-ink/25 via-transparent to-transparent opacity-60" />
-          </div>
-        ) : null}
-      </div>
-    </Band>
+      </Band>
+    </>
   );
 }

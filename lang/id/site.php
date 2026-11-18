@@ -76,6 +76,9 @@ return [
         'language' => 'Bahasa',
         'pause_video' => 'Jeda video latar',
         'play_video' => 'Putar video latar',
+        'profile_play' => 'Putar video profil perusahaan',
+        'profile_loading' => 'Memuat video...',
+        'profile_error' => 'Video tidak dapat dimuat.',
         'skip' => 'Lewati ke konten',
     ],
 

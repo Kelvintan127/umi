@@ -44,7 +44,7 @@ return [
             [
                 'type' => 'prose',
                 'heading' => '精密金属冲压，源于 Batam 的工程制造',
-                'video' => '/media/company-profile.mp4',
+                'video' => '/videos/company-profile.mp4',
                 'paragraphs' => [
                     'PT. Uni-Metaltech Industry (UMI) 是一家精密金属冲压企业，于 2000 年在印度尼西亚 Batam 注册成立。我们的工厂位于 Batam Center 的 Kara Industrial Park，并于 2014 年在 Jababeka Industrial Park 设立了雅加达销售办事处。',
                     '我们为电气、电子及汽车制造商生产电池触点、线束与接线端子、ODS DVD 驱动器部件、机械组件，以及电气及其他金属零件。',
@@ -74,7 +74,7 @@ return [
             [
                 'type' => 'prose',
                 'heading' => '具战略意义的制造区位',
-                'video' => '/media/company-profile.mp4',
+                'video' => '/videos/company-profile.mp4',
                 'paragraphs' => [
                     '我们的工厂位于 Batam Center 的 Kara Industrial Park，距离 Singapore Batamindo Industrial Park 与国际渡轮码头不远。',
                     'Batam 岛是自由贸易区，被视为印度尼西亚最佳的出口导向型生产基地之一。我们同时受益于印度尼西亚具竞争力的成本优势，以及新加坡高技能、快速的支持。',

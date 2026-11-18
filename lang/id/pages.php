@@ -51,7 +51,7 @@ return [
             [
                 'type' => 'prose',
                 'heading' => 'Stamping logam presisi, dirancang di Batam',
-                'video' => '/media/company-profile.mp4',
+                'video' => '/videos/company-profile.mp4',
                 'paragraphs' => [
                     'PT. Uni-Metaltech Industry (UMI) adalah perusahaan stamping logam presisi yang didirikan pada tahun 2000 di Batam, Indonesia. Pabrik kami berada di Kara Industrial Park, Batam Center, dengan Kantor Penjualan Jakarta di Jababeka Industrial Park yang didirikan pada tahun 2014.',
                     'Kami memproduksi kontak baterai, perakitan kabel dan terminal kabel, komponen ODS DVD drive, perakitan mekanis, serta komponen logam listrik dan komponen logam lainnya untuk produsen listrik, elektronik, dan otomotif.',
@@ -81,7 +81,7 @@ return [
             [
                 'type' => 'prose',
                 'heading' => 'Lokasi manufaktur yang strategis',
-                'video' => '/media/company-profile.mp4',
+                'video' => '/videos/company-profile.mp4',
                 'paragraphs' => [
                     'Pabrik kami berlokasi di Kara Industrial Park, Batam Center — berjarak dekat dari Singapore Batamindo Industrial Park dan International Ferry Terminal.',
                     'Pulau Batam merupakan Kawasan Perdagangan Bebas (Free Trade Zone) dan dianggap sebagai salah satu lokasi manufaktur terbaik di Indonesia untuk produksi berorientasi ekspor. Kami memperoleh manfaat dari keunggulan biaya yang kompetitif di Indonesia sekaligus dukungan tenaga kerja terampil dan respons cepat dari Singapura.',
