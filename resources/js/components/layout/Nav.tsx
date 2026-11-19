@@ -5,6 +5,76 @@ import type { LanguageOption, NavItem } from "@/types";
 import { cn } from "@/lib/utils";
 
 /**
+ * Locale flag as inline SVG.
+ *
+ * Flag emoji (regional-indicator pairs such as U+1F1EC U+1F1E7) were replaced
+ * here because they are not reliably renderable: a font without the emoji
+ * glyphs shows the raw letters ("GB"), and several environments have no
+ * colour-emoji font at all. The glyphs are also aria-hidden, so a screen
+ * reader got nothing. An inline SVG renders identically everywhere.
+ *
+ * Decorative on purpose: the locale code and language name next to it carry
+ * the meaning, so this stays aria-hidden.
+ */
+function Flag({ code }: { code: string }) {
+  const common = {
+    "aria-hidden": true as const,
+    focusable: "false" as const,
+    viewBox: "0 0 24 18",
+    className: "h-3.5 w-[1.15rem] shrink-0 rounded-[2px] object-cover ring-1 ring-white/20",
+  };
+
+  switch (code) {
+    case "en":
+      // Union Jack.
+      return (
+        <svg {...common}>
+          <rect width="24" height="18" fill="#012169" />
+          <path d="M0 0l24 18M24 0L0 18" stroke="#fff" strokeWidth="3.6" />
+          <path d="M0 0l24 18M24 0L0 18" stroke="#c8102e" strokeWidth="1.8" />
+          <path d="M12 0v18M0 9h24" stroke="#fff" strokeWidth="6" />
+          <path d="M12 0v18M0 9h24" stroke="#c8102e" strokeWidth="3.6" />
+        </svg>
+      );
+    case "id":
+      // Indonesia: red over white.
+      return (
+        <svg {...common}>
+          <rect width="24" height="9" fill="#ce1126" />
+          <rect y="9" width="24" height="9" fill="#fff" />
+        </svg>
+      );
+    case "zh":
+      // China: red field, one large and four small stars.
+      return (
+        <svg {...common}>
+          <rect width="24" height="18" fill="#de2910" />
+          <path
+            d="M4.6 2.2l.72 2.1h2.22l-1.8 1.3.69 2.1-1.83-1.3-1.82 1.3.68-2.1-1.8-1.3h2.22z"
+            fill="#ffde00"
+          />
+          <g fill="#ffde00">
+            <circle cx="9.1" cy="2.6" r="0.52" />
+            <circle cx="10.4" cy="4.4" r="0.52" />
+            <circle cx="10.4" cy="6.7" r="0.52" />
+            <circle cx="9.1" cy="8.5" r="0.52" />
+          </g>
+        </svg>
+      );
+    default:
+      // Unknown locale: a neutral globe rather than an invisible control.
+      return (
+        <svg {...common}>
+          <rect width="24" height="18" fill="#334155" />
+          <circle cx="12" cy="9" r="6" fill="none" stroke="#cbd5e1" strokeWidth="1.3" />
+          <path d="M6 9h12M12 3c2.6 3.4 2.6 8.6 0 12-2.6-3.4-2.6-8.6 0-12z" fill="none" stroke="#cbd5e1" strokeWidth="1.1" />
+        </svg>
+      );
+  }
+}
+
+
+/**
  * Language switcher.
  *
  * A locale without signed-off copy for the current page is rendered as a
@@ -27,7 +97,6 @@ export function LanguageSwitcher({
   compact?: boolean;
 }) {
   const current = languages.find((lang) => lang.current) ?? languages[0];
-  const flags: Record<string, string> = { en: "🇬🇧", id: "🇮🇩", zh: "🇨🇳" };
   const [open, setOpen] = useState(false);
   const menuRef = useRef<HTMLDivElement | null>(null);
   const triggerRef = useRef<HTMLButtonElement | null>(null);
@@ -67,9 +136,7 @@ export function LanguageSwitcher({
           open && "bg-white/10",
         )}
       >
-        <span aria-hidden="true" className="text-base leading-none">
-          {flags[current.code] ?? "🌐"}
-        </span>
+        <Flag code={current.code} />
         <span>{current.code}</span>
         <span
           aria-hidden="true"
@@ -103,9 +170,7 @@ export function LanguageSwitcher({
           );
           const content = (
             <>
-              <span aria-hidden="true" className="text-base leading-none">
-                {flags[lang.code] ?? "🌐"}
-              </span>
+              <Flag code={lang.code} />
               <span className="flex-1">
                 <span className="block">{lang.code}</span>
                 <span className="mt-0.5 block normal-case tracking-normal text-white/45">
