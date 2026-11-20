@@ -1,4 +1,4 @@
-import { useMemo } from "react";
+import { useMemo, type CSSProperties } from "react";
 
 /**
  * Approved references use two distinct scales:
@@ -27,7 +27,7 @@ export interface EngineeringRulerProps {
 export function EngineeringRuler({
   variant = "home",
   orientation = "horizontal",
-  density = 10,
+  density = 9.83,
   majorEvery,
   labelEvery,
   color = "#ecf1f5",
@@ -50,7 +50,7 @@ export function EngineeringRuler({
   const step = Math.max(6, density);
   const width = Math.max(2400, start + step * 220);
   const count = Math.ceil((width - start) / step);
-  const markerPositions = markers ?? (facility ? [] : contact ? [96] : [10, 70]);
+  const markerPositions = markers ?? (facility ? [] : contact ? [99] : [10, 70]);
   const vertical = orientation === "vertical";
 
   const ticks = useMemo(() => Array.from({length: count + 1}, (_,n) => ({
@@ -86,8 +86,7 @@ export function EngineeringRuler({
           d={"M "+(x-7)+" "+(barHeight-16)+" L "+(x+7)+" "+(barHeight-16)+" L "+x+" "+(barHeight-1)+" Z"}
           fill={accent}/>;
       })}
-      {facility && <rect x={Math.max(0,Math.min(3,activeIndex))*330}
-        y={0} width={330} height={3} fill={accent}/>}
+
     </svg>
   );
   return <div
@@ -97,5 +96,7 @@ export function EngineeringRuler({
     {vertical
       ? <div style={{width,height:barHeight,transformOrigin:"top left",transform:"translateX("+barHeight+"px) rotate(90deg)"}}>{drawing}</div>
       : drawing}
+    {facility && <span aria-hidden="true" className="umi-ruler-active"
+      style={{ "--umi-ruler-tab": activeIndex, "--umi-ruler-mobile-tab": activeIndex % 2, backgroundColor: accent } as CSSProperties}/>}
   </div>;
 }

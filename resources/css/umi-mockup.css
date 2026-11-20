@@ -145,3 +145,23 @@
   .umi-mockup .umi-facility-tab-title { font-size: .98rem; }
   .umi-mockup .umi-facility-main-title { font-size: 1.55rem; }
 }
+
+
+/* Active tab highlight follows four columns on desktop and two on mobile. */
+.umi-mockup .umi-engineering-ruler--facilities { position: relative; }
+.umi-mockup .umi-ruler-active {
+  position: absolute;
+  left: 0;
+  top: 0;
+  z-index: 2;
+  width: 50%;
+  height: 3px;
+  transform: translateX(calc(100% * var(--umi-ruler-mobile-tab)));
+  pointer-events: none;
+}
+@media (min-width: 1024px) {
+  .umi-mockup .umi-ruler-active {
+    width: 25%;
+    transform: translateX(calc(100% * var(--umi-ruler-tab)));
+  }
+}
