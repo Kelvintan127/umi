@@ -165,6 +165,7 @@ export default function Contact() {
   const { locale, seo, htmlLang, content } = props;
   const { contact } = content.blocks;
   const [location, setLocation] = useState(0);
+  const [interactiveBatamMap, setInteractiveBatamMap] = useState(false);
   const primary = contact.batam;
   const secondary = (contact as typeof contact & { jakarta?: {label: string; lines: string[]; map?: string} }).jakarta;
   const locations = [
@@ -218,7 +219,7 @@ export default function Contact() {
           <section className="rounded-lg border border-[#d8e0e7] p-6"><div className="umi-mark"/>
             <h2 className="text-xl font-black">Office hours</h2><p className="mt-4 flex items-center gap-3 text-sm text-[#596a7b]"><Clock3 size={18}/>Contact the office to confirm visiting hours</p></section>
           <section className="rounded-lg border border-[#d8e0e7] p-6"><div className="umi-mark"/>
-            <h2 className="text-xl font-black">Management systems</h2><p className="mt-4 flex items-center gap-3 text-sm text-[#596a7b]"><ShieldCheck size={18}/>ISO 9001:2015 · Environmental management</p>
+            <h2 className="text-xl font-black">Certified</h2><p className="mt-4 flex items-center gap-3 text-sm text-[#596a7b]"><ShieldCheck size={18}/>ISO 9001:2015 · ISO 14001:2015</p>
             <p className="mt-3 text-xs text-[#798696]">{content.blocks.quality.labelling}</p></section>
         </aside>
       </div>
@@ -234,10 +235,28 @@ export default function Contact() {
       </div>
       <div id="umi-map-panel" role="tabpanel" className="relative mt-7 h-[290px] overflow-hidden rounded-lg border border-[#ccd6de] bg-[#dce6eb] sm:h-[340px]">
         {location === 0 ? (
-          <a href={selected.map || mapSearch} target="_blank" rel="noopener noreferrer"
-            aria-label="Open Batam factory map in Google Maps" className="block h-full w-full">
-            <MockupCrop crop="batam-map" alt="Approved Batam factory map at Kara Industrial Park" className="h-full w-full" />
-          </a>
+          interactiveBatamMap ? (
+            <div className="relative h-full w-full">
+              <iframe title="Interactive Batam factory location map" loading="lazy" referrerPolicy="no-referrer-when-downgrade"
+                src={"https://maps.google.com/maps?q=" + encodeURIComponent(selected.query) + "&z=14&output=embed"}
+                className="h-full w-full border-0" />
+              <button type="button" onClick={() => setInteractiveBatamMap(false)}
+                className="absolute bottom-4 right-4 rounded bg-white px-4 py-2 text-xs font-bold text-[#071522] shadow-lg">
+                Reference view
+              </button>
+            </div>
+          ) : (
+            <div className="relative h-full w-full">
+              <a href={selected.map || mapSearch} target="_blank" rel="noopener noreferrer"
+                aria-label="Open Batam factory map in Google Maps" className="block h-full w-full">
+                <MockupCrop crop="batam-map" alt="Approved Batam factory map at Kara Industrial Park" className="h-full w-full" />
+              </a>
+              <button type="button" onClick={() => setInteractiveBatamMap(true)}
+                className="absolute bottom-4 right-4 rounded bg-white px-4 py-2 text-xs font-bold text-[#071522] shadow-lg hover:bg-[#eaf0f4]">
+                Explore interactive map
+              </button>
+            </div>
+          )
         ) : (
           <>
             <iframe key={selected.query} title={selected.label + " map"} loading="lazy" referrerPolicy="no-referrer-when-downgrade"
