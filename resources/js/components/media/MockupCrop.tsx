@@ -15,7 +15,8 @@ export type MockupCropKey =
   | "cable-terminals"
   | "mechanical-assembly"
   | "other-metal-parts"
-  | "production-line";
+  | "production-line"
+  | "batam-map";
 
 const cropBoxes: Record<MockupCropKey, [number, number, number, number]> = {
   hero: [258, 54, 267, 184],
@@ -25,6 +26,7 @@ const cropBoxes: Record<MockupCropKey, [number, number, number, number]> = {
   "mechanical-assembly": [270, 605, 126, 82],
   "other-metal-parts": [401, 605, 120, 82],
   "production-line": [21, 899, 303, 188],
+  "batam-map": [37, 1041, 954, 233],
 };
 
 export function MockupCrop({
@@ -33,6 +35,7 @@ export function MockupCrop({
   ...props
 }: Omit<SVGProps<SVGSVGElement>, "children"> & { crop: MockupCropKey; alt: string }) {
   const [x, y, w, h] = cropBoxes[crop];
+  const contactSource = crop === "batam-map";
   return (
     <svg
       {...props}
@@ -43,11 +46,11 @@ export function MockupCrop({
     >
       <title>{alt}</title>
       <image
-        href="/design-reference/mockup-home.jpg"
+        href={contactSource ? "/design-reference/mockup-contact.jpg" : "/design-reference/mockup-home.jpg"}
         x={0}
         y={0}
-        width={534}
-        height={1600}
+        width={contactSource ? 1024 : 534}
+        height={contactSource ? 1536 : 1600}
         preserveAspectRatio="none"
       />
     </svg>
