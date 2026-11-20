@@ -62,3 +62,86 @@
     scroll-snap-align: none;
   }
 }
+
+
+/* Scoped industrial type scale, measured against the approved reference. */
+.umi-mockup {
+  --umi-type-section: clamp(2.15rem, 3.45vw, 3.6rem);
+  --umi-type-body: clamp(.95rem, 1.15vw, 1.07rem);
+  --umi-type-metadata: .78rem;
+}
+.umi-mockup .umi-heading {
+  font-size: var(--umi-type-section);
+  font-weight: 900;
+  line-height: 1.055;
+  letter-spacing: -.052em;
+}
+.umi-mockup .umi-engineering-ruler svg {
+  min-width: 2400px;
+  width: 2400px;
+  max-width: none;
+  shape-rendering: geometricPrecision;
+}
+.umi-mockup .umi-engineering-ruler--facilities {
+  border-top: 1px solid rgba(220,232,244,.28);
+}
+.umi-mockup .umi-section-description {
+  font-size: var(--umi-type-body);
+  line-height: 1.45;
+}
+.umi-mockup .umi-facility-meta {
+  font-size: var(--umi-type-metadata);
+  letter-spacing: .055em;
+  line-height: 1.55;
+  font-weight: 800;
+}
+.umi-mockup .umi-facility-tab { min-height: 116px; }
+.umi-mockup .umi-facility-tab-number {
+  font-size: 1.55rem;
+  line-height: 1;
+  letter-spacing: -.035em;
+}
+.umi-mockup .umi-facility-tab-title {
+  font-size: clamp(.95rem, 1.32vw, 1.22rem);
+  line-height: 1.17;
+  letter-spacing: -.025em;
+}
+.umi-mockup .umi-facility-tab-sub {
+  font-size: clamp(.68rem, .78vw, .8rem);
+  letter-spacing: .055em;
+  line-height: 1.45;
+}
+.umi-mockup .umi-facility-photo {
+  display: block;
+  border-radius: 5px;
+  object-fit: cover;
+}
+.umi-mockup .umi-facility-main-title {
+  font-size: clamp(1.65rem, 2.25vw, 2.4rem);
+  line-height: 1.12;
+  letter-spacing: -.035em;
+  font-weight: 900;
+}
+.umi-mockup .umi-facility-summary {
+  font-size: clamp(1rem, 1.15vw, 1.18rem);
+  line-height: 1.5;
+  font-weight: 550;
+}
+.umi-mockup .umi-facility-specs {
+  font-size: clamp(.91rem, 1.02vw, 1.06rem);
+  font-weight: 650;
+  line-height: 1.4;
+}
+.umi-mockup .umi-product-description {
+  font-size: clamp(.92rem, 1vw, 1.02rem);
+  font-weight: 500;
+  line-height: 1.5;
+}
+.umi-mockup .umi-certificate-description {
+  font-weight: 500;
+}
+@media (max-width: 640px) {
+  .umi-mockup .umi-facility-tab { min-height: 108px; }
+  .umi-mockup .umi-facility-tab-title { font-size: .98rem; }
+  .umi-mockup .umi-facility-main-title { font-size: 1.55rem; }
+}
