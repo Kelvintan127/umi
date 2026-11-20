@@ -1,0 +1,10 @@
+name: UMI visual QA
+on:
+  workflow_dispatch:
+permissions:
+  contents: read
+jobs:
+  pending:
+    runs-on: ubuntu-latest
+    steps:
+      - run: echo 'Visual QA workflow pending configuration'
