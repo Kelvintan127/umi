@@ -35,7 +35,7 @@ function QuoteForm({ locale, props }: { locale: string; props: PageProps }) {
     form.post("/" + locale + "/contact", {
       preserveScroll: true,
       onSuccess: (page) => {
-        const result = (page.props as PageProps).flash?.inquiry;
+        const result = (page.props as unknown as PageProps).flash?.inquiry;
         if (result?.ok) setSent(true);
       },
     });
