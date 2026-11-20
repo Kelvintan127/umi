@@ -67,10 +67,10 @@ function QuoteForm({ locale, props }: { locale: string; props: PageProps }) {
     setDragOver(false);
     selectFiles(Array.from(event.dataTransfer.files));
   };
-  const field = "mt-2 block w-full rounded border border-[#b6c2cc] bg-white px-4 py-3 text-sm text-[#071522] outline-offset-2 focus:border-[#d71920]";
+  const field = "mt-1.5 block w-full rounded border border-[#b6c2cc] bg-white px-3 py-2 text-sm text-[#071522] outline-offset-2 focus:border-[#d71920]";
   const msg = (key: keyof InquiryFields) => form.errors[key] && <p role="alert" className="mt-1 text-xs font-semibold text-[#d71920]">{form.errors[key]}</p>;
 
-  return <div className="rounded-lg border border-[#d8e0e7] bg-white p-5 shadow-sm sm:p-8">
+  return <div className="rounded-lg border border-[#d8e0e7] bg-white p-4 shadow-sm sm:p-6">
     <div className="umi-mark"/><div className="flex flex-wrap items-center justify-between gap-4">
       <h2 className="umi-heading">{locale === "id" ? "Minta Penawaran" : locale === "zh" ? "申请报价" : "Request a Quote"}</h2><span className="text-[10px] font-bold uppercase tracking-widest text-[#667484]">01 Contact · 02 Project · 03 Files</span>
     </div>
@@ -78,18 +78,18 @@ function QuoteForm({ locale, props }: { locale: string; props: PageProps }) {
       <CheckCircle2 className="text-[#297f53]"/><h3 className="mt-3 text-xl font-bold">{labels.successTitle}</h3>
       <p className="mt-2 text-sm">{flash?.inquiry?.message ?? labels.successBody}</p>
       <button type="button" className="mt-4 text-sm font-bold text-[#d71920] underline" onClick={() => { setSent(false); form.reset(); }}>{labels.successAgain}</button>
-    </div> : <form className="mt-7" onSubmit={submit} noValidate>
+    </div> : <form className="mt-4" onSubmit={submit} noValidate>
       <div className="hidden" aria-hidden="true"><label htmlFor="umi-website">Website</label><input id="umi-website" tabIndex={-1} autoComplete="off" value={form.data.website} onChange={e => form.setData("website", e.target.value)}/></div>
       <h3 className="flex items-center gap-3 border-b border-[#e3e8ec] pb-3 text-lg font-black">
         <span className="rounded bg-[#d71920] px-2 py-1 text-xs text-white">01</span> {locale === "id" ? "Detail kontak" : locale === "zh" ? "联系方式" : "Contact details"}
       </h3>
-      <div className="mt-4 grid gap-5 md:grid-cols-2">
+      <div className="mt-3 grid gap-3 md:grid-cols-2">
         <label className="text-sm font-semibold">{labels.fields.name} *<input autoComplete="name" className={field} value={form.data.name} required onChange={e => form.setData("name", e.target.value)}/>{msg("name")}</label>
         <label className="text-sm font-semibold">{labels.fields.company}<input autoComplete="organization" className={field} value={form.data.company} onChange={e => form.setData("company", e.target.value)}/>{msg("company")}</label>
         <label className="text-sm font-semibold">{labels.fields.email} *<input autoComplete="email" type="email" className={field} value={form.data.email} required onChange={e => form.setData("email", e.target.value)}/>{msg("email")}</label>
         <label className="text-sm font-semibold">{labels.fields.phone}<input autoComplete="tel" className={field} value={form.data.phone} onChange={e => form.setData("phone", e.target.value)}/>{msg("phone")}</label>
       </div>
-      <h3 className="mt-8 flex items-center gap-3 border-b border-[#e3e8ec] pb-3 text-lg font-black">
+      <h3 className="mt-5 flex items-center gap-3 border-b border-[#e3e8ec] pb-2 text-lg font-black">
         <span className="rounded bg-[#d71920] px-2 py-1 text-xs text-white">02</span> {locale === "id" ? "Proyek" : locale === "zh" ? "项目" : "Project"}
       </h3>
       <fieldset className="mt-5">
@@ -101,7 +101,7 @@ function QuoteForm({ locale, props }: { locale: string; props: PageProps }) {
         </div>
         {msg("inquiry_type")}
       </fieldset>
-      <div className="mt-5 grid gap-4 sm:grid-cols-3">
+      <div className="mt-3 grid gap-3 sm:grid-cols-3">
         <label className="text-xs font-bold">Material
           <select value={material} onChange={e => setMaterial(e.target.value)} className={field}>
             <option value="">Select material</option>
@@ -121,13 +121,13 @@ function QuoteForm({ locale, props }: { locale: string; props: PageProps }) {
           </select>
         </label>
       </div>
-      <label className="mt-6 block text-sm font-semibold">{labels.fields.message} *<textarea rows={6} className={field} value={form.data.message} required onChange={e => form.setData("message", e.target.value)} placeholder={labels.placeholders.message}/>{msg("message")}</label>
-      <h3 className="mt-6 flex items-center gap-3 border-b border-[#e3e8ec] pb-3 text-lg font-black"><span className="rounded bg-[#d71920] px-2 py-1 text-xs text-white">03</span>{locale === "id" ? "Gambar teknik" : locale === "zh" ? "文件" : "Files"}</h3>
+      <label className="mt-4 block text-sm font-semibold">{labels.fields.message} *<textarea rows={3} className={field} value={form.data.message} required onChange={e => form.setData("message", e.target.value)} placeholder={labels.placeholders.message}/>{msg("message")}</label>
+      <h3 className="mt-4 flex items-center gap-3 border-b border-[#e3e8ec] pb-2 text-lg font-black"><span className="rounded bg-[#d71920] px-2 py-1 text-xs text-white">03</span>{locale === "id" ? "Gambar teknik" : locale === "zh" ? "文件" : "Files"}</h3>
       <label htmlFor="umi-drawings"
         onDragOver={event=>{event.preventDefault();setDragOver(true);}}
         onDragLeave={event=>{event.preventDefault();setDragOver(false);}}
         onDrop={onDrop}
-        className={"mt-4 block cursor-pointer rounded-lg border border-dashed px-5 py-6 text-center text-sm transition-colors focus-within:outline focus-within:outline-2 focus-within:outline-[#d71920] " + (dragOver ? "border-[#d71920] bg-[#fff0f1]" : "border-[#aab8c5] bg-[#fafbfc]")}>
+        className={"mt-3 block cursor-pointer rounded-lg border border-dashed px-4 py-4 text-center text-sm transition-colors focus-within:outline focus-within:outline-2 focus-within:outline-[#d71920] " + (dragOver ? "border-[#d71920] bg-[#fff0f1]" : "border-[#aab8c5] bg-[#fafbfc]")}>
         <input id="umi-drawings" name="attachments[]" className="sr-only" type="file" multiple
           accept=".pdf,.dwg,.dxf,.step,.stp,.iges,.igs"
           onChange={event=>{selectFiles(Array.from(event.target.files ?? []));event.target.value="";}} />
@@ -146,13 +146,13 @@ function QuoteForm({ locale, props }: { locale: string; props: PageProps }) {
         <p key={key} role="alert" className="mt-2 text-xs font-bold text-[#d71920]">{message}</p>
       )}
       {form.progress && <progress aria-label="Upload progress" className="mt-3 w-full accent-[#d71920]" max={100} value={form.progress.percentage ?? 0}/>}
-      <label className="mt-6 flex items-start gap-3 text-sm leading-6">
+      <label className="mt-4 flex items-start gap-3 text-sm leading-6">
         <input type="checkbox" required checked={form.data.consent} onChange={e => form.setData("consent", e.target.checked)} className="mt-1 accent-[#d71920]"/>
         <span>{labels.consent}</span>
       </label>{msg("consent")}
       {Object.keys(form.errors).length > 0 && <p className="mt-3 text-sm font-bold text-[#d71920]" role="alert">{labels.errorsTitle}</p>}
       <button type="submit" disabled={form.processing || !form.data.consent}
-        className="umi-btn-red mt-7 flex w-full items-center justify-center gap-2 rounded py-4 text-sm font-bold text-white disabled:cursor-not-allowed disabled:opacity-50">
+        className="umi-btn-red mt-4 flex w-full items-center justify-center gap-2 rounded py-3 text-sm font-bold text-white disabled:cursor-not-allowed disabled:opacity-50">
         {form.processing ? labels.submitting : labels.submit}<ArrowRight size={18}/>
       </button>
       <p className="mt-4 text-center text-xs text-[#6e7b89]">{labels.fields.email}: {props.content.blocks.contact.email}</p>
@@ -179,13 +179,13 @@ export default function Contact() {
   return <MockupShell active="contact">
     <PageHead seo={seo} htmlLang={htmlLang}/>
     <section className="umi-hero umi-blueprint-lines overflow-hidden bg-[#071522] text-white">
-      <div className="mx-auto grid max-w-[1400px] gap-8 px-5 py-14 sm:px-8 lg:grid-cols-2 xl:px-10">
+      <div className="mx-auto grid max-w-[1400px] gap-8 px-5 py-7 sm:px-8 lg:grid-cols-2 xl:px-10">
         <div><p className="mb-4 text-xs uppercase tracking-wider text-white/65"><Link href={"/" + locale}>Home</Link> / Contact</p>
           <p className="mb-2 text-xs font-bold uppercase tracking-widest text-[#fa4951]">Contact · Request for quotation</p>
           <h1 className="max-w-xl text-4xl font-black leading-tight tracking-[-0.045em] sm:text-5xl">{headline}</h1>
           <p className="mt-5 max-w-xl text-base leading-7 text-white/80">{intro}</p>
         </div>
-        <div className="relative flex min-h-[215px] items-center justify-center text-white/60">
+        <div className="relative flex min-h-[175px] items-center justify-center text-white/60">
           <svg viewBox="0 0 500 250" className="w-full max-w-lg" role="img" aria-label="Technical drawing of a precision formed metal bracket">
             <g fill="none" stroke="currentColor" strokeWidth="2.2">
               <path d="M55 100Q55 80 75 80H125L145 53H195V35H255V53H314Q333 53 334 75V80H407Q430 80 430 102V152Q430 170 412 170H342V195H287V170H154V191H101V170H77Q55 170 55 147Z"/>
@@ -199,7 +199,7 @@ export default function Contact() {
         </div>
       </div>
     </section>
-    <section className="py-10 lg:py-10">
+    <section className="py-7 lg:py-7">
       <div className="mx-auto grid max-w-[1400px] items-start gap-6 px-5 sm:px-8 lg:grid-cols-[1.6fr_1fr] xl:px-10">
         <QuoteForm locale={locale} props={props}/>
         <aside className="space-y-4">
@@ -223,7 +223,7 @@ export default function Contact() {
         </aside>
       </div>
     </section>
-    <section className="bg-[#f6f8fa] py-10 lg:py-10"><div className="mx-auto max-w-[1400px] px-5 sm:px-8 xl:px-10">
+    <section className="bg-[#f6f8fa] py-7 lg:py-7"><div className="mx-auto max-w-[1400px] px-5 sm:px-8 xl:px-10">
       <div className="flex flex-wrap items-end justify-between gap-6"><div><div className="umi-mark"/><h2 className="umi-heading">Find us</h2>
         <p className="mt-2 text-sm text-[#566578]">Batam Factory and Jakarta Sales Office.</p></div>
         <div className="flex border-b border-[#cbd5df]" role="tablist" aria-label="Office locations">

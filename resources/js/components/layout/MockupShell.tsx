@@ -10,6 +10,7 @@ export function MockupShell({ active, children }: { active: string; children: Re
   const { chrome, locale, content } = usePage<PageProps>().props;
   const [mobileOpen, setMobileOpen] = useState(false);
   const contact = content.blocks.contact;
+  const jakartaOffice = (contact as typeof contact & { jakarta?: { label: string; lines: string[] } }).jakarta;
 
   useEffect(() => {
     setMobileOpen(false);
@@ -84,17 +85,17 @@ export function MockupShell({ active, children }: { active: string; children: Re
       </header>
       <main id="main">{children}</main>
       <footer className="bg-[#f8fafb]">
-        <div className="mx-auto grid max-w-[1400px] gap-10 px-5 py-14 sm:px-8 md:grid-cols-2 xl:grid-cols-4 xl:px-10">
+        <div className="mx-auto grid max-w-[1400px] gap-7 px-5 py-7 sm:px-8 md:grid-cols-2 xl:grid-cols-4 xl:px-10">
           <div className="flex items-start gap-3"><img src="/images/logo.png" alt="" className="h-14 w-14 object-contain" />
             <b className="pt-2 text-xs font-black leading-4">PT. UNI-METALTECH<br/>INDUSTRY (UMI)</b></div>
           <div><h2 className="text-sm font-bold">Batam Factory</h2>
-            <p className="mt-3 text-sm leading-6 text-[#506070]">{contact.batam.lines.join(", ")}</p></div>
-          <div><h2 className="text-sm font-bold">Sales Office</h2><p className="mt-3 text-sm leading-6 text-[#506070]">Jababeka Industrial Park, Indonesia</p></div>
-          <div><h2 className="text-sm font-bold">Quick Links</h2><div className="mt-3 grid grid-cols-2 gap-2">
+            <p className="mt-2 text-xs leading-5 text-[#506070]">{contact.batam.lines.join(", ")}</p></div>
+          <div><h2 className="text-sm font-bold">Sales Office</h2><p className="mt-3 text-sm leading-6 text-[#506070]">{jakartaOffice?.lines.join(", ") ?? "Jababeka Industrial Park, Indonesia"}</p></div>
+          <div><h2 className="text-sm font-bold">Quick Links</h2><div className="mt-2 grid grid-cols-2 gap-1.5">
             {chrome.nav.map(item => <Link key={item.key} href={siteLink(locale, item.path)} className="text-xs text-[#506070] hover:text-[#d71920]">{item.label}</Link>)}
           </div></div>
         </div>
-        <div className="mx-auto flex max-w-[1400px] flex-col justify-between gap-4 border-t border-[#dce3e7] px-5 py-5 text-xs text-[#637081] sm:px-8 md:flex-row xl:px-10">
+        <div className="mx-auto flex max-w-[1400px] flex-col justify-between gap-4 border-t border-[#dce3e7] px-5 py-3 text-xs text-[#637081] sm:px-8 md:flex-row xl:px-10">
           <span>© 2000–{new Date().getFullYear()} PT. Uni-Metaltech Industry. {chrome.footer.rights}</span>
           <div className="flex gap-5"><Link href={siteLink(locale, "privacy")}>{chrome.footer.privacy}</Link><Link href={siteLink(locale, "terms")}>{chrome.footer.terms}</Link></div>
         </div>

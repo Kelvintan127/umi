@@ -201,7 +201,7 @@ export default function Home() {
     <section className="bg-[#071522] py-16 text-white"><div className="mx-auto flex max-w-[1400px] flex-wrap items-center justify-between gap-6 px-5 sm:px-8 xl:px-10">
       <h2 className="text-2xl font-black sm:text-3xl">{c.cta}</h2>
       <Link className="umi-btn-red inline-flex items-center gap-2 rounded px-6 py-3.5 text-sm font-bold" href={"/" + locale + "/contact"}>{chrome.cta.team}<ArrowRight size={17}/></Link>
-      <a href={"mailto:" + blocks.contact.email} className="text-xs text-white/75">{blocks.contact.email}</a>
+      <div className="text-xs leading-6 text-white/75"><a href={"mailto:" + blocks.contact.email} className="block hover:text-white">{blocks.contact.email}</a><a href={"tel:" + blocks.contact.phone} className="block hover:text-white">{blocks.contact.phone}</a></div>
     </div></section>
 
     {videoOpen && corporateVideo && <div role="dialog" aria-modal="true" aria-label={c.video} className="fixed inset-0 z-[100] flex items-center justify-center bg-black/90 p-5">

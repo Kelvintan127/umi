@@ -19,3 +19,4 @@ Based on compressed approved full-page references and actual running Laravel/Ine
 | Both | Footer | Reference four-column composition | Similar but larger gaps | P2 | Spacing differences | Further geometry QA | Ongoing |
 
 No claim of pixel-perfect reconstruction is made without matched original media and normalized screenshot comparisons.
+\n## Additional compactness corrections\n- Contact: reduced hero padding, input padding and gaps, project textarea rows, upload drop-zone padding, and form spacing to target the approved compact RFQ proportions.\n- Shared footer: reduced spacing and switched Jakarta office block to the existing contact data rather than hard-coded shortened placeholder.\n- Homepage bottom CTA: added office phone link from verified application content.\n- Quantified visual offsets still require native-resolution reference alignment; the supplied screenshots are compressed.\n
