@@ -184,13 +184,13 @@ return [
         [
             'name' => 'ISO 9001:2015',
             'title' => 'Sistem Manajemen Mutu',
-            'description' => 'Tersertifikasi sejak 2000 sesuai ISO 9001:2015. Audit internal dan eksternal memastikan sistem manajemen manufaktur kami ditinjau dan diperbarui secara berkala untuk menjaga kompetensi operasional dan peningkatan mutu produk secara berkelanjutan.',
+            'description' => 'Sertifikat QMS/15/R62/0013 diterbitkan oleh Certification Partner Global untuk lingkup Metal Stamping. Sertifikasi ulang 05 Mar 2024; masa berlaku tercantum hingga 05 Mar 2027, bergantung pada audit tahunan dan status penerbit.',
             'document' => '/images/certifications/CPG 9001 QMS Recertification.pdf',
         ],
         [
-            'name' => 'ISO 14000:2015',
+            'name' => 'ISO 14001:2015',
             'title' => 'Sistem Manajemen Lingkungan',
-            'description' => 'Tersertifikasi sesuai ISO 14000:2015. Kami berkomitmen untuk mencegah pencemaran, meminimalkan limbah, mematuhi peraturan, dan menurunkan konsumsi energi di seluruh proses produksi kami.',
+            'description' => 'Sertifikat EMS/2/R62/0013 diterbitkan oleh Certification Partner Global untuk lingkup Metal Stamping. Sertifikasi ulang 05 Mar 2024; masa berlaku tercantum hingga 05 Mar 2027, bergantung pada audit tahunan dan status penerbit.',
             'document' => '/images/certifications/CPG 14001 EMS Recertification.pdf',
         ],
     ],

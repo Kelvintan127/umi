@@ -181,13 +181,13 @@ return [
         [
             'name' => 'ISO 9001:2015',
             'title' => 'Quality Management System',
-            'description' => 'Certified since 2000 according to ISO 9001:2015. Internal and external audits ensure our manufacturing management system is periodically reviewed and updated to sustain operational competency and continual product quality improvement.',
+            'description' => 'Certificate QMS/15/R62/0013 is issued by Certification Partner Global for Metal Stamping. Recertified 05 Mar 2024; expiry stated as 05 Mar 2027, conditional on annual audits and issuer status.',
             'document' => '/images/certifications/CPG 9001 QMS Recertification.pdf',
         ],
         [
-            'name' => 'ISO 14000:2015',
+            'name' => 'ISO 14001:2015',
             'title' => 'Environmental Management System',
-            'description' => 'Certified to ISO 14000:2015. We are committed to preventing pollution, minimizing waste, complying with regulations, and reducing energy consumption across our production processes.',
+            'description' => 'Certificate EMS/2/R62/0013 is issued by Certification Partner Global for Metal Stamping. Recertified 05 Mar 2024; expiry stated as 05 Mar 2027, conditional on annual audits and issuer status.',
             'document' => '/images/certifications/CPG 14001 EMS Recertification.pdf',
         ],
     ],

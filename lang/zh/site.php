@@ -180,13 +180,13 @@ return [
         [
             'name' => 'ISO 9001:2015',
             'title' => '质量管理体系',
-            'description' => '自 2000 年起依据 ISO 9001:2015 获得认证。内部与外部审核确保我们的制造管理体系得到定期评审与更新，以维持运营能力并持续提升产品质量。',
+            'description' => '质量管理体系证书 QMS/15/R62/0013 由 Certification Partner Global 颁发，认证范围为金属冲压。最近复审日期为 2024 年 3 月 5 日，证书载明的到期日期为 2027 年 3 月 5 日，须满足年度审核及发证机构状态要求。',
             'document' => '/images/certifications/CPG 9001 QMS Recertification.pdf',
         ],
         [
-            'name' => 'ISO 14000:2015',
+            'name' => 'ISO 14001:2015',
             'title' => '环境管理体系',
-            'description' => '依据 ISO 14000:2015 认证。我们承诺在生产过程中防止污染、减少废弃物、遵守法规并降低能源消耗。',
+            'description' => '环境管理体系证书 EMS/2/R62/0013 由 Certification Partner Global 颁发，认证范围为金属冲压。最近复审日期为 2024 年 3 月 5 日，证书载明的到期日期为 2027 年 3 月 5 日，须满足年度审核及发证机构状态要求。',
             'document' => '/images/certifications/CPG 14001 EMS Recertification.pdf',
         ],
     ],

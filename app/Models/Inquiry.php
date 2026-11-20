@@ -24,6 +24,7 @@ class Inquiry extends Model
         'ip_hash',
         'user_agent',
         'mail_sent_at',
+        'attachments',
     ];
 
     /** True once the office has actually been told. Drives exactly-once send. */
@@ -42,6 +43,7 @@ class Inquiry extends Model
     {
         return [
             'mail_sent_at' => 'datetime',
+            'attachments' => 'array',
             'office_notified_at' => 'datetime',
             'acknowledged_at' => 'datetime',
             'office_notify_attempts' => 'integer',

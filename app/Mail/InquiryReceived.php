@@ -8,6 +8,7 @@ use Illuminate\Mail\Mailable;
 use Illuminate\Mail\Mailables\Address;
 use Illuminate\Mail\Mailables\Content;
 use Illuminate\Mail\Mailables\Envelope;
+use Illuminate\Mail\Mailables\Attachment;
 use Illuminate\Queue\SerializesModels;
 
 /**
@@ -65,4 +66,23 @@ class InquiryReceived extends Mailable
             ],
         );
     }
+    /**
+     * Attach the verified private drawings to the office notification only.
+     * Acknowledgement emails must never echo a customer's CAD files back.
+     *
+     * @return list<Attachment>
+     */
+    public function attachments(): array
+    {
+        if ($this->acknowledgement) {
+            return [];
+        }
+        return array_map(
+            static fn (array $file): Attachment => Attachment::fromStorageDisk('local', $file['path'])
+                ->as($file['name'])
+                ->withMime($file['mime'] ?: 'application/octet-stream'),
+            $this->inquiry->attachments ?? [],
+        );
+    }
+
 }

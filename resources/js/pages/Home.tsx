@@ -1,3 +1,4 @@
+import { EngineeringRuler } from "@/components/layout/EngineeringRuler";
 import { Link, usePage } from "@inertiajs/react";
 import { ArrowRight, ArrowUpRight, Play, X } from "lucide-react";
 import { MockupCrop, type MockupCropKey } from "@/components/media/MockupCrop";
@@ -50,7 +51,9 @@ export default function Home() {
   const [videoOpen, setVideoOpen] = useState(false);
   const facilities = blocks.facilities;
   const selected = facilities[Math.min(activeFacility, Math.max(0, facilities.length - 1))];
-  const corporateVideo = content.sections.find(section => section.type === "prose" && section.video)?.video;
+  const corporateVideo = import.meta.env.VITE_UMI_COMPANY_PROFILE_URL?.trim()
+    || content.sections.find(section => section.type === "prose" && section.video)?.video;
+  const [videoError, setVideoError] = useState(false);
 
   return <MockupShell active="home">
     <PageHead seo={seo} htmlLang={htmlLang} />
@@ -97,7 +100,7 @@ export default function Home() {
         </div>
         <div className="group relative overflow-hidden rounded-lg bg-[#071522]">
           <MockupCrop crop="factory-aerial" alt="Approved aerial view of the UMI factory complex" className="h-[240px] w-full sm:h-[300px] lg:h-[320px]" />
-          {corporateVideo && <button onClick={() => setVideoOpen(true)} aria-label={c.video} type="button"
+          {corporateVideo && <button onClick={() => { setVideoError(false); setVideoOpen(true); }} aria-label={c.video} type="button"
             className="absolute left-1/2 top-1/2 flex h-16 w-16 -translate-x-1/2 -translate-y-1/2 items-center justify-center rounded-full bg-[#071522]/90 text-white ring-4 ring-white/30">
             <Play size={25} fill="currentColor"/>
           </button>}
@@ -112,14 +115,14 @@ export default function Home() {
           <div><div className="umi-mark"/><h2 className="umi-heading">{c.process}</h2></div>
           <p className="max-w-xl text-sm leading-6 text-[#5a6876]">A fully integrated process from engineering to delivery, focused on precision, consistency and reliable supply.</p>
         </div>
-        <div className="grid grid-cols-2 gap-4 sm:grid-cols-3 lg:grid-cols-6">
+        <div className="grid grid-cols-2 gap-x-4 gap-y-7 sm:grid-cols-3 lg:grid-cols-6">
           {blocks.process.map((stage, index) => {
             const icon = processIconNames[index];
-            return <div key={index} className="relative rounded border border-[#e8edf1] bg-white px-5 py-3">
+            return <div key={index} className="relative px-2 py-2">
               <span className="inline-flex rounded bg-[#d71920] px-2 py-1 text-xs font-black text-white">{String(index + 1).padStart(2, "0")}</span>
               <img src={"/images/process/" + icon} alt="" aria-hidden="true" loading="lazy" className="mx-auto my-2 h-14 w-16 object-contain" />
               <h3 className="text-center text-xs font-black sm:text-sm">{stage.title}</h3>
-              {index < 5 && <ArrowRight size={15} aria-hidden="true" className="absolute -right-4 top-1/2 z-10 hidden text-[#d71920] lg:block" />}
+              {index < 5 && <ArrowRight size={15} aria-hidden="true" className="absolute -right-4 top-[55%] z-10 hidden text-[#acb6c0] lg:block" />}
             </div>;
           })}
         </div>
@@ -157,6 +160,7 @@ export default function Home() {
             <span className="mt-1 block text-sm font-bold">{item.title}</span>
           </button>)}
         </div>
+        <EngineeringRuler className="border-b border-white/20" height={24} showLabels={false} markers={[0,40,70,110]} color="#dce4eb" />
         {selected && <div id="umi-facility-panel" role="tabpanel" className="mt-8 grid gap-8 lg:grid-cols-[1.15fr_0.85fr]">
           {activeFacility === 0 ? <MockupCrop crop="production-line" alt="Approved AIDA and SEYI press production line photograph" className="h-[340px] w-full rounded-lg lg:h-[450px]" /> : <img src={selected.image} alt={selected.title} className="h-[340px] w-full rounded-lg object-cover lg:h-[450px]" loading="lazy"/>}
           <div className="flex flex-col justify-center">
@@ -178,10 +182,13 @@ export default function Home() {
           {blocks.certifications.map((certificate, i) => <article key={i} className="rounded-lg border border-[#e0e5e9] p-5 md:p-7">
             <p className="text-xs font-bold text-[#d71920]">{certificate.name}</p><h3 className="mt-1 text-xl font-black">{certificate.title}</h3>
             <div className="mt-5 flex min-h-[205px] items-center justify-center overflow-hidden rounded border border-[#e6eaf0] bg-[#fafafa]">
-              <MockupCrop
-                crop={i === 0 ? "certificate-quality" : "certificate-environment"}
-                alt={"Compressed approved-design preview of " + certificate.name + " certificate; use View PDF for the underlying original document"}
-                className="h-[234px] w-full"
+              <img
+                src={i === 0 ? "/images/certifications/preview-iso-9001.jpg" : "/images/certifications/preview-iso-14001.jpg"}
+                alt={"Authentic first-page preview from the original " + certificate.name + " certificate"}
+                loading="lazy"
+                width={700}
+                height={990}
+                className="h-[234px] w-full object-contain"
               />
             </div>
             <p className="mt-4 text-xs leading-6 text-[#697786]">{certificate.description}</p>
@@ -197,12 +204,16 @@ export default function Home() {
     <section className="bg-[#071522] py-16 text-white"><div className="mx-auto flex max-w-[1400px] flex-wrap items-center justify-between gap-6 px-5 sm:px-8 xl:px-10">
       <h2 className="text-2xl font-black sm:text-3xl">{c.cta}</h2>
       <Link className="umi-btn-red inline-flex items-center gap-2 rounded px-6 py-3.5 text-sm font-bold" href={"/" + locale + "/contact"}>{chrome.cta.team}<ArrowRight size={17}/></Link>
-      <a href={"mailto:" + blocks.contact.email} className="text-xs text-white/75">{blocks.contact.email}</a>
+      <div className="text-xs leading-6 text-white/75"><a href={"mailto:" + blocks.contact.email} className="block hover:text-white">{blocks.contact.email}</a><a href={"tel:" + blocks.contact.phone} className="block hover:text-white">{blocks.contact.phone}</a></div>
     </div></section>
 
     {videoOpen && corporateVideo && <div role="dialog" aria-modal="true" aria-label={c.video} className="fixed inset-0 z-[100] flex items-center justify-center bg-black/90 p-5">
       <button type="button" onClick={() => setVideoOpen(false)} aria-label="Close video" className="absolute right-5 top-5 text-white"><X size={28}/></button>
-      <video controls autoPlay playsInline preload="metadata" src={corporateVideo} className="max-h-[85vh] w-full max-w-5xl"/>
+      <video controls autoPlay playsInline preload="metadata" src={corporateVideo}
+        onError={() => setVideoError(true)} className="max-h-[85vh] w-full max-w-5xl"/>
+      {videoError && <div role="alert" className="absolute bottom-8 left-1/2 w-[min(90vw,34rem)] -translate-x-1/2 rounded bg-[#fff1f1] p-4 text-center text-sm font-semibold text-[#8b1218]">
+        {locale === "id" ? "Video perusahaan belum dapat diputar. Silakan hubungi UMI untuk meminta versi resminya." : locale === "zh" ? "公司视频暂时无法播放，请联系 UMI 获取正式版本。" : "The company profile video is temporarily unavailable. Contact UMI for the official file."}
+      </div>}
     </div>}
   </MockupShell>;
 }

@@ -2,7 +2,7 @@ name: UMI real-app visual QA
 
 on:
   push:
-    branches: [feat/umi-mockup-redesign-20261120]
+    branches: [feat/umi-mockup-redesign-20261120, feat/umi-fidelity-assets-rfq-20261120]
   workflow_dispatch:
 
 permissions:
