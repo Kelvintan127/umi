@@ -16,6 +16,8 @@ export type MockupCropKey =
   | "mechanical-assembly"
   | "other-metal-parts"
   | "production-line"
+  | "certificate-quality"
+  | "certificate-environment"
   | "batam-map";
 
 const cropBoxes: Record<MockupCropKey, [number, number, number, number]> = {
@@ -26,6 +28,8 @@ const cropBoxes: Record<MockupCropKey, [number, number, number, number]> = {
   "mechanical-assembly": [270, 605, 126, 82],
   "other-metal-parts": [401, 605, 120, 82],
   "production-line": [21, 899, 303, 188],
+  "certificate-quality": [26, 1200, 226, 147],
+  "certificate-environment": [286, 1200, 225, 147],
   "batam-map": [37, 1041, 954, 233],
 };
 

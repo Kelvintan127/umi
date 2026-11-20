@@ -17,7 +17,7 @@ The reference folder contains a compressed 534×1600 homepage mockup, a 1024×15
 | AIDA production-line photograph | Home 21,899,303,188 | Facilities 1 | Exact scene, compressed |
 | Batam factory map | Contact 37,1041,954,233 | Map | Static preview with external Google Maps link |
 | Engineering through Delivery icons | Six original PNGs in supplied ZIP | Process | Original assets extracted by prebuild/predev |
-| UMI identity | public/images/logo.png | Header, footer | Original repository logo |
+| ISO certificate card previews | Home 26,1200,226,147 and 286,1200,225,147 | Quality | Compressed approved mockup previews, not a substitute for the original PDFs |\n| UMI identity | public/images/logo.png | Header, footer | Original repository logo |
 | Certification PDFs | public/images/certifications | Quality | Existing original PDFs; validity not verified |
 
 The SVG viewBox media component displays exact crop subjects but does not restore source detail. Approved high-resolution files are required for final production media.
@@ -31,7 +31,7 @@ The SVG viewBox media component displays exact crop subjects but does not restor
 | Process | Generic illustration | Original six icons, reduced spacing | Precise typography review |
 | Products | Mismatched images, tall section | Four matching crops, shorter section | Original-resolution images |
 | Facilities | Single press | AIDA line image, enlarged media/tabs | Original-resolution image |
-| Quality | Generic certificate visuals | Existing PDF embeds | Headless PDF preview unavailable |
+| Quality | Headless PDF preview blank | Approved reference previews plus original PDF links | Compressed reference crops; current certification validity unverified |
 | Footer | Compressed | Increased CTA/footer spacing | Visual sign-off |
 | Contact map | Blank iframe in isolated CI | Clickable reference map | Embedded provider only for Jakarta |
 | RFQ upload | No backend support | Explicit email handoff | Secure CAD/PDF attachment pipeline |
@@ -45,3 +45,7 @@ Playwright captured the real running Laravel/Inertia app, not a static HTML prev
 The first full Laravel suite remains failing in legacy locale assertions and inquiry rate-limit/test isolation. Correct before merging. Re-run after subsequent visual commits.
 
 The ruler at the top of the screenshots is interpreted as measurement tooling, not website navigation. The compressed source prevents a defensible pixel-error score. Do not claim 100% parity or deploy without owner QA and original media.
+
+## 2026-11-20 certification visual correction
+
+The actual Chromium screenshots from run 44691512298 showed blank certificate preview cards although the PDF files were linked. The card media now uses two faithful, low-resolution certificate crops from the user-provided approved screenshot. View PDF / Download PDF retain the existing repository PDF documents. These cropped previews are design references only: no new certificates were created, and certificate status still requires verification. Build and browser rerun required after this change.

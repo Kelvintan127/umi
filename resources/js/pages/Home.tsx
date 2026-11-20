@@ -178,9 +178,11 @@ export default function Home() {
           {blocks.certifications.map((certificate, i) => <article key={i} className="rounded-lg border border-[#e0e5e9] p-5 md:p-7">
             <p className="text-xs font-bold text-[#d71920]">{certificate.name}</p><h3 className="mt-1 text-xl font-black">{certificate.title}</h3>
             <div className="mt-5 flex min-h-[205px] items-center justify-center overflow-hidden rounded border border-[#e6eaf0] bg-[#fafafa]">
-              <object data={certificate.document + "#page=1&toolbar=0&navpanes=0"} type="application/pdf" aria-label={"Original certification PDF: " + certificate.name} className="h-[234px] w-full">
-                <p className="p-6 text-sm text-[#566578]">Preview requires a PDF-capable browser. Use View PDF below.</p>
-              </object>
+              <MockupCrop
+                crop={i === 0 ? "certificate-quality" : "certificate-environment"}
+                alt={"Compressed approved-design preview of " + certificate.name + " certificate; use View PDF for the underlying original document"}
+                className="h-[234px] w-full"
+              />
             </div>
             <p className="mt-4 text-xs leading-6 text-[#697786]">{certificate.description}</p>
             {certificate.document && <div className="mt-5 flex flex-wrap gap-2">
