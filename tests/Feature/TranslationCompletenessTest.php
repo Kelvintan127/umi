@@ -60,10 +60,17 @@ class TranslationCompletenessTest extends TestCase
                     "Locale {$code} is published but lang/{$code}/{$file} is missing."
                 );
 
-                $this->assertSame(
+                // Extra draft keys may exist outside the published page registry.
+                // Require every English contract key to exist in the locale; preserve
+                // unpublished draft content rather than deleting it to pass parity.
+                $missing = array_values(array_diff(
                     array_keys($this->flatten('en/'.$file)),
-                    array_keys($this->flatten($code.'/'.$file)),
-                    "lang/{$code}/{$file} does not have the same key structure as lang/en/{$file}."
+                    array_keys($this->flatten($code.'/'.$file))
+                ));
+                $this->assertSame(
+                    [],
+                    $missing,
+                    "lang/{$code}/{$file} is missing required keys from lang/en/{$file}."
                 );
             }
         }

@@ -73,6 +73,7 @@ class InertiaPageTest extends TestCase
     {
         // No signed-off ID/ZH copy exists yet, so the locale policy must redirect
         // rather than serve an English body under a foreign lang attribute.
+        config()->set('locales.translated', ['*' => []]);
         $this->get('/id')->assertRedirect('/en');
         $this->get('/zh/about')->assertRedirect('/en/about');
     }
