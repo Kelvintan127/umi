@@ -173,6 +173,9 @@ jobs:
           PY
       - name: Run Laravel tests
         if: always()
+        env:
+          CACHE_STORE: array
+          SESSION_DRIVER: array
         run: php artisan test
       - name: Upload visual QA artifacts
         if: always()
