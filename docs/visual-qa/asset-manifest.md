@@ -26,7 +26,7 @@ The twelve photographs were inspected as contact sheets, not categorized solely 
 - EMS: `CPG 14001 (EMS) Recert Jasanz IAF.pdf`, Drive `1Vm2fBe7s34HRYzviQv20cNLXw83OgUhk`. ISO 14001:2015, registration `EMS/2/R62/0013`.
 - Both PDFs identify PT. UNI METALTECH INDUSTRY, scope Metal Stamping, recertification 05/Mar/2024, expiry 05/Mar/2027, subject to annual audits and issuer status confirmation.
 - PDF links currently resolve to the existing repo versions. The 9001 repo PDF has the exact same Git blob SHA as the Drive file. The 14001 Drive original (441,110 bytes) has been inserted into this feature branch with Git blob SHA c14c77455ac7296d64596c6d37ea2110a2ccb543, replacing the earlier differently-sized repository file.
-- Screenshot-only certificate crops are **not** authentic certificate previews. Authentic page previews were rendered locally from both originals, but cannot be committed as original assets through the current GitHub text-only source handoff.
+- The actual certificate preview images `preview-iso-9001.jpg` and `preview-iso-14001.jpg` are downsampled JPEG renders of the complete first page of the authoritative original PDFs, produced at 700×990 without cropping. The official PDF links remain separate and unchanged.
 
 ## Company video
 Drive ID `1TG8YE0MxVe2aQjj5IaukehXx_JJzdBDw`, `Company Profile Video`, `video/quicktime`, 1,017,676,520 bytes. Original not committed to Git. No standalone object-storage upload destination was provided, so the actual video cannot yet be declared verified H.264/AAC fast-start streaming.

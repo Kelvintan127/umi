@@ -182,10 +182,13 @@ export default function Home() {
           {blocks.certifications.map((certificate, i) => <article key={i} className="rounded-lg border border-[#e0e5e9] p-5 md:p-7">
             <p className="text-xs font-bold text-[#d71920]">{certificate.name}</p><h3 className="mt-1 text-xl font-black">{certificate.title}</h3>
             <div className="mt-5 flex min-h-[205px] items-center justify-center overflow-hidden rounded border border-[#e6eaf0] bg-[#fafafa]">
-              <MockupCrop
-                crop={i === 0 ? "certificate-quality" : "certificate-environment"}
-                alt={"Compressed approved-design preview of " + certificate.name + " certificate; use View PDF for the underlying original document"}
-                className="h-[234px] w-full"
+              <img
+                src={i === 0 ? "/images/certifications/preview-iso-9001.jpg" : "/images/certifications/preview-iso-14001.jpg"}
+                alt={"Authentic first-page preview from the original " + certificate.name + " certificate"}
+                loading="lazy"
+                width={700}
+                height={990}
+                className="h-[234px] w-full object-contain"
               />
             </div>
             <p className="mt-4 text-xs leading-6 text-[#697786]">{certificate.description}</p>
