@@ -1,0 +1,53 @@
+/* Mockup-specific styling: scoped to Home and Contact so existing pages retain
+   their current styling until the complete design review is approved. */
+.umi-mockup {
+  --umi-navy: #071522;
+  --umi-red: #d71920;
+  --umi-panel: #0e2236;
+  font-family: Inter, ui-sans-serif, system-ui, -apple-system, "Segoe UI", Arial, sans-serif;
+}
+.umi-mockup .umi-hero {
+  background-image: linear-gradient(112deg, #071522 0%, #0b1e2e 63%, #071522 100%);
+}
+.umi-mockup .umi-blueprint-lines {
+  background-image:
+    linear-gradient(rgba(255,255,255,.055) 1px, transparent 1px),
+    linear-gradient(90deg, rgba(255,255,255,.055) 1px, transparent 1px);
+  background-size: 53px 53px;
+}
+.umi-mockup .umi-heading {
+  font-size: clamp(1.8rem, 3.1vw, 3.25rem);
+  line-height: 1.07;
+  letter-spacing: -.048em;
+  font-weight: 900;
+}
+.umi-mockup .umi-mark {
+  width: 43px;
+  height: 4px;
+  margin-bottom: 12px;
+  background: #d71920;
+}
+.umi-mockup .umi-btn-red {
+  background: #d71920;
+  transition: background .2s ease, transform .2s ease;
+}
+.umi-mockup .umi-btn-red:hover {
+  background: #b9151b;
+  transform: translateY(-1px);
+}
+.umi-mockup .umi-measure {
+  font-size: 11px;
+  font-weight: 650;
+  letter-spacing: .04em;
+  color: rgba(255,255,255,.86);
+  z-index: 15;
+}
+@media (prefers-reduced-motion: reduce) {
+  .umi-mockup *,
+  .umi-mockup *::before,
+  .umi-mockup *::after {
+    scroll-behavior: auto !important;
+    transition: none !important;
+    animation: none !important;
+  }
+}
