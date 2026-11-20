@@ -41,7 +41,7 @@ export function EngineeringRuler({
 }: EngineeringRulerProps) {
   const facility = variant === "facilities";
   const contact = variant === "contact";
-  const barHeight = height ?? (facility ? 32 : 38);
+  const barHeight = height ?? (facility ? 32 : contact ? 38 : 48);
   const major = Math.max(1, majorEvery ?? (contact ? 5 : 10));
   const medium = Math.max(1, Math.floor(major / 2));
   const labelsAt = Math.max(1, labelEvery ?? major);
@@ -73,7 +73,7 @@ export function EngineeringRuler({
         strokeOpacity={t.major ? .98 : t.medium ? .78 : .62}
         strokeWidth={t.major ? 1.4 : t.medium ? 1.05 : .8}/>)}
       {drawLabels && ticks.filter(t=>t.major&&t.n % labelsAt===0).map(t=>
-        <text key={t.n} x={t.x} y={13}
+        <text key={t.n} x={t.x} y={contact ? 13 : Math.max(13, barHeight - 27)}
           textAnchor={t.n===0?"start":"middle"}
           fill={color} fontSize={contact?12:12.5}
           fontFamily="Inter, Arial, sans-serif"

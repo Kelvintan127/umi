@@ -29,7 +29,7 @@ export function MockupShell({ active, children }: { active: string; children: Re
     <div className="umi-mockup min-h-screen bg-white text-[#071522] antialiased">
       <a href="#main" className="sr-only sr-only-focusable fixed z-[100] bg-white px-5 py-3 text-[#071522]">Skip to content</a>
       <header className="sticky top-0 z-50 border-b border-[#dfe4e8] bg-white/95 shadow-sm backdrop-blur-xl">
-        <EngineeringRuler variant={active === "contact" ? "contact" : "home"} height={38} />
+        <EngineeringRuler variant={active === "contact" ? "contact" : "home"} height={active === "contact" ? 38 : 48} />
         <div className="mx-auto flex h-[78px] max-w-[1400px] items-center justify-between gap-4 px-5 sm:px-8 xl:px-10">
           <Link href={siteLink(locale, "")} className="flex shrink-0 items-center gap-2.5" aria-label={chrome.brand.company + " homepage"}>
             <img src="/images/logo.png" alt="UMI" className="h-12 w-12 object-contain lg:h-14 lg:w-14" />
