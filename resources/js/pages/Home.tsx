@@ -210,7 +210,7 @@ export default function Home() {
         onError={() => setVideoError(true)} className="max-h-[85vh] w-full max-w-5xl"/>
       {videoError && <div role="alert" className="absolute bottom-8 left-1/2 w-[min(90vw,34rem)] -translate-x-1/2 rounded bg-[#fff1f1] p-4 text-center text-sm font-semibold text-[#8b1218]">
         {locale === "id" ? "Video perusahaan belum dapat diputar. Silakan hubungi UMI untuk meminta versi resminya." : locale === "zh" ? "公司视频暂时无法播放，请联系 UMI 获取正式版本。" : "The company profile video is temporarily unavailable. Contact UMI for the official file."}
-      </div>
+      </div>}
     </div>}
   </MockupShell>;
 }
