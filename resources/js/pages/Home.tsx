@@ -43,6 +43,13 @@ const copy = {
 const processIconNames = ["UMI_Engineering.png", "UMI_Tooling.png", "UMI_Stamping.png", "UMI_Inspection.png", "UMI_Assembly.png", "UMI_Delivery.png"];
 const productCrops: MockupCropKey[] = ["battery-contacts", "cable-terminals", "mechanical-assembly", "other-metal-parts"];
 
+const approvedProductionSpecsEn = [
+  "C-frame presses 15–160 T — Seyi, Aida, Amada",
+  "High-speed presses 15–60 T — Yamada Dobby, Amada, Seyi, ISIS",
+  "Auto cutting, tapping, riveting & manual presses",
+  "Prototyping to mass production",
+];
+
 const facilityReference = {
   en: {
     subtitles: ["15–160 T PRESSES", "CNC · EDM · GRINDING", "IN-HOUSE DIE SETS", "CALIBRATED QA"],
@@ -227,7 +234,7 @@ export default function Home() {
               {activeFacility === 0 ? facilityReference[locale].summary : selected.summary}
             </p>
             <ul className="umi-facility-specs mt-6 space-y-3">
-              {selected.specs.slice(0, 5).map((spec, index) => <li key={index} className="flex items-start gap-3">
+              {(activeFacility === 0 && locale === "en" ? approvedProductionSpecsEn : selected.specs).slice(0, 5).map((spec, index) => <li key={index} className="flex items-start gap-3">
                 <span className="mt-[.65em] h-[3px] w-4 shrink-0 bg-[#f33d45]" aria-hidden="true"/>
                 <span>{spec}</span>
               </li>)}

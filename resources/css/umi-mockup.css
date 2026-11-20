@@ -165,3 +165,30 @@
     transform: translateX(calc(100% * var(--umi-ruler-tab)));
   }
 }
+
+
+/* Cycle 2: specifications remain within the photographic 455px panel height,
+   but match the stronger technical hierarchy in the approved artboard. */
+.umi-mockup .umi-facility-tab-title {
+  font-size: clamp(1rem, 1.45vw, 1.27rem);
+}
+.umi-mockup .umi-facility-tab-sub {
+  font-size: clamp(.72rem, .92vw, .89rem);
+}
+.umi-mockup .umi-facility-summary {
+  font-size: clamp(1.04rem, 1.3vw, 1.2rem);
+  line-height: 1.45;
+}
+.umi-mockup .umi-facility-specs {
+  font-size: clamp(1rem, 1.25vw, 1.16rem);
+  font-weight: 700;
+  line-height: 1.38;
+}
+.umi-mockup .umi-facility-specs li + li {
+  margin-top: .6rem;
+}
+@media (min-width: 1024px) {
+  .umi-mockup .umi-facility-main-title {
+    font-size: clamp(1.7rem, 2.4vw, 2.4rem);
+  }
+}
