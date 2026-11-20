@@ -189,6 +189,6 @@
 }
 @media (min-width: 1024px) {
   .umi-mockup .umi-facility-main-title {
-    font-size: clamp(1.7rem, 2.4vw, 2.4rem);
+    font-size: clamp(1.7rem, 2.25vw, 2.4rem);
   }
 }
