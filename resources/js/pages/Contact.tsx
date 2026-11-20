@@ -14,6 +14,9 @@ type InquiryFields = {
 function QuoteForm({ locale, props }: { locale: string; props: PageProps }) {
   const { form: labels, flash } = props;
   const [sent, setSent] = useState(flash?.inquiry?.ok === true);
+  const [material, setMaterial] = useState("");
+  const [thickness, setThickness] = useState("");
+  const [quantity, setQuantity] = useState("");
   const startedAt = useRef(0);
   useEffect(() => { startedAt.current = Date.now(); }, []);
   const types = Object.entries(labels.inquiryTypes);
@@ -26,6 +29,7 @@ function QuoteForm({ locale, props }: { locale: string; props: PageProps }) {
     event.preventDefault();
     form.transform(data => ({
       ...data,
+      message: [data.message, material && "Material: " + material, thickness && "Thickness: " + thickness + " mm", quantity && "Annual quantity: " + quantity].filter(Boolean).join("\n"),
       elapsed_ms: startedAt.current ? Date.now() - startedAt.current : 0,
     }));
     form.post("/" + locale + "/contact", {
@@ -70,6 +74,26 @@ function QuoteForm({ locale, props }: { locale: string; props: PageProps }) {
         </div>
         {msg("inquiry_type")}
       </fieldset>
+      <div className="mt-5 grid gap-4 sm:grid-cols-3">
+        <label className="text-xs font-bold">Material
+          <select value={material} onChange={e => setMaterial(e.target.value)} className={field}>
+            <option value="">Select material</option>
+            {["Stainless steel", "Copper", "Brass", "Aluminium", "Carbon steel", "Other / to be advised"].map(v => <option key={v} value={v}>{v}</option>)}
+          </select>
+        </label>
+        <label className="text-xs font-bold">Thickness (mm)
+          <select value={thickness} onChange={e => setThickness(e.target.value)} className={field}>
+            <option value="">Select thickness</option>
+            {["0.10", "0.20", "0.30", "0.50", "0.80", "1.00", "1.50", "2.00", "To be advised"].map(v => <option key={v} value={v}>{v}</option>)}
+          </select>
+        </label>
+        <label className="text-xs font-bold">Annual quantity
+          <select value={quantity} onChange={e => setQuantity(e.target.value)} className={field}>
+            <option value="">Select quantity</option>
+            {["Under 10,000", "10,000–50,000", "50,001–100,000", "100,001–500,000", "500,000+", "To be advised"].map(v => <option key={v} value={v}>{v}</option>)}
+          </select>
+        </label>
+      </div>
       <label className="mt-6 block text-sm font-semibold">{labels.fields.message} *<textarea rows={6} className={field} value={form.data.message} required onChange={e => form.setData("message", e.target.value)} placeholder={labels.placeholders.message}/>{msg("message")}</label>
       <div className="mt-6 rounded-lg border border-dashed border-[#aab8c5] bg-[#fafbfc] px-5 py-7 text-center text-sm">
         <p className="font-bold">{locale === "id" ? "Punya gambar teknik?" : locale === "zh" ? "有技术图纸吗？" : "Have technical drawings?"}</p>
@@ -173,6 +197,18 @@ export default function Contact() {
         </div>
       </div>
     </div></section>
+    <section className="border-y border-[#dce3ea] bg-[#f5f7f9] py-9">
+      <div className="mx-auto grid max-w-[1400px] gap-6 px-5 sm:px-8 md:grid-cols-3 xl:px-10">
+        {[
+          ["01", "What do you need for a quote?", "A drawing or sample, material, thickness and estimated quantity."],
+          ["02", "Do you make prototypes?", "Yes, we can discuss prototyping before mass-production tooling."],
+          ["03", "Which industries do you serve?", "Electrical, electronics and automotive manufacturers."],
+        ].map(([n, title, desc]) => <div key={n} className="flex gap-4 border-[#cad4df] md:border-r md:pr-5 md:last:border-r-0">
+          <strong className="text-base font-black text-[#d71920]">{n}</strong>
+          <div><h3 className="text-sm font-black">{title}</h3><p className="mt-2 text-xs leading-5 text-[#566578]">{desc}</p></div>
+        </div>)}
+      </div>
+    </section>
     <section className="bg-[#071522] py-9 text-white"><div className="mx-auto flex max-w-[1400px] flex-wrap items-center justify-between gap-6 px-5 sm:px-8 xl:px-10">
       <h2 className="text-2xl font-black sm:text-3xl">{headline}</h2>
       <a href={"mailto:" + contact.email} className="umi-btn-red inline-flex items-center gap-2 rounded px-6 py-3 text-sm font-bold">Talk to Our Team <ArrowRight size={16}/></a>

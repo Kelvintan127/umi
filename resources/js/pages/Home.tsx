@@ -1,5 +1,6 @@
 import { Link, usePage } from "@inertiajs/react";
-import { ArrowRight, ArrowUpRight, Boxes, Cog, ClipboardCheck, Factory, Play, Truck, Wrench, X } from "lucide-react";
+import { ArrowRight, ArrowUpRight, Play, X } from "lucide-react";
+import { MockupCrop, type MockupCropKey } from "@/components/media/MockupCrop";
 import { useState } from "react";
 import { MockupShell } from "@/components/layout/MockupShell";
 import { PageHead } from "@/components/layout/PageHead";
@@ -38,8 +39,8 @@ const copy = {
   },
 };
 
-const steps = [Wrench, Cog, Factory, ClipboardCheck, Boxes, Truck];
-const manufacturingImage = "/images/products/formed-sheet-metal-mounting-bracket.png";
+const processIconNames = ["UMI_Engineering.png", "UMI_Tooling.png", "UMI_Stamping.png", "UMI_Inspection.png", "UMI_Assembly.png", "UMI_Delivery.png"];
+const productCrops: MockupCropKey[] = ["battery-contacts", "cable-terminals", "mechanical-assembly", "other-metal-parts"];
 
 export default function Home() {
   const { locale, seo, htmlLang, chrome, content } = usePage<PageProps>().props;
@@ -70,10 +71,7 @@ export default function Home() {
           <div className="pointer-events-none absolute left-8 top-7 h-4 w-4 border-l border-t border-white/40" aria-hidden="true" />
           <div className="pointer-events-none absolute bottom-7 right-8 h-4 w-4 border-b border-r border-white/40" aria-hidden="true" />
           <div className="absolute inset-0 bg-[radial-gradient(circle_at_center,rgba(162,190,207,0.16),transparent_62%)]" />
-          <img src={manufacturingImage} alt="Precision formed metal part" className="relative z-10 max-h-[75%] w-[88%] object-contain drop-shadow-[0_25px_22px_rgba(0,0,0,.45)]" />
-          <span className="umi-measure absolute left-[18%] top-6 border-b border-white/50 px-6 pb-2">24.50 mm</span>
-          <span className="umi-measure absolute right-2 top-[47%] border-r border-white/50 pr-2">12.00 mm</span>
-          <span className="umi-measure absolute bottom-5 left-[23%]">t ± 0.10 mm</span>
+          <MockupCrop crop="hero" alt="Approved precision stamped battery contact with engineering measurement overlays" className="relative z-10 h-full w-full" />
         </div>
       </div>
     </section>
@@ -81,8 +79,8 @@ export default function Home() {
     <section aria-label="Company highlights" className="border-b border-[#e4e8ed] bg-white">
       <div className="mx-auto grid max-w-[1400px] grid-cols-2 px-5 py-7 sm:px-8 lg:grid-cols-4 xl:px-10">
         {blocks.stats.map((stat, i) => <div key={i} className="border-[#e0e4e9] px-4 py-1 first:pl-0 lg:border-r lg:last:border-r-0">
-          <strong className="block text-3xl font-black tracking-[-0.05em] lg:text-4xl">{stat.value}</strong>
-          <span className="mt-1 block text-[10px] font-bold uppercase tracking-widest text-[#586778]">{stat.label}</span>
+          <strong className="block text-3xl font-black tracking-[-0.05em] lg:text-4xl">{locale === "en" ? ["25+ Years", "3,000 m²", "0.10 mm", "15–160 T"][i] : stat.value}</strong>
+          <span className="mt-1 block text-[10px] font-bold uppercase tracking-widest text-[#586778]">{locale === "en" ? ["EST. 2000", "FACTORY", "MIN. THICKNESS", "PRESS RANGE"][i] : stat.label}</span>
         </div>)}
       </div>
     </section>
@@ -98,7 +96,7 @@ export default function Home() {
           </p>
         </div>
         <div className="group relative overflow-hidden rounded-lg bg-[#071522]">
-          <img src="/images/video/company-profile-poster.jpg" alt="UMI factory and production facilities" className="h-[310px] w-full object-cover opacity-90 transition-transform duration-700 group-hover:scale-[1.035] sm:h-[385px]"/>
+          <MockupCrop crop="factory-aerial" alt="Approved aerial view of the UMI factory complex" className="h-[240px] w-full sm:h-[300px] lg:h-[320px]" />
           {corporateVideo && <button onClick={() => setVideoOpen(true)} aria-label={c.video} type="button"
             className="absolute left-1/2 top-1/2 flex h-16 w-16 -translate-x-1/2 -translate-y-1/2 items-center justify-center rounded-full bg-[#071522]/90 text-white ring-4 ring-white/30">
             <Play size={25} fill="currentColor"/>
@@ -116,10 +114,10 @@ export default function Home() {
         </div>
         <div className="grid grid-cols-2 gap-4 sm:grid-cols-3 lg:grid-cols-6">
           {blocks.process.map((stage, index) => {
-            const Icon = steps[index] ?? Cog;
+            const icon = processIconNames[index];
             return <div key={index} className="relative rounded border border-[#e8edf1] bg-white px-5 py-6">
               <span className="inline-flex rounded bg-[#d71920] px-2 py-1 text-xs font-black text-white">{String(index + 1).padStart(2, "0")}</span>
-              <Icon size={44} strokeWidth={1.35} aria-hidden="true" className="mx-auto my-5 text-[#071522]" />
+              <img src={"/images/process/" + icon} alt="" aria-hidden="true" loading="lazy" className="mx-auto my-4 h-14 w-16 object-contain" />
               <h3 className="text-center text-xs font-black sm:text-sm">{stage.title}</h3>
               {index < 5 && <ArrowRight size={15} aria-hidden="true" className="absolute -right-4 top-1/2 z-10 hidden text-[#d71920] lg:block" />}
             </div>;
@@ -135,8 +133,8 @@ export default function Home() {
           <p className="max-w-xl text-sm leading-6 text-[#5a6876]">Precision stamped and assembled components for electrical, electronics and automotive applications.</p>
         </div>
         <div className="grid gap-5 sm:grid-cols-2 xl:grid-cols-4">
-          {blocks.products.slice(0, 4).map(product => <article key={product.key} className="overflow-hidden rounded-lg border border-[#dde3e8] bg-white shadow-sm">
-            <Link href={"/" + locale + "/products"} className="block overflow-hidden bg-[#e9edef]"><img loading="lazy" src={product.image} alt={product.title} className="h-52 w-full object-cover transition-transform duration-500 hover:scale-105"/></Link>
+          {blocks.products.slice(0, 4).map((product, productIndex) => <article key={product.key} className="overflow-hidden rounded-lg border border-[#dde3e8] bg-white shadow-sm">
+            <Link href={"/" + locale + "/products"} className="block overflow-hidden bg-[#e9edef]"><MockupCrop crop={productCrops[productIndex]} alt={"Approved mockup image: " + product.title} className="h-52 w-full" /></Link>
             <div className="p-5"><h3 className="text-lg font-black">{product.title}</h3><p className="mt-2 line-clamp-3 min-h-[4.5rem] text-sm leading-6 text-[#546376]">{product.description}</p>
               <Link href={"/" + locale + "/products"} className="mt-5 inline-flex items-center gap-2 text-xs font-black uppercase tracking-wider text-[#d71920]">{c.view}<ArrowRight size={16}/></Link>
             </div>
@@ -160,7 +158,7 @@ export default function Home() {
           </button>)}
         </div>
         {selected && <div id="umi-facility-panel" role="tabpanel" className="mt-8 grid gap-8 lg:grid-cols-[1.15fr_0.85fr]">
-          <img src={selected.image} alt={selected.title} className="h-[340px] w-full rounded-lg object-cover lg:h-[420px]" loading="lazy"/>
+          {activeFacility === 0 ? <MockupCrop crop="production-line" alt="Approved AIDA and SEYI press production line photograph" className="h-[340px] w-full rounded-lg lg:h-[420px]" /> : <img src={selected.image} alt={selected.title} className="h-[340px] w-full rounded-lg object-cover lg:h-[420px]" loading="lazy"/>}
           <div className="flex flex-col justify-center">
             <p className="text-xs font-extrabold uppercase tracking-widest text-[#ee3841]">{String(activeFacility + 1).padStart(2, "0")} / {c.facilities}</p>
             <h3 className="mt-3 text-3xl font-black">{selected.title}</h3>
@@ -179,9 +177,10 @@ export default function Home() {
         <div className="mt-9 grid gap-6 md:grid-cols-2">
           {blocks.certifications.map((certificate, i) => <article key={i} className="rounded-lg border border-[#e0e5e9] p-5 md:p-7">
             <p className="text-xs font-bold text-[#d71920]">{certificate.name}</p><h3 className="mt-1 text-xl font-black">{certificate.title}</h3>
-            <div className="mt-5 flex min-h-[205px] items-center justify-center rounded border border-[#e6eaf0] bg-[linear-gradient(135deg,#f4f7f9,#fff)] p-6">
-              <div className="text-center"><div className="mx-auto mb-3 flex h-14 w-14 items-center justify-center rounded-full border-4 border-[#193d67] text-lg font-black text-[#193d67]">ISO</div>
-                <p className="text-sm font-black">{certificate.name}</p><p className="mt-1 text-xs text-[#596879]">{certificate.title}</p></div>
+            <div className="mt-5 flex min-h-[205px] items-center justify-center overflow-hidden rounded border border-[#e6eaf0] bg-[#fafafa]">
+              <object data={certificate.document + "#page=1&toolbar=0&navpanes=0"} type="application/pdf" aria-label={"Original certification PDF: " + certificate.name} className="h-[260px] w-full">
+                <p className="p-6 text-sm text-[#566578]">Preview requires a PDF-capable browser. Use View PDF below.</p>
+              </object>
             </div>
             <p className="mt-4 text-xs leading-6 text-[#697786]">{certificate.description}</p>
             {certificate.document && <div className="mt-5 flex flex-wrap gap-2">
