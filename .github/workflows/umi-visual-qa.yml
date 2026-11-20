@@ -2,7 +2,7 @@ name: UMI real-app visual QA
 
 on:
   push:
-    branches: [feat/umi-mockup-redesign-20261120, feat/umi-fidelity-assets-rfq-20261120]
+    branches: [feat/umi-mockup-redesign-20261120, feat/umi-fidelity-assets-rfq-20261120, feat/umi-pixel-fidelity-ruler-facilities-20261120]
   workflow_dispatch:
 
 permissions:
@@ -130,6 +130,70 @@ jobs:
           } finally {await browser.close();}
           writeFileSync("visual-qa/report.json",JSON.stringify(report,null,2));
           if(report.checks.some(c=>c.failed||c.passed===false)) process.exitCode=1;
+          JS
+      - name: Capture focused engineering-ruler and Facilities geometry
+        run: |
+          node --input-type=module <<'JS'
+          import { chromium } from "playwright";
+          import { writeFileSync, mkdirSync } from "node:fs";
+          const browser = await chromium.launch({headless: true});
+          const sizes = [
+            ["desktop-1440", 1440, 900], ["desktop-1920", 1920, 1080],
+            ["tablet-1024", 1024, 768], ["tablet-768", 768, 1024],
+            ["mobile-390", 390, 844],
+          ];
+          const measurements = [];
+          try {
+            for (const [viewport, width, height] of sizes) {
+              const context = await browser.newContext({viewport:{width,height},reducedMotion:"reduce",deviceScaleFactor:1});
+              const page = await context.newPage();
+              mkdirSync("visual-qa/"+viewport,{recursive:true});
+              for (const name of ["home", "contact"]) {
+                await page.goto("http://127.0.0.1:8000/en"+(name==="home"?"":"/contact"),{waitUntil:"domcontentloaded"});
+                await page.evaluate(()=>document.fonts.ready);
+                const ruler = page.locator("header .umi-engineering-ruler");
+                await ruler.screenshot({path:"visual-qa/"+viewport+"/"+name+"-ruler.png",animations:"disabled"});
+                const data = await page.evaluate(() => {
+                  const rect = s => {
+                    const node = document.querySelector(s);
+                    if (!node) return null;
+                    const r = node.getBoundingClientRect();
+                    return {x:Math.round(r.x),y:Math.round(r.y),width:Math.round(r.width),height:Math.round(r.height)};
+                  };
+                  const style = s => {
+                    const node = document.querySelector(s);
+                    if (!node) return null;
+                    const c = getComputedStyle(node);
+                    return {size:c.fontSize,weight:c.fontWeight,lineHeight:c.lineHeight,letterSpacing:c.letterSpacing,family:c.fontFamily};
+                  };
+                  return {
+                    headerRuler:rect("header .umi-engineering-ruler"),
+                    header:rect("header"),
+                    heroHeading:rect("main h1"),
+                    heroTypography:style("main h1"),
+                    sectionHeadingTypography:style(".umi-heading"),
+                    facilitySection:rect(".umi-facilities"),
+                    facilityPhoto:rect(".umi-facility-photo"),
+                    facilityDetails:rect(".umi-facility-details"),
+                    facilityRuler:rect(".umi-facilities .umi-engineering-ruler"),
+                    facilityTabs:Array.from(document.querySelectorAll(".umi-facility-tab")).map(el=>{
+                      const r=el.getBoundingClientRect();return {x:Math.round(r.x),y:Math.round(r.y),width:Math.round(r.width),height:Math.round(r.height)};
+                    }),
+                    horizontalOverflow: document.documentElement.scrollWidth>innerWidth+2,
+                  };
+                });
+                measurements.push({viewport,page:name,...data});
+                if(name==="home"){
+                  const facilities = page.locator(".umi-facilities");
+                  await facilities.screenshot({path:"visual-qa/"+viewport+"/facilities-full.png",animations:"disabled"});
+                  await page.locator(".umi-facilities .umi-engineering-ruler").screenshot({path:"visual-qa/"+viewport+"/facilities-ruler.png",animations:"disabled"});
+                }
+              }
+              await context.close();
+            }
+          } finally { await browser.close(); }
+          writeFileSync("visual-qa/fidelity-metrics.json",JSON.stringify(measurements,null,2));
+          if(measurements.some(m=>m.horizontalOverflow)) process.exitCode=1;
           JS
       - name: Compare actual screenshots to approved compressed mockups
         if: always()
