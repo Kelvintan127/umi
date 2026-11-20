@@ -86,6 +86,8 @@ return [
                     'Pabrik kami berlokasi di Kara Industrial Park, Batam Center — berjarak dekat dari Singapore Batamindo Industrial Park dan International Ferry Terminal.',
                     'Pulau Batam merupakan Kawasan Perdagangan Bebas (Free Trade Zone) dan dianggap sebagai salah satu lokasi manufaktur terbaik di Indonesia untuk produksi berorientasi ekspor. Kami memperoleh manfaat dari keunggulan biaya yang kompetitif di Indonesia sekaligus dukungan tenaga kerja terampil dan respons cepat dari Singapura.',
                     'Luas pabrik kami sekitar 3.000 m², terdiri atas area produksi, gudang, dan kantor. Kantor Penjualan Jakarta didirikan pada tahun 2014 di Jababeka Industrial Park.',
+                    'Kami memproduksi berbagai komponen logam khusus untuk pelanggan di industri kelistrikan, elektronik, dan otomotif.',
+                    'Dengan pengalaman produksi dan engineer yang terampil, kami mampu melakukan stamping material hingga setipis 0,10 mm dengan tooling presisi tinggi.',
                 ],
             ],
             ['type' => 'stats'],
@@ -201,6 +203,14 @@ return [
             'lead' => 'UMI memproduksi berbagai jenis komponen logam, sebagian besar disesuaikan dengan kebutuhan proyek tertentu. Kami mampu melakukan stamping material setipis 0,10 mm, yang menuntut perkakas presisi tinggi dan engineer yang terampil.',
         ],
         'sections' => [
+            [
+                'type' => 'prose',
+                'heading' => 'Rangkaian Produk',
+                'paragraphs' => [
+                    'UMI memproduksi berbagai jenis komponen logam yang sebagian besar disesuaikan dengan kebutuhan proyek pelanggan. Kapabilitas kami mencakup kontak baterai, terminal kabel, perakitan mekanis, dan berbagai komponen logam lain.',
+                    'Dengan pengalaman produksi dan tooling presisi tinggi, kami mampu melakukan stamping material hingga setipis 0,10 mm.',
+                ],
+            ],
             ['type' => 'cards', 'heading' => 'Rangkaian produk', 'source' => 'products', 'link_base' => '/products/'],
             ['type' => 'cta'],
         ],
