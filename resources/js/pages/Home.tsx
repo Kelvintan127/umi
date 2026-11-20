@@ -43,6 +43,34 @@ const copy = {
 const processIconNames = ["UMI_Engineering.png", "UMI_Tooling.png", "UMI_Stamping.png", "UMI_Inspection.png", "UMI_Assembly.png", "UMI_Delivery.png"];
 const productCrops: MockupCropKey[] = ["battery-contacts", "cable-terminals", "mechanical-assembly", "other-metal-parts"];
 
+const approvedProductionSpecsEn = [
+  "C-frame presses 15–160 T — Seyi, Aida, Amada",
+  "High-speed presses 15–60 T — Yamada Dobby, Amada, Seyi, ISIS",
+  "Auto cutting, tapping, riveting & manual presses",
+  "Prototyping to mass production",
+];
+
+const facilityReference = {
+  en: {
+    subtitles: ["15–160 T PRESSES", "CNC · EDM · GRINDING", "IN-HOUSE DIE SETS", "CALIBRATED QA"],
+    metadata: "15–160 T PRESSES · IN-HOUSE TOOL ROOM · CALIBRATED QA",
+    summary: "15–160 ton presses made in Japan and Taiwan, with mechanical roller, air and NC feeders.",
+    intro: "A complete in-house production chain in Batam, from die design to final inspection.",
+  },
+  id: {
+    subtitles: ["PRESS 15–160 T", "CNC · EDM · GRINDING", "DIE SET INTERNAL", "QA TERKALIBRASI"],
+    metadata: "PRESS 15–160 T · TOOL ROOM INTERNAL · QA TERKALIBRASI",
+    summary: "Mesin press 15–160 ton buatan Jepang dan Taiwan, dengan pengumpan mekanis roller, udara, dan NC.",
+    intro: "Rantai produksi internal yang lengkap di Batam, dari desain dies hingga inspeksi akhir.",
+  },
+  zh: {
+    subtitles: ["15–160 吨冲床", "CNC · EDM · 磨削", "内部模具", "校准质检"],
+    metadata: "15–160 吨冲床 · 内部模具车间 · 校准质检",
+    summary: "配备日本及台湾制造的 15–160 吨冲床，采用机械滚轮、气动及 NC 送料装置。",
+    intro: "巴淡岛拥有完整的内部生产链，从模具设计到最终检验。",
+  },
+} as const;
+
 export default function Home() {
   const { locale, seo, htmlLang, chrome, content } = usePage<PageProps>().props;
   const c = copy[locale];
@@ -120,8 +148,8 @@ export default function Home() {
             const icon = processIconNames[index];
             return <div key={index} className="relative px-2 py-2">
               <span className="inline-flex rounded bg-[#d71920] px-2 py-1 text-xs font-black text-white">{String(index + 1).padStart(2, "0")}</span>
-              <img src={"/images/process/" + icon} alt="" aria-hidden="true" loading="lazy" className="mx-auto my-2 h-14 w-16 object-contain" />
-              <h3 className="text-center text-xs font-black sm:text-sm">{stage.title}</h3>
+              <img src={"/images/process/" + icon} alt="" aria-hidden="true" loading="lazy" className="mx-auto my-3 h-[76px] w-[88px] object-contain" />
+              <h3 className="umi-process-caption text-center text-sm font-extrabold sm:text-base">{stage.title}</h3>
               {index < 5 && <ArrowRight size={15} aria-hidden="true" className="absolute -right-4 top-[55%] z-10 hidden text-[#acb6c0] lg:block" />}
             </div>;
           })}
@@ -138,7 +166,7 @@ export default function Home() {
         <div className="grid gap-5 sm:grid-cols-2 xl:grid-cols-4">
           {blocks.products.slice(0, 4).map((product, productIndex) => <article key={product.key} className="overflow-hidden rounded-lg border border-[#dde3e8] bg-white shadow-sm">
             <Link href={"/" + locale + "/products"} className="block overflow-hidden bg-[#e9edef]"><MockupCrop crop={productCrops[productIndex]} alt={"Approved mockup image: " + product.title} className="h-44 w-full" /></Link>
-            <div className="p-5"><h3 className="text-lg font-black">{product.title}</h3><p className="mt-2 line-clamp-3 min-h-[4.5rem] text-sm leading-6 text-[#546376]">{product.description}</p>
+            <div className="p-5"><h3 className="text-xl font-extrabold tracking-tight">{product.title}</h3><p className="umi-product-description mt-2 line-clamp-3 min-h-[4.5rem] text-sm leading-6 text-[#546376]">{product.description}</p>
               <Link href={"/" + locale + "/products"} className="mt-5 inline-flex items-center gap-2 text-xs font-black uppercase tracking-wider text-[#d71920]">{c.view}<ArrowRight size={16}/></Link>
             </div>
           </article>)}
@@ -146,29 +174,75 @@ export default function Home() {
       </div>
     </section>
 
-    <section className="bg-[#071522] py-16 text-white lg:py-24">
+    <section className="umi-facilities bg-[#071522] py-10 text-white lg:py-12" aria-labelledby="umi-facilities-heading">
       <div className="mx-auto max-w-[1400px] px-5 sm:px-8 xl:px-10">
-        <div className="mb-9 flex flex-wrap items-end justify-between gap-6">
-          <div><div className="umi-mark"/><h2 className="umi-heading">{c.facilities}</h2><p className="mt-3 max-w-xl text-sm text-white/65">Production, tooling and inspection equipment supporting an integrated manufacturing operation.</p></div>
-          <span className="text-[10px] font-bold uppercase tracking-widest text-white/50">Manufacturing · Tool Room · Quality Control</span>
+        <div className="umi-facility-heading-row mb-6 grid items-end gap-4 lg:grid-cols-[1.15fr_1fr]">
+          <div>
+            <div className="umi-mark" />
+            <h2 id="umi-facilities-heading" className="umi-heading">{c.facilities}</h2>
+            <p className="umi-section-description mt-3 max-w-2xl text-white/85">{facilityReference[locale].intro}</p>
+          </div>
+          <div className="umi-facility-meta border-l border-white/30 pl-5 text-white/90 lg:justify-self-end">
+            {facilityReference[locale].metadata}
+          </div>
         </div>
-        <div className="grid grid-cols-2 border-y border-white/25 lg:grid-cols-4" role="tablist" aria-label={c.facilities}>
-          {facilities.map((item, index) => <button type="button" role="tab" aria-controls="umi-facility-panel" aria-selected={activeFacility === index}
-            key={item.key} onClick={() => setActiveFacility(index)}
-            className={"border-r border-white/20 px-4 py-5 text-left transition-colors last:border-r-0 " + (activeFacility === index ? "border-b-4 border-b-[#d71920] bg-[#102d43]" : "hover:bg-white/10")}>
-            <span className="block text-sm font-black text-[#ee3841]">{String(index + 1).padStart(2, "0")}</span>
-            <span className="mt-1 block text-sm font-bold">{item.title}</span>
-          </button>)}
+        <div className="umi-facility-tabs grid grid-cols-2 border-t border-white/30 lg:grid-cols-4"
+          role="tablist" aria-label={c.facilities}>
+          {facilities.map((item, index) => (
+            <button key={item.key} type="button" role="tab"
+              id={"umi-facility-tab-" + index}
+              aria-controls="umi-facility-panel"
+              aria-selected={activeFacility === index}
+              tabIndex={activeFacility === index ? 0 : -1}
+              onClick={() => setActiveFacility(index)}
+              onKeyDown={event => {
+                if (!["ArrowLeft","ArrowRight","Home","End"].includes(event.key)) return;
+                event.preventDefault();
+                const count = facilities.length;
+                const next = event.key === "Home" ? 0 : event.key === "End" ? count-1 :
+                  (index + (event.key === "ArrowRight" ? 1 : -1) + count) % count;
+                setActiveFacility(next);
+                document.getElementById("umi-facility-tab-" + next)?.focus();
+              }}
+              className={"umi-facility-tab relative min-w-0 border-r border-b-4 border-r-white/20 px-3 py-4 text-left transition-colors focus-visible:z-10 last:border-r-0 sm:px-5 lg:py-5 " +
+                (activeFacility === index
+                  ? "border-b-[#d71920] bg-[#0e2b41] before:absolute before:inset-x-0 before:top-0 before:h-[4px] before:bg-[#d71920]"
+                  : "border-b-transparent hover:bg-white/10")}>
+              <span className="umi-facility-tab-number block font-black text-[#fa474e]">{String(index + 1).padStart(2, "0")}</span>
+              <span className="umi-facility-tab-title mt-1 block font-extrabold">{item.title}</span>
+              <span className="umi-facility-tab-sub mt-1 block font-semibold uppercase text-white/70">{facilityReference[locale].subtitles[index]}</span>
+            </button>
+          ))}
         </div>
-        <EngineeringRuler className="border-b border-white/20" height={24} showLabels={false} markers={[0,40,70,110]} color="#dce4eb" />
-        {selected && <div id="umi-facility-panel" role="tabpanel" className="mt-8 grid gap-8 lg:grid-cols-[1.15fr_0.85fr]">
-          {activeFacility === 0 ? <MockupCrop crop="production-line" alt="Approved AIDA and SEYI press production line photograph" className="h-[340px] w-full rounded-lg lg:h-[450px]" /> : <img src={selected.image} alt={selected.title} className="h-[340px] w-full rounded-lg object-cover lg:h-[450px]" loading="lazy"/>}
-          <div className="flex flex-col justify-center">
-            <p className="text-xs font-extrabold uppercase tracking-widest text-[#ee3841]">{String(activeFacility + 1).padStart(2, "0")} / {c.facilities}</p>
-            <h3 className="mt-3 text-3xl font-black">{selected.title}</h3>
-            <p className="mt-5 text-sm leading-7 text-white/70">{selected.summary}</p>
-            <ul className="mt-5 space-y-3">{selected.specs.slice(0, 5).map((spec, i) => <li key={i} className="border-l-2 border-[#d71920] pl-4 text-sm text-white/80">{spec}</li>)}</ul>
-            <Link href={"/" + locale + "/facilities"} className="mt-7 inline-flex items-center gap-2 text-sm font-bold text-[#fa5158]">{c.facilityLink}<ArrowUpRight size={17}/></Link>
+        <EngineeringRuler variant="facilities" activeIndex={activeFacility} height={32}
+          color="#dfe7ed" background="#071522" className="border-b border-white/15" />
+        {selected && <div id="umi-facility-panel" role="tabpanel" aria-labelledby={"umi-facility-tab-" + activeFacility}
+          className="umi-facility-panel mt-5 grid items-start gap-6 lg:grid-cols-[minmax(0,1.62fr)_minmax(0,1fr)]">
+          <div className="overflow-hidden rounded-md">
+            {activeFacility === 0
+              ? <MockupCrop crop="production-line" alt="Approved AIDA and SEYI production press line"
+                  className="umi-facility-photo h-[310px] w-full sm:h-[400px] lg:h-[455px]"/>
+              : <img src={selected.image} alt={selected.title} loading="lazy"
+                  className="umi-facility-photo h-[310px] w-full object-cover sm:h-[400px] lg:h-[455px]"/>}
+          </div>
+          <div className="umi-facility-details pt-1">
+            <div className="umi-facility-main-title flex items-baseline gap-3">
+              <span className="text-[#f63d46]">{String(activeFacility + 1).padStart(2, "0")}</span>
+              <h3 className="min-w-0 uppercase">{selected.title}</h3>
+            </div>
+            <p className="umi-facility-summary mt-5 max-w-lg text-white/90">
+              {activeFacility === 0 ? facilityReference[locale].summary : selected.summary}
+            </p>
+            <ul className="umi-facility-specs mt-6 space-y-3">
+              {(activeFacility === 0 && locale === "en" ? approvedProductionSpecsEn : selected.specs).slice(0, 5).map((spec, index) => <li key={index} className="flex items-start gap-3">
+                <span className="mt-[.65em] h-[3px] w-4 shrink-0 bg-[#f33d45]" aria-hidden="true"/>
+                <span>{spec}</span>
+              </li>)}
+            </ul>
+            <Link href={"/" + locale + "/facilities"}
+              className="mt-6 inline-flex items-center gap-2 text-sm font-extrabold text-[#fa5158] hover:text-[#ff8c90]">
+              {c.facilityLink}<ArrowUpRight size={17} aria-hidden="true"/>
+            </Link>
           </div>
         </div>}
       </div>
@@ -180,18 +254,18 @@ export default function Home() {
         <p className="mt-3 max-w-3xl text-sm leading-6 text-[#566578]">{blocks.quality.labelling}</p>
         <div className="mt-9 grid gap-6 md:grid-cols-2">
           {blocks.certifications.map((certificate, i) => <article key={i} className="rounded-lg border border-[#e0e5e9] p-5 md:p-7">
-            <p className="text-xs font-bold text-[#d71920]">{certificate.name}</p><h3 className="mt-1 text-xl font-black">{certificate.title}</h3>
-            <div className="mt-5 flex min-h-[205px] items-center justify-center overflow-hidden rounded border border-[#e6eaf0] bg-[#fafafa]">
+            <p className="text-xs font-bold text-[#d71920]">{certificate.name}</p><h3 className="mt-1 text-2xl font-extrabold tracking-tight">{certificate.title}</h3>
+            <div className="mt-4 flex min-h-[300px] items-center justify-center overflow-hidden rounded border border-[#e6eaf0] bg-[#fafafa] lg:min-h-[340px]">
               <img
                 src={i === 0 ? "/images/certifications/preview-iso-9001.jpg" : "/images/certifications/preview-iso-14001.jpg"}
                 alt={"Authentic first-page preview from the original " + certificate.name + " certificate"}
                 loading="lazy"
                 width={700}
                 height={990}
-                className="h-[234px] w-full object-contain"
+                className="umi-certificate-preview h-[300px] w-full object-contain lg:h-[340px]"
               />
             </div>
-            <p className="mt-4 text-xs leading-6 text-[#697786]">{certificate.description}</p>
+            <p className="umi-certificate-description mt-4 text-sm leading-6 text-[#566579]">{certificate.description}</p>
             {certificate.document && <div className="mt-5 flex flex-wrap gap-2">
               <a href={certificate.document} target="_blank" rel="noopener noreferrer" className="rounded border border-[#aab7c4] px-4 py-3 text-xs font-bold">{c.certLink}</a>
               <a href={certificate.document} download className="umi-btn-red rounded px-4 py-3 text-xs font-bold text-white">{c.download}</a>
