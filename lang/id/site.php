@@ -188,9 +188,9 @@ return [
             'document' => '/images/certifications/CPG 9001 QMS Recertification.pdf',
         ],
         [
-            'name' => 'ISO 14000:2015',
+            'name' => 'ISO 14001:2015',
             'title' => 'Sistem Manajemen Lingkungan',
-            'description' => 'Tersertifikasi sesuai ISO 14000:2015. Kami berkomitmen untuk mencegah pencemaran, meminimalkan limbah, mematuhi peraturan, dan menurunkan konsumsi energi di seluruh proses produksi kami.',
+            'description' => 'Tersertifikasi sesuai ISO 14001:2015. Kami berkomitmen untuk mencegah pencemaran, meminimalkan limbah, mematuhi peraturan, dan menurunkan konsumsi energi di seluruh proses produksi kami.',
             'document' => '/images/certifications/CPG 14001 EMS Recertification.pdf',
         ],
     ],

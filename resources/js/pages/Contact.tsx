@@ -46,7 +46,7 @@ function QuoteForm({ locale, props }: { locale: string; props: PageProps }) {
 
   return <div className="rounded-lg border border-[#d8e0e7] bg-white p-5 shadow-sm sm:p-8">
     <div className="umi-mark"/><div className="flex flex-wrap items-center justify-between gap-4">
-      <h2 className="umi-heading">{labels.title}</h2><span className="text-[10px] font-bold uppercase tracking-widest text-[#667484]">01 Contact · 02 Project · 03 Send</span>
+      <h2 className="umi-heading">{locale === "id" ? "Minta Penawaran" : locale === "zh" ? "申请报价" : "Request a Quote"}</h2><span className="text-[10px] font-bold uppercase tracking-widest text-[#667484]">01 Contact · 02 Project · 03 Files</span>
     </div>
     {sent ? <div role="status" className="mt-8 rounded border border-[#a8caba] bg-[#f0faf5] p-6">
       <CheckCircle2 className="text-[#297f53]"/><h3 className="mt-3 text-xl font-bold">{labels.successTitle}</h3>
@@ -96,6 +96,7 @@ function QuoteForm({ locale, props }: { locale: string; props: PageProps }) {
         </label>
       </div>
       <label className="mt-6 block text-sm font-semibold">{labels.fields.message} *<textarea rows={6} className={field} value={form.data.message} required onChange={e => form.setData("message", e.target.value)} placeholder={labels.placeholders.message}/>{msg("message")}</label>
+      <h3 className="mt-6 flex items-center gap-3 border-b border-[#e3e8ec] pb-3 text-lg font-black"><span className="rounded bg-[#d71920] px-2 py-1 text-xs text-white">03</span>{locale === "id" ? "Gambar teknik" : locale === "zh" ? "文件" : "Files"}</h3>
       <div className="mt-6 rounded-lg border border-dashed border-[#aab8c5] bg-[#fafbfc] px-5 py-7 text-center text-sm">
         <p className="font-bold">{locale === "id" ? "Punya gambar teknik?" : locale === "zh" ? "有技术图纸吗？" : "Have technical drawings?"}</p>
         <p className="mt-2 text-xs text-[#5e6e7c]">CAD/PDF file upload requires backend integration. Please mention the drawings in your inquiry or email them to the office.</p>
@@ -154,7 +155,7 @@ export default function Contact() {
         </div>
       </div>
     </section>
-    <section className="py-14 lg:py-18">
+    <section className="py-10 lg:py-10">
       <div className="mx-auto grid max-w-[1400px] items-start gap-6 px-5 sm:px-8 lg:grid-cols-[1.6fr_1fr] xl:px-10">
         <QuoteForm locale={locale} props={props}/>
         <aside className="space-y-4">
@@ -178,7 +179,7 @@ export default function Contact() {
         </aside>
       </div>
     </section>
-    <section className="bg-[#f6f8fa] py-14 lg:py-18"><div className="mx-auto max-w-[1400px] px-5 sm:px-8 xl:px-10">
+    <section className="bg-[#f6f8fa] py-10 lg:py-10"><div className="mx-auto max-w-[1400px] px-5 sm:px-8 xl:px-10">
       <div className="flex flex-wrap items-end justify-between gap-6"><div><div className="umi-mark"/><h2 className="umi-heading">Find us</h2>
         <p className="mt-2 text-sm text-[#566578]">Batam Factory and Jakarta Sales Office.</p></div>
         <div className="flex border-b border-[#cbd5df]" role="tablist" aria-label="Office locations">

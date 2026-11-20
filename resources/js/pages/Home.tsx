@@ -1,3 +1,4 @@
+import { EngineeringRuler } from "@/components/layout/EngineeringRuler";
 import { Link, usePage } from "@inertiajs/react";
 import { ArrowRight, ArrowUpRight, Play, X } from "lucide-react";
 import { MockupCrop, type MockupCropKey } from "@/components/media/MockupCrop";
@@ -112,14 +113,14 @@ export default function Home() {
           <div><div className="umi-mark"/><h2 className="umi-heading">{c.process}</h2></div>
           <p className="max-w-xl text-sm leading-6 text-[#5a6876]">A fully integrated process from engineering to delivery, focused on precision, consistency and reliable supply.</p>
         </div>
-        <div className="grid grid-cols-2 gap-4 sm:grid-cols-3 lg:grid-cols-6">
+        <div className="grid grid-cols-2 gap-x-4 gap-y-7 sm:grid-cols-3 lg:grid-cols-6">
           {blocks.process.map((stage, index) => {
             const icon = processIconNames[index];
-            return <div key={index} className="relative rounded border border-[#e8edf1] bg-white px-5 py-3">
+            return <div key={index} className="relative px-2 py-2">
               <span className="inline-flex rounded bg-[#d71920] px-2 py-1 text-xs font-black text-white">{String(index + 1).padStart(2, "0")}</span>
               <img src={"/images/process/" + icon} alt="" aria-hidden="true" loading="lazy" className="mx-auto my-2 h-14 w-16 object-contain" />
               <h3 className="text-center text-xs font-black sm:text-sm">{stage.title}</h3>
-              {index < 5 && <ArrowRight size={15} aria-hidden="true" className="absolute -right-4 top-1/2 z-10 hidden text-[#d71920] lg:block" />}
+              {index < 5 && <ArrowRight size={15} aria-hidden="true" className="absolute -right-4 top-[55%] z-10 hidden text-[#acb6c0] lg:block" />}
             </div>;
           })}
         </div>
@@ -157,6 +158,7 @@ export default function Home() {
             <span className="mt-1 block text-sm font-bold">{item.title}</span>
           </button>)}
         </div>
+        <EngineeringRuler className="border-b border-white/20" height={24} showLabels={false} markers={[0,40,70,110]} color="#dce4eb" />
         {selected && <div id="umi-facility-panel" role="tabpanel" className="mt-8 grid gap-8 lg:grid-cols-[1.15fr_0.85fr]">
           {activeFacility === 0 ? <MockupCrop crop="production-line" alt="Approved AIDA and SEYI press production line photograph" className="h-[340px] w-full rounded-lg lg:h-[450px]" /> : <img src={selected.image} alt={selected.title} className="h-[340px] w-full rounded-lg object-cover lg:h-[450px]" loading="lazy"/>}
           <div className="flex flex-col justify-center">

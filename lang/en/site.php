@@ -185,9 +185,9 @@ return [
             'document' => '/images/certifications/CPG 9001 QMS Recertification.pdf',
         ],
         [
-            'name' => 'ISO 14000:2015',
+            'name' => 'ISO 14001:2015',
             'title' => 'Environmental Management System',
-            'description' => 'Certified to ISO 14000:2015. We are committed to preventing pollution, minimizing waste, complying with regulations, and reducing energy consumption across our production processes.',
+            'description' => 'Certified to ISO 14001:2015. We are committed to preventing pollution, minimizing waste, complying with regulations, and reducing energy consumption across our production processes.',
             'document' => '/images/certifications/CPG 14001 EMS Recertification.pdf',
         ],
     ],

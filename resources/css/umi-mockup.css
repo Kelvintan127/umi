@@ -51,3 +51,14 @@
     animation: none !important;
   }
 }
+
+/* Engineering-scale strip belongs to the navigation and manufacturing tab area. */
+.umi-mockup .umi-engineering-ruler svg {
+  display: block;
+  shape-rendering: crispEdges;
+}
+@media (min-width: 1024px) {
+  .umi-mockup .umi-engineering-ruler {
+    scroll-snap-align: none;
+  }
+}
