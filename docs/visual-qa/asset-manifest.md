@@ -25,9 +25,14 @@ The twelve photographs were inspected as contact sheets, not categorized solely 
 - QMS: `CPG 9001 (QMS) Recert Jasanz IAF.pdf`, Drive `157r9OUPWpC-lwKmXtWX1kSx8lYJC43hF`. ISO 9001:2015, registration `QMS/15/R62/0013`.
 - EMS: `CPG 14001 (EMS) Recert Jasanz IAF.pdf`, Drive `1Vm2fBe7s34HRYzviQv20cNLXw83OgUhk`. ISO 14001:2015, registration `EMS/2/R62/0013`.
 - Both PDFs identify PT. UNI METALTECH INDUSTRY, scope Metal Stamping, recertification 05/Mar/2024, expiry 05/Mar/2027, subject to annual audits and issuer status confirmation.
-- PDF links currently resolve to the existing repo versions. The 14001 repo PDF is a different byte size from the Drive original, so identity needs binary verification before treating them as byte-identical.
+- PDF links currently resolve to the existing repo versions. The 9001 repo PDF has the exact same Git blob SHA as the Drive file. The 14001 Drive original (441,110 bytes) has been inserted into this feature branch with Git blob SHA c14c77455ac7296d64596c6d37ea2110a2ccb543, replacing the earlier differently-sized repository file.
 - Screenshot-only certificate crops are **not** authentic certificate previews. Authentic page previews were rendered locally from both originals, but cannot be committed as original assets through the current GitHub text-only source handoff.
 
 ## Company video
 Drive ID `1TG8YE0MxVe2aQjj5IaukehXx_JJzdBDw`, `Company Profile Video`, `video/quicktime`, 1,017,676,520 bytes. Original not committed to Git. No standalone object-storage upload destination was provided, so the actual video cannot yet be declared verified H.264/AAC fast-start streaming.
 
+
+## Verified original source PDF bits
+- ISO 9001:2015: Git blob 889ab34d04d299602c00ea19c8c60967e0b3e973, byte-identical to original Drive file, 442,173 bytes.
+- ISO 14001:2015: Git blob c14c77455ac7296d64596c6d37ea2110a2ccb543, pulled as raw bytes from the original Drive file, 441,110 bytes.
+- Both PDF files were rendered and visually inspected. Text metadata and date values above came from the actual PDFs, not the screenshot crops.
