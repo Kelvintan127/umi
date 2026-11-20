@@ -51,7 +51,9 @@ export default function Home() {
   const [videoOpen, setVideoOpen] = useState(false);
   const facilities = blocks.facilities;
   const selected = facilities[Math.min(activeFacility, Math.max(0, facilities.length - 1))];
-  const corporateVideo = content.sections.find(section => section.type === "prose" && section.video)?.video;
+  const corporateVideo = import.meta.env.VITE_UMI_COMPANY_PROFILE_URL?.trim()
+    || content.sections.find(section => section.type === "prose" && section.video)?.video;
+  const [videoError, setVideoError] = useState(false);
 
   return <MockupShell active="home">
     <PageHead seo={seo} htmlLang={htmlLang} />
@@ -98,7 +100,7 @@ export default function Home() {
         </div>
         <div className="group relative overflow-hidden rounded-lg bg-[#071522]">
           <MockupCrop crop="factory-aerial" alt="Approved aerial view of the UMI factory complex" className="h-[240px] w-full sm:h-[300px] lg:h-[320px]" />
-          {corporateVideo && <button onClick={() => setVideoOpen(true)} aria-label={c.video} type="button"
+          {corporateVideo && <button onClick={() => { setVideoError(false); setVideoOpen(true); }} aria-label={c.video} type="button"
             className="absolute left-1/2 top-1/2 flex h-16 w-16 -translate-x-1/2 -translate-y-1/2 items-center justify-center rounded-full bg-[#071522]/90 text-white ring-4 ring-white/30">
             <Play size={25} fill="currentColor"/>
           </button>}
@@ -204,7 +206,11 @@ export default function Home() {
 
     {videoOpen && corporateVideo && <div role="dialog" aria-modal="true" aria-label={c.video} className="fixed inset-0 z-[100] flex items-center justify-center bg-black/90 p-5">
       <button type="button" onClick={() => setVideoOpen(false)} aria-label="Close video" className="absolute right-5 top-5 text-white"><X size={28}/></button>
-      <video controls autoPlay playsInline preload="metadata" src={corporateVideo} className="max-h-[85vh] w-full max-w-5xl"/>
+      <video controls autoPlay playsInline preload="metadata" src={corporateVideo}
+        onError={() => setVideoError(true)} className="max-h-[85vh] w-full max-w-5xl"/>
+      {videoError && <div role="alert" className="absolute bottom-8 left-1/2 w-[min(90vw,34rem)] -translate-x-1/2 rounded bg-[#fff1f1] p-4 text-center text-sm font-semibold text-[#8b1218]">
+        {locale === "id" ? "Video perusahaan belum dapat diputar. Silakan hubungi UMI untuk meminta versi resminya." : locale === "zh" ? "公司视频暂时无法播放，请联系 UMI 获取正式版本。" : "The company profile video is temporarily unavailable. Contact UMI for the official file."}
+      </div>
     </div>}
   </MockupShell>;
 }
