@@ -56,7 +56,7 @@ export default function Home() {
     <PageHead seo={seo} htmlLang={htmlLang} />
     <section className="umi-hero relative isolate overflow-hidden bg-[#071522] text-white">
       <div className="umi-blueprint-lines pointer-events-none absolute inset-0 opacity-25" aria-hidden="true" />
-      <div className="relative mx-auto grid min-h-[510px] max-w-[1400px] items-center gap-8 px-5 py-16 sm:px-8 lg:grid-cols-[0.97fr_1.03fr] xl:px-10">
+      <div className="relative mx-auto grid min-h-[510px] max-w-[1400px] items-center gap-8 px-5 py-16 sm:px-8 lg:py-6 lg:grid-cols-[0.97fr_1.03fr] xl:px-10">
         <div className="relative z-10">
           <p className="mb-4 text-[11px] font-extrabold uppercase tracking-widest text-[#ee3841]">{c.eyebrow}</p>
           <h1 className="whitespace-pre-line text-[clamp(3.4rem,5.3vw,6.5rem)] font-black leading-[0.93] tracking-[-0.06em]">{c.title}</h1>
@@ -85,7 +85,7 @@ export default function Home() {
       </div>
     </section>
 
-    <section className="py-16 lg:py-20">
+    <section className="py-16 lg:py-8">
       <div className="mx-auto grid max-w-[1400px] items-center gap-10 px-5 sm:px-8 lg:grid-cols-[0.9fr_1.1fr] xl:px-10">
         <div><div className="umi-mark" /><h2 className="umi-heading whitespace-pre-line">{c.about}</h2>
           <p className="mt-6 text-sm leading-7 text-[#48586a] sm:text-base">
@@ -106,7 +106,7 @@ export default function Home() {
       </div>
     </section>
 
-    <section id="umi-process" className="border-y border-[#e6eaee] bg-[#fafbfc] py-16 lg:py-20">
+    <section id="umi-process" className="border-y border-[#e6eaee] bg-[#fafbfc] py-16 lg:py-8">
       <div className="mx-auto max-w-[1400px] px-5 sm:px-8 xl:px-10">
         <div className="mb-10 grid gap-5 lg:grid-cols-2">
           <div><div className="umi-mark"/><h2 className="umi-heading">{c.process}</h2></div>
@@ -115,9 +115,9 @@ export default function Home() {
         <div className="grid grid-cols-2 gap-4 sm:grid-cols-3 lg:grid-cols-6">
           {blocks.process.map((stage, index) => {
             const icon = processIconNames[index];
-            return <div key={index} className="relative rounded border border-[#e8edf1] bg-white px-5 py-6">
+            return <div key={index} className="relative rounded border border-[#e8edf1] bg-white px-5 py-3">
               <span className="inline-flex rounded bg-[#d71920] px-2 py-1 text-xs font-black text-white">{String(index + 1).padStart(2, "0")}</span>
-              <img src={"/images/process/" + icon} alt="" aria-hidden="true" loading="lazy" className="mx-auto my-4 h-14 w-16 object-contain" />
+              <img src={"/images/process/" + icon} alt="" aria-hidden="true" loading="lazy" className="mx-auto my-2 h-14 w-16 object-contain" />
               <h3 className="text-center text-xs font-black sm:text-sm">{stage.title}</h3>
               {index < 5 && <ArrowRight size={15} aria-hidden="true" className="absolute -right-4 top-1/2 z-10 hidden text-[#d71920] lg:block" />}
             </div>;
@@ -126,7 +126,7 @@ export default function Home() {
       </div>
     </section>
 
-    <section className="bg-[#f3f5f6] py-16 lg:py-20">
+    <section className="bg-[#f3f5f6] py-16 lg:py-8">
       <div className="mx-auto max-w-[1400px] px-5 sm:px-8 xl:px-10">
         <div className="mb-10 grid gap-5 lg:grid-cols-2">
           <div><div className="umi-mark"/><h2 className="umi-heading">{c.products}</h2></div>
@@ -134,7 +134,7 @@ export default function Home() {
         </div>
         <div className="grid gap-5 sm:grid-cols-2 xl:grid-cols-4">
           {blocks.products.slice(0, 4).map((product, productIndex) => <article key={product.key} className="overflow-hidden rounded-lg border border-[#dde3e8] bg-white shadow-sm">
-            <Link href={"/" + locale + "/products"} className="block overflow-hidden bg-[#e9edef]"><MockupCrop crop={productCrops[productIndex]} alt={"Approved mockup image: " + product.title} className="h-52 w-full" /></Link>
+            <Link href={"/" + locale + "/products"} className="block overflow-hidden bg-[#e9edef]"><MockupCrop crop={productCrops[productIndex]} alt={"Approved mockup image: " + product.title} className="h-44 w-full" /></Link>
             <div className="p-5"><h3 className="text-lg font-black">{product.title}</h3><p className="mt-2 line-clamp-3 min-h-[4.5rem] text-sm leading-6 text-[#546376]">{product.description}</p>
               <Link href={"/" + locale + "/products"} className="mt-5 inline-flex items-center gap-2 text-xs font-black uppercase tracking-wider text-[#d71920]">{c.view}<ArrowRight size={16}/></Link>
             </div>
@@ -143,7 +143,7 @@ export default function Home() {
       </div>
     </section>
 
-    <section className="bg-[#071522] py-16 text-white lg:py-20">
+    <section className="bg-[#071522] py-16 text-white lg:py-24">
       <div className="mx-auto max-w-[1400px] px-5 sm:px-8 xl:px-10">
         <div className="mb-9 flex flex-wrap items-end justify-between gap-6">
           <div><div className="umi-mark"/><h2 className="umi-heading">{c.facilities}</h2><p className="mt-3 max-w-xl text-sm text-white/65">Production, tooling and inspection equipment supporting an integrated manufacturing operation.</p></div>
@@ -158,7 +158,7 @@ export default function Home() {
           </button>)}
         </div>
         {selected && <div id="umi-facility-panel" role="tabpanel" className="mt-8 grid gap-8 lg:grid-cols-[1.15fr_0.85fr]">
-          {activeFacility === 0 ? <MockupCrop crop="production-line" alt="Approved AIDA and SEYI press production line photograph" className="h-[340px] w-full rounded-lg lg:h-[420px]" /> : <img src={selected.image} alt={selected.title} className="h-[340px] w-full rounded-lg object-cover lg:h-[420px]" loading="lazy"/>}
+          {activeFacility === 0 ? <MockupCrop crop="production-line" alt="Approved AIDA and SEYI press production line photograph" className="h-[340px] w-full rounded-lg lg:h-[450px]" /> : <img src={selected.image} alt={selected.title} className="h-[340px] w-full rounded-lg object-cover lg:h-[450px]" loading="lazy"/>}
           <div className="flex flex-col justify-center">
             <p className="text-xs font-extrabold uppercase tracking-widest text-[#ee3841]">{String(activeFacility + 1).padStart(2, "0")} / {c.facilities}</p>
             <h3 className="mt-3 text-3xl font-black">{selected.title}</h3>
@@ -170,7 +170,7 @@ export default function Home() {
       </div>
     </section>
 
-    <section className="py-16 lg:py-20">
+    <section className="py-16 lg:py-12">
       <div className="mx-auto max-w-[1400px] px-5 sm:px-8 xl:px-10">
         <div className="umi-mark"/><h2 className="umi-heading">{c.quality}</h2>
         <p className="mt-3 max-w-3xl text-sm leading-6 text-[#566578]">{blocks.quality.labelling}</p>
@@ -178,7 +178,7 @@ export default function Home() {
           {blocks.certifications.map((certificate, i) => <article key={i} className="rounded-lg border border-[#e0e5e9] p-5 md:p-7">
             <p className="text-xs font-bold text-[#d71920]">{certificate.name}</p><h3 className="mt-1 text-xl font-black">{certificate.title}</h3>
             <div className="mt-5 flex min-h-[205px] items-center justify-center overflow-hidden rounded border border-[#e6eaf0] bg-[#fafafa]">
-              <object data={certificate.document + "#page=1&toolbar=0&navpanes=0"} type="application/pdf" aria-label={"Original certification PDF: " + certificate.name} className="h-[260px] w-full">
+              <object data={certificate.document + "#page=1&toolbar=0&navpanes=0"} type="application/pdf" aria-label={"Original certification PDF: " + certificate.name} className="h-[234px] w-full">
                 <p className="p-6 text-sm text-[#566578]">Preview requires a PDF-capable browser. Use View PDF below.</p>
               </object>
             </div>
@@ -192,7 +192,7 @@ export default function Home() {
       </div>
     </section>
 
-    <section className="bg-[#071522] py-9 text-white"><div className="mx-auto flex max-w-[1400px] flex-wrap items-center justify-between gap-6 px-5 sm:px-8 xl:px-10">
+    <section className="bg-[#071522] py-16 text-white"><div className="mx-auto flex max-w-[1400px] flex-wrap items-center justify-between gap-6 px-5 sm:px-8 xl:px-10">
       <h2 className="text-2xl font-black sm:text-3xl">{c.cta}</h2>
       <Link className="umi-btn-red inline-flex items-center gap-2 rounded px-6 py-3.5 text-sm font-bold" href={"/" + locale + "/contact"}>{chrome.cta.team}<ArrowRight size={17}/></Link>
       <a href={"mailto:" + blocks.contact.email} className="text-xs text-white/75">{blocks.contact.email}</a>
