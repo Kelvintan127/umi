@@ -6,7 +6,9 @@
     "build": "vite build",
     "dev": "vite",
     "ssr": "vite build --ssr resources/js/ssr.tsx",
-    "typecheck": "tsc --noEmit"
+    "typecheck": "tsc --noEmit",
+    "prebuild": "node scripts/prepare-mockup-assets.mjs",
+    "predev": "node scripts/prepare-mockup-assets.mjs"
   },
   "dependencies": {
     "@inertiajs/react": "^2.0.0",

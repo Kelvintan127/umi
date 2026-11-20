@@ -33,3 +33,34 @@ Run in an environment with dependencies:
 - Contact submit/validation and language-switch smoke test
 
 Do not deploy or merge without these checks.
+
+
+## Reference-source inspection update
+
+The supplied Drive folder contained two compressed design screenshots (534×1600
+homepage, 1024×1536 contact), one palette image, and the six approved process
+icons in a ZIP. No isolated original-resolution hero/product, aerial factory,
+or AIDA production-line images were provided.
+
+To preserve the mockup's photographic identity rather than substitute unrelated
+images, the homepage now uses responsive SVG viewBox crops of the provided
+**low-resolution screenshot**. The crops match the reference subject and
+composition, but magnification cannot restore missing image detail.
+These crops are temporary implementation assets and must be replaced by approved
+high-resolution originals when available.
+
+The process illustrations are the original supplied PNGs; a dependency-free
+Node prebuild/predev script unpacks the six checked filenames into public/images.
+
+The certification cards embed the already-committed source PDF files rather than
+fabricating certificate imagery. Verify currency and content against issuing
+authorities before release.
+
+The inquiry form includes material/thickness/quantity selectors. These values
+are appended to the existing free-text inquiry message before POST, retaining
+the current controller's validated schema. CAD file upload remains unimplemented:
+the existing backend has no secure, approved attachment-storage design.
+
+The scale printed across the very top of each screenshot was identified as
+reference screenshot annotation, not a website navigation element; it is not
+rendered as site chrome.

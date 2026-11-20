@@ -20,6 +20,8 @@ class HreflangTest extends TestCase
 {
     public function test_unsigned_locales_are_omitted_rather_than_pointed_at_english(): void
     {
+        // Simulate a page with no approved translations while keeping production sign-offs.
+        config()->set('locales.translated', ['*' => []]);
         $response = $this->get('/en/about');
         $response->assertOk();
 
@@ -59,10 +61,7 @@ class HreflangTest extends TestCase
     {
         // Proves the omission is driven by the sign-off registry, not by a
         // hardcoded English-only list. Signing off `id` must add the alternate.
-        config()->set('locales.translated', array_merge(
-            (array) config('locales.translated'),
-            ['about' => ['en', 'id']]
-        ));
+        config()->set('locales.translated', ['*' => [], 'about' => ['en', 'id']]);
 
         $alternates = Locales::alternates('about', 'about');
         $codes = array_column($alternates, 'code');
@@ -91,6 +90,7 @@ class HreflangTest extends TestCase
     public function test_unavailable_locales_are_not_rendered_as_links(): void
     {
         // A disabled control is honest; a link that redirects back to /en is not.
+        config()->set('locales.translated', ['*' => []]);
         $languages = $this->get('/en/about')->viewData('page')['props']['chrome']['languages'];
 
         foreach ($languages as $lang) {
@@ -110,10 +110,7 @@ class HreflangTest extends TestCase
         // page returns 302, which looks exactly like "not signed off yet".
         $key = 'products.battery-contacts';
 
-        config()->set('locales.translated', array_merge(
-            (array) config('locales.translated'),
-            [$key => ['en', 'id']]
-        ));
+        config()->set('locales.translated', ['*' => [], $key => ['en', 'id']]);
 
         $this->assertTrue(Locales::isTranslated($key, 'id'));
         $this->assertSame(['en', 'id'], Locales::translated($key));

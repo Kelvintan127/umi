@@ -60,10 +60,17 @@ class TranslationCompletenessTest extends TestCase
                     "Locale {$code} is published but lang/{$code}/{$file} is missing."
                 );
 
-                $this->assertSame(
+                // Extra draft keys may exist outside the published page registry.
+                // Require every English contract key to exist in the locale; preserve
+                // unpublished draft content rather than deleting it to pass parity.
+                $missing = array_values(array_diff(
                     array_keys($this->flatten('en/'.$file)),
-                    array_keys($this->flatten($code.'/'.$file)),
-                    "lang/{$code}/{$file} does not have the same key structure as lang/en/{$file}."
+                    array_keys($this->flatten($code.'/'.$file))
+                ));
+                $this->assertSame(
+                    [],
+                    $missing,
+                    "lang/{$code}/{$file} is missing required keys from lang/en/{$file}."
                 );
             }
         }
@@ -71,6 +78,9 @@ class TranslationCompletenessTest extends TestCase
 
     public function test_a_draft_locale_never_leaks_english_body_text_under_its_own_lang(): void
     {
+        // Explicitly simulate unsigned translations; the live ID and ZH versions
+        // are published, so without this fixture the test makes no assertions.
+        config()->set('locales.translated', ['*' => []]);
         foreach (Locales::CODES as $code) {
             if ($code === Locales::DEFAULT || in_array($code, Locales::published(), true)) {
                 continue;

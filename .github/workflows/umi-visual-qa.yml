@@ -1,0 +1,187 @@
+name: UMI real-app visual QA
+
+on:
+  push:
+    branches: [feat/umi-mockup-redesign-20261120]
+  workflow_dispatch:
+
+permissions:
+  contents: read
+
+jobs:
+  screenshot:
+    name: Build Laravel/Inertia and capture screenshots
+    runs-on: ubuntu-latest
+    timeout-minutes: 35
+    env:
+      APP_ENV: testing
+      APP_DEBUG: "true"
+      APP_URL: http://127.0.0.1:8000
+      DB_CONNECTION: sqlite
+      SESSION_DRIVER: file
+      CACHE_STORE: file
+      QUEUE_CONNECTION: sync
+      MAIL_MAILER: log
+    steps:
+      - uses: actions/checkout@v4
+      - uses: shivammathur/setup-php@v2
+        with:
+          php-version: "8.4"
+          extensions: mbstring, dom, fileinfo, pdo_sqlite, sqlite3, xml, curl, zip
+          tools: composer:v2
+          coverage: none
+      - uses: actions/setup-node@v4
+        with:
+          node-version: "22"
+          cache: npm
+      - name: Install PHP dependencies
+        run: composer install --prefer-dist --no-interaction --no-progress
+      - name: Configure local Laravel with SQLite
+        run: |
+          cp .env.example .env
+          touch database/database.sqlite
+          echo "APP_URL=http://127.0.0.1:8000" >> .env
+          echo "DB_CONNECTION=sqlite" >> .env
+          echo "DB_DATABASE=$GITHUB_WORKSPACE/database/database.sqlite" >> .env
+          echo "SESSION_DRIVER=file" >> .env
+          echo "CACHE_STORE=file" >> .env
+          echo "QUEUE_CONNECTION=sync" >> .env
+          echo "MAIL_MAILER=log" >> .env
+          php artisan key:generate --force
+          php artisan migrate --force
+      - name: Install and build frontend
+        run: |
+          npm ci
+          npm run typecheck
+          npm run build
+          npm run ssr
+      - name: Install Playwright browser
+        run: |
+          npm install --no-save --package-lock=false playwright
+          npx playwright install --with-deps chromium
+      - name: Start real Laravel server
+        run: |
+          mkdir -p visual-qa
+          php artisan serve --host=127.0.0.1 --port=8000 > visual-qa/server.log 2>&1 &
+          for i in $(seq 1 30); do
+            if curl -fsS http://127.0.0.1:8000/en >/dev/null; then exit 0; fi
+            sleep 2
+          done
+          cat visual-qa/server.log
+          exit 1
+      - name: Capture real application screenshots
+        run: |
+          node --input-type=module <<'JS'
+          import { chromium } from "playwright";
+          import { mkdirSync, writeFileSync } from "node:fs";
+          import { join } from "node:path";
+          const sizes = [
+            ["desktop-1440", 1440, 900], ["desktop-1920", 1920, 1080],
+            ["tablet-1024", 1024, 768], ["tablet-768", 768, 1024],
+            ["mobile-390", 390, 844], ["mobile-375", 375, 812],
+          ];
+          mkdirSync("visual-qa", {recursive:true});
+          const report = {version:process.env.GITHUB_SHA,source:"localhost Laravel/Inertia after npm run build",screenshots:[],checks:[]};
+          const browser = await chromium.launch({headless:true});
+          try {
+            for (const [slug,w,h] of sizes) {
+              const context = await browser.newContext({viewport:{width:w,height:h},reducedMotion:"reduce",deviceScaleFactor:1});
+              const page = await context.newPage();
+              const errors = [];
+              page.on("pageerror",e=>errors.push(e.message));
+              mkdirSync(join("visual-qa",slug),{recursive:true});
+              for (const name of ["home","contact"]) {
+                const route = name==="home" ? "/en" : "/en/contact";
+                const resp = await page.goto("http://127.0.0.1:8000"+route,{waitUntil:"domcontentloaded",timeout:45000});
+                await page.locator("main").waitFor();
+                await page.evaluate(()=>document.fonts.ready);
+                await page.evaluate(async()=>{const max=document.documentElement.scrollHeight;for(let y=0;y<max;y+=650){window.scrollTo(0,y);await new Promise(r=>setTimeout(r,35));}window.scrollTo(0,0);});
+                await page.waitForTimeout(200);
+                await page.screenshot({path:join("visual-qa",slug,name+"-viewport.png"),animations:"disabled"});
+                await page.screenshot({path:join("visual-qa",slug,name+"-full.png"),fullPage:true,animations:"disabled"});
+                const check = await page.evaluate(()=>({
+                  title:document.title,
+                  h1:document.querySelector("main h1")?.innerText,
+                  bodyWidth:document.documentElement.scrollWidth,
+                  viewportWidth:window.innerWidth,
+                  pageHeight:document.documentElement.scrollHeight,
+                  missingImages:Array.from(document.images).filter(i=>!i.complete||i.naturalWidth===0).map(i=>i.src),
+                }));
+                report.screenshots.push({viewport:slug,route,status:resp?.status(),...check,errors:errors.slice()});
+                if (check.bodyWidth > w+2 || resp?.status()!==200 || errors.length) report.checks.push({failed:true,viewport:slug,route,details:check,errors:errors.slice()});
+                errors.length=0;
+              }
+              await page.goto("http://127.0.0.1:8000/en",{waitUntil:"domcontentloaded"});
+              const tabs=page.getByRole("tab");
+              if(await tabs.count()>=2){
+                await tabs.nth(1).click();
+                const selected=await tabs.nth(1).getAttribute("aria-selected");
+                report.checks.push({test:"facility tab state",viewport:slug,passed:selected==="true"});
+              }
+              if(w<1024){
+                const menu=page.locator('button[aria-controls="umi-mobile-nav"]');
+                if(await menu.count()){
+                  await menu.click();
+                  report.checks.push({test:"mobile navigation",viewport:slug,expanded:await menu.getAttribute("aria-expanded")});
+                }
+              }
+              await context.close();
+            }
+          } finally {await browser.close();}
+          writeFileSync("visual-qa/report.json",JSON.stringify(report,null,2));
+          if(report.checks.some(c=>c.failed||c.passed===false)) process.exitCode=1;
+          JS
+      - name: Compare actual screenshots to approved compressed mockups
+        if: always()
+        run: |
+          python3 -m pip install --user pillow
+          python3 - <<'PY'
+          from pathlib import Path
+          from PIL import Image,ImageChops,ImageEnhance
+          root=Path("visual-qa")
+          out=root/"comparisons"
+          out.mkdir(parents=True,exist_ok=True)
+          report=[]
+          for label in ("home","contact"):
+              refpath=Path("public/design-reference/mockup-"+label+".jpg")
+              actualpath=root/"desktop-1440"/(label+"-full.png")
+              if not actualpath.exists(): continue
+              ref=Image.open(refpath).convert("RGB")
+              actual=Image.open(actualpath).convert("RGB")
+              width=actual.width
+              scaled=ref.resize((width,round(ref.height*width/ref.width)),Image.Resampling.LANCZOS)
+              height=max(scaled.height,actual.height)
+              one=Image.new("RGB",(width,height),"white")
+              two=Image.new("RGB",(width,height),"white")
+              one.paste(scaled,(0,0))
+              two.paste(actual,(0,0))
+              Image.blend(one,two,0.5).save(out/(label+"-overlay-50pct.jpg"),quality=85)
+              ImageEnhance.Contrast(ImageChops.difference(one,two)).enhance(3).save(out/(label+"-difference.jpg"),quality=85)
+              pair=Image.new("RGB",(width*2,height),"white")
+              pair.paste(one,(0,0));pair.paste(two,(width,0))
+              pair.save(out/(label+"-side-by-side.jpg"),quality=85)
+              report.append(label+": reference "+str(ref.size)+", running application "+str(actual.size))
+          (root/"README.md").write_text(
+              "# Running Laravel/Inertia screenshot evidence\n\n"
+              "Captured against http://127.0.0.1:8000 on GitHub Actions, compiled with Vite.\n\n"
+              "The compressed mockups are scaled desktop references. Overlays were resized by width "
+              "without measuring actual page section geometry; interpret them qualitatively, not as a pixel-accuracy score.\n\n"
+              + "\n".join(report)+"\n\n"
+              "High-resolution isolated hero, product, aerial factory, and AIDA-line photography is still missing.\n"
+              "CAD upload backend and final certification-status verification remain unresolved.\n"
+          )
+          PY
+      - name: Run Laravel tests
+        if: always()
+        env:
+          CACHE_STORE: array
+          SESSION_DRIVER: array
+        run: php artisan test
+      - name: Upload visual QA artifacts
+        if: always()
+        uses: actions/upload-artifact@v4
+        with:
+          name: umi-running-app-evidence
+          path: visual-qa/
+          if-no-files-found: warn
+          retention-days: 14

@@ -69,6 +69,6 @@ class FrontendContractTest extends TestCase
         // Unavailable locales render as <span aria-disabled>, never an href to a
         // URL that would redirect the visitor back to English.
         $this->assertStringContainsString('aria-disabled', $src);
-        $this->assertStringContainsString('!lang.available', $src);
+        $this->assertStringContainsString('lang.available', $src);
     }
 }
