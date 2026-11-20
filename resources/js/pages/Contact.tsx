@@ -2,6 +2,7 @@ import { Link, useForm, usePage } from "@inertiajs/react";
 import { ArrowRight, ArrowUpRight, CheckCircle2, Clock3, Mail, MapPin, Phone, ShieldCheck } from "lucide-react";
 import { useEffect, useRef, useState, type FormEvent } from "react";
 import { MockupShell } from "@/components/layout/MockupShell";
+import { MockupCrop } from "@/components/media/MockupCrop";
 import { PageHead } from "@/components/layout/PageHead";
 import type { PageProps } from "@/types";
 
@@ -186,15 +187,25 @@ export default function Contact() {
             {String(index + 1).padStart(2, "0")} {item.label}</button>)}
         </div>
       </div>
-      <div id="umi-map-panel" role="tabpanel" className="relative mt-7 h-[380px] overflow-hidden rounded-lg border border-[#ccd6de] bg-[#dce6eb] lg:h-[430px]">
-        <iframe key={selected.query} title={selected.label + " map"} loading="lazy" referrerPolicy="no-referrer-when-downgrade"
-          src={"https://maps.google.com/maps?q=" + encodeURIComponent(selected.query) + "&z=13&output=embed"} className="h-full w-full border-0"/>
-        <div className="absolute bottom-5 left-5 max-w-[330px] rounded-lg bg-white/95 p-5 shadow-lg backdrop-blur">
-          <p className="text-xs font-black uppercase tracking-widest text-[#d71920]">{location === 0 ? "HQ / Factory" : "Sales Office"}</p>
-          <h3 className="mt-1 text-lg font-black">{selected.label}</h3>
-          <p className="mt-3 flex items-start gap-2 text-xs leading-5 text-[#536171]"><MapPin size={16} className="shrink-0"/>{selected.address}</p>
-          <a href={selected.map || mapSearch} target="_blank" rel="noopener noreferrer" className="umi-btn-red mt-4 inline-flex items-center gap-2 rounded px-4 py-3 text-xs font-bold text-white">Get directions<ArrowUpRight size={16}/></a>
-        </div>
+      <div id="umi-map-panel" role="tabpanel" className="relative mt-7 h-[290px] overflow-hidden rounded-lg border border-[#ccd6de] bg-[#dce6eb] sm:h-[340px]">
+        {location === 0 ? (
+          <a href={selected.map || mapSearch} target="_blank" rel="noopener noreferrer"
+            aria-label="Open Batam factory map in Google Maps" className="block h-full w-full">
+            <MockupCrop crop="batam-map" alt="Approved Batam factory map at Kara Industrial Park" className="h-full w-full" />
+          </a>
+        ) : (
+          <>
+            <iframe key={selected.query} title={selected.label + " map"} loading="lazy" referrerPolicy="no-referrer-when-downgrade"
+              src={"https://maps.google.com/maps?q=" + encodeURIComponent(selected.query) + "&z=13&output=embed"} className="h-full w-full border-0"/>
+            <div className="absolute bottom-5 left-5 max-w-[330px] rounded-lg bg-white/95 p-5 shadow-lg backdrop-blur">
+              <p className="text-xs font-black uppercase tracking-widest text-[#d71920]">Sales Office</p>
+              <h3 className="mt-1 text-lg font-black">{selected.label}</h3>
+              <p className="mt-3 flex items-start gap-2 text-xs leading-5 text-[#536171]"><MapPin size={16} className="shrink-0"/>{selected.address}</p>
+              <a href={selected.map || mapSearch} target="_blank" rel="noopener noreferrer"
+                className="umi-btn-red mt-4 inline-flex items-center gap-2 rounded px-4 py-3 text-xs font-bold text-white">Get directions<ArrowUpRight size={16}/></a>
+            </div>
+          </>
+        )}
       </div>
     </div></section>
     <section className="border-y border-[#dce3ea] bg-[#f5f7f9] py-9">
