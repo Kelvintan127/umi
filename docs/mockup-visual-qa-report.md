@@ -42,10 +42,23 @@ GitHub Actions run: https://github.com/Kelvintan127/umi/actions/runs/44689316966
 
 Playwright captured the real running Laravel/Inertia app, not a static HTML preview, at 375, 390, 768, 1024, 1440 and 1920px for Home and Contact. All 12 visited page/viewports returned HTTP 200, with no horizontal overflow, uncaught page errors, or missing img elements. Facility tab switching and mobile navigation expansion passed.
 
-The first full Laravel suite remains failing in legacy locale assertions and inquiry rate-limit/test isolation. Correct before merging. Re-run after subsequent visual commits.
+All PHP assertions now pass after test-cache isolation, correcting localized data contracts, and updating stale unpublished-language fixtures. Final verification: 80 passed, 770 assertions; no risky tests.
 
 The ruler at the top of the screenshots is interpreted as measurement tooling, not website navigation. The compressed source prevents a defensible pixel-error score. Do not claim 100% parity or deploy without owner QA and original media.
 
 ## 2026-11-20 certification visual correction
 
 The actual Chromium screenshots from run 44691512298 showed blank certificate preview cards although the PDF files were linked. The card media now uses two faithful, low-resolution certificate crops from the user-provided approved screenshot. View PDF / Download PDF retain the existing repository PDF documents. These cropped previews are design references only: no new certificates were created, and certificate status still requires verification. Build and browser rerun required after this change.
+
+
+## Final verification (2026-11-20)
+
+- Commit `f0459dc2f05929cf27153b63b7647aaf16fedfba`
+- [GitHub Actions: successful build, Playwright screenshots and PHP tests](https://github.com/Kelvintan127/umi/actions/runs/44693122103)
+- `npm ci`, `npm run typecheck`, `npm run build`, `npm run ssr`: passed
+- Laravel migrations and `php artisan test`: **80 passed, 770 assertions**
+- Playwright: actual Inertia pages visited at 375, 390, 768, 1024, 1440 and 1920 pixels; all HTTP 200, no missing images or JavaScript page errors, no horizontal overflow
+- Facilities tab and responsive navigation interactions: passed
+- Source images remain low-resolution crops of approved compressed mockups. Real CAD upload, production-resolution original images and owner-confirmed certifications remain release blockers.
+
+No merge into `dev` or deployment has been performed.
