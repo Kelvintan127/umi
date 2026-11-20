@@ -27,6 +27,8 @@ class LocalePolicyTest extends TestCase
 
     public function test_an_unsigned_off_locale_redirects_to_the_default(): void
     {
+        // Exercise this contract even when all production translations are published.
+        config()->set('locales.translated', ['*' => []]);
         foreach (Locales::CODES as $code) {
             if (Locales::isTranslated('home', $code)) {
                 continue;
@@ -39,6 +41,7 @@ class LocalePolicyTest extends TestCase
 
     public function test_an_unsigned_off_locale_page_redirects_to_the_default_page(): void
     {
+        config()->set('locales.translated', ['*' => []]);
         foreach (['about', 'products', 'contact', 'facilities'] as $pageKey) {
             $path = Pages::path($pageKey);
 

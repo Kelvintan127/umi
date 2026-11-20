@@ -78,6 +78,9 @@ class TranslationCompletenessTest extends TestCase
 
     public function test_a_draft_locale_never_leaks_english_body_text_under_its_own_lang(): void
     {
+        // Explicitly simulate unsigned translations; the live ID and ZH versions
+        // are published, so without this fixture the test makes no assertions.
+        config()->set('locales.translated', ['*' => []]);
         foreach (Locales::CODES as $code) {
             if ($code === Locales::DEFAULT || in_array($code, Locales::published(), true)) {
                 continue;
