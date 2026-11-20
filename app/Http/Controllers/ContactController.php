@@ -5,6 +5,7 @@ namespace App\Http\Controllers;
 use App\Mail\InquiryReceived;
 use App\Models\Inquiry;
 use App\Rules\DeliverableEmail;
+use App\Rules\EngineeringDrawing;
 use App\Support\Locales;
 use Illuminate\Http\JsonResponse;
 use Illuminate\Http\RedirectResponse;
@@ -12,7 +13,10 @@ use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Log;
 use Illuminate\Support\Facades\Mail;
 use Illuminate\Support\Facades\RateLimiter;
+use Illuminate\Support\Facades\Storage;
+use Illuminate\Support\Str;
 use Illuminate\Validation\Rule;
+use Illuminate\Http\UploadedFile;
 use Throwable;
 
 /**
@@ -58,6 +62,20 @@ class ContactController extends Controller
             'inquiry_type' => ['required', 'string', Rule::in(array_keys((array) trans('forms.inquiry_types', [], 'en')))],
             'message' => ['required', 'string', 'min:10', 'max:5000'],
             'consent' => ['accepted'],
+            'attachments' => [
+                'sometimes', 'array', 'max:3',
+                function (string $attribute, mixed $files, \Closure $fail): void {
+                    if (! is_array($files)) return;
+                    $total = array_sum(array_map(
+                        fn (mixed $file): int => $file instanceof UploadedFile ? (int) $file->getSize() : 0,
+                        $files
+                    ));
+                    if ($total > 25 * 1024 * 1024) {
+                        $fail('The combined drawing size must not exceed 25 MB.');
+                    }
+                },
+            ],
+            'attachments.*' => ['required', 'file', 'max:25600', new EngineeringDrawing],
         ]);
 
         $inquiry = Inquiry::create([
@@ -71,6 +89,43 @@ class ContactController extends Controller
             'ip_hash' => hash('sha256', (string) $request->ip()),
             'user_agent' => substr((string) $request->userAgent(), 0, 255),
         ]);
+
+        // Keep the files private (never storage:link). Persist paths before
+        // sending so a failed mail still leaves a complete inquiry on disk.
+        // Filenames are kept only for the sales notification's attachments.
+        $stored = [];
+        try {
+            foreach ($request->file('attachments', []) as $drawing) {
+                $name = str_replace(["\\", "/", "\r", "\n"], '_', $drawing->getClientOriginalName());
+                $name = mb_substr($name, 0, 140);
+                $extension = strtolower($drawing->getClientOriginalExtension());
+                $path = $drawing->storeAs(
+                    'inquiries/'.$inquiry->id,
+                    (string) Str::uuid().'.'.$extension,
+                    'local'
+                );
+                if ($path === false) {
+                    throw new \RuntimeException('Cannot store RFQ attachment.');
+                }
+                $stored[] = [
+                    'path' => $path,
+                    'name' => $name,
+                    'mime' => $drawing->getMimeType() ?: 'application/octet-stream',
+                    'size' => $drawing->getSize(),
+                ];
+            }
+            if ($stored !== []) {
+                $inquiry->forceFill(['attachments' => $stored])->save();
+            }
+        } catch (\Throwable $exception) {
+            foreach ($stored as $file) {
+                Storage::disk('local')->delete($file['path']);
+            }
+            Log::error('contact.attachment_storage_failed', [
+                'inquiry_id' => $inquiry->id, 'exception' => $exception::class,
+            ]);
+            throw $exception;
+        }
 
         $queued = $this->deliver($inquiry, $locale);
 

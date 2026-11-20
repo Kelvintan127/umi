@@ -1,6 +1,6 @@
 import { Link, useForm, usePage } from "@inertiajs/react";
 import { ArrowRight, ArrowUpRight, CheckCircle2, Clock3, Mail, MapPin, Phone, ShieldCheck } from "lucide-react";
-import { useEffect, useRef, useState, type FormEvent } from "react";
+import { useEffect, useRef, useState, type FormEvent, type DragEvent } from "react";
 import { MockupShell } from "@/components/layout/MockupShell";
 import { MockupCrop } from "@/components/media/MockupCrop";
 import { PageHead } from "@/components/layout/PageHead";
@@ -9,7 +9,7 @@ import type { PageProps } from "@/types";
 type InquiryFields = {
   name: string; company: string; email: string; phone: string;
   inquiry_type: string; message: string; consent: boolean;
-  website: string; elapsed_ms: number;
+  website: string; elapsed_ms: number; attachments: File[];
 };
 
 function QuoteForm({ locale, props }: { locale: string; props: PageProps }) {
@@ -18,13 +18,15 @@ function QuoteForm({ locale, props }: { locale: string; props: PageProps }) {
   const [material, setMaterial] = useState("");
   const [thickness, setThickness] = useState("");
   const [quantity, setQuantity] = useState("");
+  const [fileError, setFileError] = useState<string | null>(null);
+  const [dragOver, setDragOver] = useState(false);
   const startedAt = useRef(0);
   useEffect(() => { startedAt.current = Date.now(); }, []);
   const types = Object.entries(labels.inquiryTypes);
   const form = useForm<InquiryFields>({
     name: "", company: "", email: "", phone: "",
     inquiry_type: types[0]?.[0] ?? "new-project", message: "",
-    consent: false, website: "", elapsed_ms: 0,
+    consent: false, website: "", elapsed_ms: 0, attachments: [],
   });
   const submit = (event: FormEvent<HTMLFormElement>) => {
     event.preventDefault();
@@ -40,6 +42,30 @@ function QuoteForm({ locale, props }: { locale: string; props: PageProps }) {
         if (result?.ok) setSent(true);
       },
     });
+  };
+  const extensions = new Set(["pdf","dwg","dxf","step","stp","iges","igs"]);
+  const selectFiles = (incoming: File[]) => {
+    const files = [...form.data.attachments, ...incoming];
+    if (files.length > 3) {
+      setFileError("Maximum 3 drawing files per request.");
+      return;
+    }
+    if (files.some(file => !extensions.has((file.name.split(".").pop() ?? "").toLowerCase()))) {
+      setFileError("Please use PDF, DWG, DXF, STEP or IGES files.");
+      return;
+    }
+    if (files.some(file => file.size > 25 * 1024 * 1024)
+      || files.reduce((sum,file)=>sum+file.size,0) > 25 * 1024 * 1024) {
+      setFileError("Combined upload size must not exceed 25 MB.");
+      return;
+    }
+    setFileError(null);
+    form.setData("attachments", files);
+  };
+  const onDrop = (event: DragEvent<HTMLLabelElement>) => {
+    event.preventDefault();
+    setDragOver(false);
+    selectFiles(Array.from(event.dataTransfer.files));
   };
   const field = "mt-2 block w-full rounded border border-[#b6c2cc] bg-white px-4 py-3 text-sm text-[#071522] outline-offset-2 focus:border-[#d71920]";
   const msg = (key: keyof InquiryFields) => form.errors[key] && <p role="alert" className="mt-1 text-xs font-semibold text-[#d71920]">{form.errors[key]}</p>;
@@ -97,11 +123,29 @@ function QuoteForm({ locale, props }: { locale: string; props: PageProps }) {
       </div>
       <label className="mt-6 block text-sm font-semibold">{labels.fields.message} *<textarea rows={6} className={field} value={form.data.message} required onChange={e => form.setData("message", e.target.value)} placeholder={labels.placeholders.message}/>{msg("message")}</label>
       <h3 className="mt-6 flex items-center gap-3 border-b border-[#e3e8ec] pb-3 text-lg font-black"><span className="rounded bg-[#d71920] px-2 py-1 text-xs text-white">03</span>{locale === "id" ? "Gambar teknik" : locale === "zh" ? "文件" : "Files"}</h3>
-      <div className="mt-6 rounded-lg border border-dashed border-[#aab8c5] bg-[#fafbfc] px-5 py-7 text-center text-sm">
-        <p className="font-bold">{locale === "id" ? "Punya gambar teknik?" : locale === "zh" ? "有技术图纸吗？" : "Have technical drawings?"}</p>
-        <p className="mt-2 text-xs text-[#5e6e7c]">CAD/PDF file upload requires backend integration. Please mention the drawings in your inquiry or email them to the office.</p>
-        <a href={"mailto:" + props.content.blocks.contact.email} className="mt-3 inline-block text-xs font-bold text-[#d71920] underline">{props.content.blocks.contact.email}</a>
-      </div>
+      <label htmlFor="umi-drawings"
+        onDragOver={event=>{event.preventDefault();setDragOver(true);}}
+        onDragLeave={event=>{event.preventDefault();setDragOver(false);}}
+        onDrop={onDrop}
+        className={"mt-4 block cursor-pointer rounded-lg border border-dashed px-5 py-6 text-center text-sm transition-colors focus-within:outline focus-within:outline-2 focus-within:outline-[#d71920] " + (dragOver ? "border-[#d71920] bg-[#fff0f1]" : "border-[#aab8c5] bg-[#fafbfc]")}>
+        <input id="umi-drawings" name="attachments[]" className="sr-only" type="file" multiple
+          accept=".pdf,.dwg,.dxf,.step,.stp,.iges,.igs"
+          onChange={event=>{selectFiles(Array.from(event.target.files ?? []));event.target.value="";}} />
+        <span className="block font-bold">{locale==="id" ? "Tarik gambar teknik ke sini, atau klik untuk memilih" : locale==="zh" ? "拖放工程图纸或点击选择文件" : "Drop your drawings here, or click to browse"}</span>
+        <span className="mt-2 block text-xs text-[#5e6e7c]">PDF · DWG · DXF · STEP · IGES · max 3 files · 25 MB total</span>
+      </label>
+      {form.data.attachments.length>0 && <ul className="mt-3 space-y-2" aria-label="Selected drawings">
+        {form.data.attachments.map((file,index)=><li key={file.name+"-"+index} className="flex items-center justify-between gap-3 rounded border border-[#dde3e9] bg-white px-3 py-2 text-xs">
+          <span className="min-w-0 truncate">{file.name} ({(file.size/1048576).toFixed(2)} MB)</span>
+          <button type="button" aria-label={"Remove "+file.name} onClick={()=>form.setData("attachments",form.data.attachments.filter((_,i)=>i!==index))}
+            className="shrink-0 font-bold text-[#d71920] hover:underline">Remove</button>
+        </li>)}
+      </ul>}
+      {fileError && <p role="alert" className="mt-2 text-xs font-bold text-[#d71920]">{fileError}</p>}
+      {Object.entries(form.errors as Record<string,string>).filter(([key])=>key.startsWith("attachments")).map(([key,message])=>
+        <p key={key} role="alert" className="mt-2 text-xs font-bold text-[#d71920]">{message}</p>
+      )}
+      {form.progress && <progress aria-label="Upload progress" className="mt-3 w-full accent-[#d71920]" max={100} value={form.progress.percentage ?? 0}/>}
       <label className="mt-6 flex items-start gap-3 text-sm leading-6">
         <input type="checkbox" required checked={form.data.consent} onChange={e => form.setData("consent", e.target.checked)} className="mt-1 accent-[#d71920]"/>
         <span>{labels.consent}</span>
