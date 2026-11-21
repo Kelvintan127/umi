@@ -48,7 +48,7 @@ return [
                 'heading' => 'Precision metal stamping, engineered in Batam',
                 'video' => '/videos/company-profile.mp4',
                 'paragraphs' => [
-                    'PT. Uni-Metaltech Industry (UMI) is a precision metal stamping company incorporated in the year 2000 in Batam, Indonesia. Our factory sits in Kara Industrial Park, Batam Center, with a Jakarta Sales Office in Jababeka Industrial Park established in 2014.',
+                    'PT. Uni-Metaltech Industry (UMI) is a precision metal stamping company incorporated in the year 2000 in Batam, Indonesia. Our factory operates at Kara Industrial Park, Batam Center.',
                     'We manufacture battery contacts, wire harnesses and cable terminals, ODS DVD drive parts, mechanical assemblies, and electrical and other metal parts for electrical, electronic and automotive manufacturers.',
                 ],
             ],
@@ -65,7 +65,7 @@ return [
     'about' => [
         'seo' => [
             'title' => 'About UMI Stamping — PT. Uni-Metaltech Industry',
-            'description' => 'PT. Uni-Metaltech Industry is a precision metal stamping company incorporated in 2000 in Batam, Indonesia, with a Jakarta sales office in Jababeka since 2014.',
+            'description' => 'PT. Uni-Metaltech Industry is a precision metal stamping company incorporated in 2000 in Batam, Indonesia, operating from Kara Industrial Park, Batam Center.',
         ],
         'hero' => [
             'eyebrow' => 'About Us',
@@ -471,7 +471,7 @@ return [
     'contact' => [
         'seo' => [
             'title' => 'Contact — UMI Stamping',
-            'description' => 'Contact PT. Uni-Metaltech Industry: Batam manufacturing factory and Jakarta sales representative office, with phone, fax and email.',
+            'description' => 'Contact PT. Uni-Metaltech Industry at the Batam manufacturing factory by phone, fax and email.',
         ],
         'hero' => [
             'eyebrow' => 'Contact',

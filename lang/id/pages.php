@@ -23,7 +23,7 @@
 |
 | Preserved verbatim (brand tokens, identifiers, paths, numbers): PT.
 | Uni-Metaltech Industry, UMI, UMI Stamping, ISO 9001:2015, ISO 14001:2015,
-| SMETA, Batam, Jababeka, Cikarang, Kara Industrial Park, ODS DVD, 'mm',
+| SMETA, Batam, Kara Industrial Park, ODS DVD, 'mm',
 | machine makes, URLs, emails and phone numbers. A rename of any of these is a
 | single-line diff in lang/en only.
 |
@@ -53,7 +53,7 @@ return [
                 'heading' => 'Stamping logam presisi, dirancang di Batam',
                 'video' => '/videos/company-profile.mp4',
                 'paragraphs' => [
-                    'PT. Uni-Metaltech Industry (UMI) adalah perusahaan stamping logam presisi yang didirikan pada tahun 2000 di Batam, Indonesia. Pabrik kami berada di Kara Industrial Park, Batam Center, dengan Kantor Penjualan Jakarta di Jababeka Industrial Park yang didirikan pada tahun 2014.',
+                    'PT. Uni-Metaltech Industry (UMI) adalah perusahaan stamping logam presisi yang didirikan pada tahun 2000 di Batam, Indonesia. Pabrik kami berlokasi di Kara Industrial Park, Batam Center.',
                     'Kami memproduksi kontak baterai, perakitan kabel dan terminal kabel, komponen ODS DVD drive, perakitan mekanis, serta komponen logam listrik dan komponen logam lainnya untuk produsen listrik, elektronik, dan otomotif.',
                 ],
             ],
@@ -70,7 +70,7 @@ return [
     'about' => [
         'seo' => [
             'title' => 'Tentang UMI Stamping — PT. Uni-Metaltech Industry',
-            'description' => 'PT. Uni-Metaltech Industry adalah perusahaan stamping logam presisi yang didirikan pada tahun 2000 di Batam, Indonesia, dengan kantor penjualan Jakarta di Jababeka sejak tahun 2014.',
+            'description' => 'PT. Uni-Metaltech Industry adalah perusahaan stamping logam presisi yang didirikan pada tahun 2000 di Batam, Indonesia, dan beroperasi di Kara Industrial Park, Batam Center.',
         ],
         'hero' => [
             'eyebrow' => 'Tentang UMI',
@@ -85,7 +85,7 @@ return [
                 'paragraphs' => [
                     'Pabrik kami berlokasi di Kara Industrial Park, Batam Center — berjarak dekat dari Singapore Batamindo Industrial Park dan International Ferry Terminal.',
                     'Pulau Batam merupakan Kawasan Perdagangan Bebas (Free Trade Zone) dan dianggap sebagai salah satu lokasi manufaktur terbaik di Indonesia untuk produksi berorientasi ekspor. Kami memperoleh manfaat dari keunggulan biaya yang kompetitif di Indonesia sekaligus dukungan tenaga kerja terampil dan respons cepat dari Singapura.',
-                    'Luas pabrik kami sekitar 3.000 m², terdiri atas area produksi, gudang, dan kantor. Kantor Penjualan Jakarta didirikan pada tahun 2014 di Jababeka Industrial Park.',
+                    'Luas pabrik kami sekitar 3.000 m², terdiri atas area produksi, gudang, dan kantor.',
                     'Kami memproduksi berbagai komponen logam khusus untuk pelanggan di industri kelistrikan, elektronik, dan otomotif.',
                     'Dengan pengalaman produksi dan engineer yang terampil, kami mampu melakukan stamping material hingga setipis 0,10 mm dengan tooling presisi tinggi.',
                 ],
@@ -123,7 +123,6 @@ return [
                 'items' => [
                     ['title' => 'Berdiri', 'summary' => 'Didirikan pada tahun 2000 di Batam, Indonesia.', 'specs' => []],
                     ['title' => 'Pabrik', 'summary' => 'Area produksi, gudang, dan kantor seluas sekitar 3.000 m² di Kara Industrial Park, Batam Center.', 'specs' => []],
-                    ['title' => 'Kantor penjualan', 'summary' => 'Kantor perwakilan penjualan Jakarta di Jababeka Industrial Park, didirikan pada tahun 2014.', 'specs' => []],
                     ['title' => 'Kapabilitas', 'summary' => 'Stamping material setipis 0,10 mm, dengan kapasitas pres dari 15 sampai 160 ton.', 'specs' => []],
                 ],
             ],
@@ -512,7 +511,7 @@ return [
     'contact' => [
         'seo' => [
             'title' => 'Kontak — UMI Stamping',
-            'description' => 'Hubungi PT. Uni-Metaltech Industry: pabrik manufaktur Batam dan kantor perwakilan penjualan Jakarta, dengan telepon, faks, dan email.',
+            'description' => 'Hubungi PT. Uni-Metaltech Industry di pabrik Batam melalui telepon, faks, atau email.',
         ],
         'hero' => [
             'eyebrow' => 'Kontak',

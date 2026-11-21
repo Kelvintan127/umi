@@ -14,7 +14,7 @@
 | Provenance: translated from lang/en/pages.php only. No claim, figure,
 | certification, customer or product has been added. Brand tokens (UMI,
 | PT. Uni-Metaltech Industry, ISO 9001:2015, ISO 14001:2015, SMETA, Batam,
-| Jababeka, Cikarang, Kara Industrial Park, ODS DVD, mm units, machine
+| Kara Industrial Park, ODS DVD, mm units, machine
 | makes, certificate identifiers) and all URL paths, emails, phone and fax
 | numbers are carried verbatim.
 |
@@ -46,7 +46,7 @@ return [
                 'heading' => '精密金属冲压，源于 Batam 的工程制造',
                 'video' => '/videos/company-profile.mp4',
                 'paragraphs' => [
-                    'PT. Uni-Metaltech Industry (UMI) 是一家精密金属冲压企业，于 2000 年在印度尼西亚 Batam 注册成立。我们的工厂位于 Batam Center 的 Kara Industrial Park，并于 2014 年在 Jababeka Industrial Park 设立了雅加达销售办事处。',
+                    'PT. Uni-Metaltech Industry (UMI) 是一家精密金属冲压企业，于 2000 年在印度尼西亚 Batam 注册成立。我们的工厂位于 Batam Center 的 Kara Industrial Park。',
                     '我们为电气、电子及汽车制造商生产电池触点、线束与接线端子、ODS DVD 驱动器部件、机械组件，以及电气及其他金属零件。',
                 ],
             ],
@@ -63,7 +63,7 @@ return [
     'about' => [
         'seo' => [
             'title' => '关于 UMI Stamping — PT. Uni-Metaltech Industry',
-            'description' => 'PT. Uni-Metaltech Industry 是一家精密金属冲压企业，于 2000 年在印度尼西亚 Batam 注册成立，自 2014 年起在 Jababeka 设有雅加达销售办事处。',
+            'description' => 'PT. Uni-Metaltech Industry 是一家于 2000 年在印度尼西亚 Batam 成立的精密金属冲压企业，工厂位于 Kara Industrial Park, Batam Center。',
         ],
         'hero' => [
             'eyebrow' => '关于 UMI',
@@ -78,7 +78,7 @@ return [
                 'paragraphs' => [
                     '我们的工厂位于 Batam Center 的 Kara Industrial Park，距离 Singapore Batamindo Industrial Park 与国际渡轮码头不远。',
                     'Batam 岛是自由贸易区，被视为印度尼西亚最佳的出口导向型生产基地之一。我们同时受益于印度尼西亚具竞争力的成本优势，以及新加坡高技能、快速的支持。',
-                    '我们的厂房面积约 3,000 m²，由生产区、仓库区和办公区组成。雅加达销售办事处于 2014 年设立于 Jababeka Industrial Park。',
+                    '我们的厂房面积约 3,000 m²，由生产区、仓库区和办公区组成。',
                     '本公司为电气、电子与汽车行业客户生产多种定制金属零件。',
                     '我们凭借长期生产经验与熟练的工程团队，能够使用精密模具冲压薄至 0.10 mm 的材料。',
                 ],
@@ -116,7 +116,6 @@ return [
                 'items' => [
                     ['title' => '成立时间', 'summary' => '于 2000 年在印度尼西亚 Batam 注册成立。', 'specs' => []],
                     ['title' => '工厂', 'summary' => '位于 Batam Center 的 Kara Industrial Park，生产、仓库与办公面积约 3,000 m²。', 'specs' => []],
-                    ['title' => '销售办事处', 'summary' => '设于 Jababeka Industrial Park 的雅加达销售代表办事处，成立于 2014 年。', 'specs' => []],
                     ['title' => '制造能力', 'summary' => '可冲压薄至 0.10 mm 的材料，冲床能力为 15 至 160 吨。', 'specs' => []],
                 ],
             ],
@@ -505,7 +504,7 @@ return [
     'contact' => [
         'seo' => [
             'title' => '联系我们 — UMI Stamping',
-            'description' => '联系 PT. Uni-Metaltech Industry：Batam 制造工厂与雅加达销售代表办事处，含电话、传真与邮箱。',
+            'description' => '联系 PT. Uni-Metaltech Industry 位于 Batam 的制造工厂，可通过电话、传真或电子邮件咨询。',
         ],
         'hero' => [
             'eyebrow' => '联系我们',

@@ -14,8 +14,6 @@ Legend — `SOURCE` (carried from published material, not re-confirmed) ·
 | Short name | UMI | umistamping.com | SOURCE |
 | Founded | 2000 | umistamping.com | SOURCE |
 | Manufacturing site | Kara Industrial Park Block C 05 No. 01, Batam Center 29432, Kepri, Indonesia | umistamping.com | SOURCE |
-| Sales office | Ruko CBD, Jl. Niaga Raya Block E No. 7, Jababeka 2, Cikarang, Bekasi, Jawa Barat | umistamping.com | SOURCE |
-| Jakarta office opened | 2014 | umistamping.com | SOURCE |
 | Factory floor area | approximately 3,000 m² | umistamping.com | **PENDING** — published figure, not independently verified |
 | Minimum material thickness | 0.10 mm | umistamping.com | SOURCE |
 | Phone / fax | +62 778 464141 / +62 778 464143 | umistamping.com | SOURCE |
