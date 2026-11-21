@@ -33,7 +33,7 @@ The SVG viewBox media component displays exact crop subjects but does not restor
 | Facilities | Single press | AIDA line image, enlarged media/tabs | Original-resolution image |
 | Quality | Headless PDF preview blank | Approved reference previews plus original PDF links | Compressed reference crops; current certification validity unverified |
 | Footer | Compressed | Increased CTA/footer spacing | Visual sign-off |
-| Contact map | Blank iframe in isolated CI | Clickable reference map | Embedded provider only for Jakarta |
+| Contact map | Blank iframe in isolated CI | Clickable reference map | Interactive map available for Batam factory |
 | RFQ upload | No backend support | Explicit email handoff | Secure CAD/PDF attachment pipeline |
 
 ## Verified baseline evidence

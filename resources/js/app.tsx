@@ -11,6 +11,17 @@ import { createRoot } from "react-dom/client";
 import type { ReactNode } from "react";
 
 createInertiaApp({
+  // Navigation transitions apply to GET visits, not RFQ POST submissions.
+  // Inertia v2.3 uses the native View Transitions API where supported and
+  // gracefully falls back in other browsers.
+  defaults: {
+    visitOptions: (_href, options) => ({
+      viewTransition: (options.method ?? "get").toString().toLowerCase() === "get"
+        && (typeof window === "undefined"
+          || !window.matchMedia("(prefers-reduced-motion: reduce)").matches),
+    }),
+  },
+  progress: { color: "#d71920", showSpinner: false },
   resolve: (name: string) => {
     const pages = import.meta.glob("./pages/**/*.tsx", { eager: true });
     const module = pages[`./pages/${name}.tsx`] as { default: () => ReactNode } | undefined;

@@ -254,11 +254,6 @@ final class PageProps
                     'name' => $contact['batam']['label'] ?? null,
                     'address' => implode(', ', $contact['batam']['lines'] ?? []),
                 ],
-                [
-                    '@type' => 'Place',
-                    'name' => $contact['jakarta']['label'] ?? null,
-                    'address' => implode(', ', $contact['jakarta']['lines'] ?? []),
-                ],
             ],
             'mainEntityOfPage' => $canonical,
         ];
