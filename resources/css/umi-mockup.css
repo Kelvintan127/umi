@@ -192,3 +192,142 @@
     font-size: clamp(1.7rem, 2.25vw, 2.4rem);
   }
 }
+
+
+/* =============================================================
+   Interior page design system: shared with the Home/Contact
+   white/navy/red editorial visual grammar. All styles are scoped
+   to .umi-interior and never change Home, Contact or the backend.
+   ============================================================= */
+.umi-mockup .umi-interior {
+  --umi-interior-navy:#071522;
+  --umi-interior-red:#d71920;
+  --umi-interior-muted:#506273;
+  --umi-interior-cream:#f4f6f8;
+}
+.umi-mockup .umi-interior-hero {
+  isolation:isolate;
+  background-color:var(--umi-interior-navy);
+  background-image:
+    linear-gradient(rgba(255,255,255,.052) 1px,transparent 1px),
+    linear-gradient(90deg,rgba(255,255,255,.052) 1px,transparent 1px);
+  background-size:53px 53px;
+}
+.umi-mockup .umi-interior-hero-title {
+  font-family:var(--font-sans),Inter,Arial,sans-serif;
+  text-wrap:balance;
+}
+.umi-mockup .umi-interior .umi-content-band {
+  padding-block:clamp(3.25rem,5vw,4.75rem);
+}
+.umi-mockup .umi-interior .umi-content-section-heading {
+  max-width:60rem;
+}
+.umi-mockup .umi-interior .umi-content-section-heading h2 {
+  font-size:clamp(2.15rem,3.45vw,3.6rem);
+  line-height:1.055;
+  font-weight:900;
+  letter-spacing:-.052em;
+  margin-top:0;
+}
+.umi-mockup .umi-interior .umi-content-section-heading h2+span {
+  width:44px;
+  height:4px;
+  margin-top:14px;
+}
+.umi-mockup .umi-interior .umi-content-band.bg-ink {
+  background-color:#071522;
+}
+.umi-mockup .umi-interior .umi-content-band.bg-band-light {
+  background-color:#f3f5f6;
+}
+.umi-mockup .umi-interior .umi-content-band .text-ink\/60 {
+  color:#506273;
+}
+.umi-mockup .umi-interior .umi-content-band .text-ink\/70 {
+  color:#44586b;
+}
+.umi-mockup .umi-interior .umi-content-band .text-ink\/75 {
+  color:#405367;
+}
+.umi-mockup .umi-interior .umi-content-band .text-white\/60 {
+  color:rgba(255,255,255,.78);
+}
+.umi-mockup .umi-interior .umi-content-band p {
+  text-wrap:pretty;
+}
+.umi-mockup .umi-interior .umi-content-band [class*="border-ink/10"] {
+  border-color:#dfe5eb;
+}
+.umi-mockup .umi-interior .umi-content-band :is(a,button):focus-visible {
+  outline:3px solid #d71920;
+  outline-offset:3px;
+}
+.umi-mockup .umi-interior :is(.umi-interior-cards,.umi-interior-facility-list) {
+  margin-top:clamp(1.5rem,3vw,2.6rem);
+}
+.umi-mockup .umi-interior :is(.umi-interior-card,.umi-interior-spec-item) {
+  border:1px solid #dce3e9;
+  border-radius:5px;
+  overflow:hidden;
+  box-shadow:0 5px 18px rgba(7,21,34,.045);
+}
+.umi-mockup .umi-interior .umi-interior-card h3 {
+  font-size:clamp(1.2rem,1.45vw,1.45rem);
+  line-height:1.16;
+  font-weight:800;
+  letter-spacing:-.03em;
+}
+.umi-mockup .umi-interior .umi-interior-card p {
+  font-size:clamp(.95rem,1vw,1.06rem);
+  line-height:1.55;
+}
+.umi-mockup .umi-interior .umi-interior-spec-item h3 {
+  font-size:clamp(1.5rem,2.05vw,2.2rem);
+  line-height:1.16;
+  font-weight:900;
+  letter-spacing:-.035em;
+}
+.umi-mockup .umi-interior .umi-interior-spec-item :is(p,li) {
+  font-size:clamp(.95rem,1.04vw,1.075rem);
+  line-height:1.5;
+}
+.umi-mockup .umi-interior .umi-interior-cta {
+  background:#071522;
+}
+.umi-mockup .umi-interior .umi-interior-cta h2 {
+  font-size:clamp(2rem,3.5vw,3.4rem);
+  font-weight:900;
+  letter-spacing:-.05em;
+  line-height:1.06;
+}
+.umi-mockup .umi-interior .umi-interior-card img {
+  transition:transform .45s ease;
+}
+.umi-mockup .umi-interior .umi-interior-card:hover img {
+  transform:scale(1.035);
+}
+.umi-mockup .umi-interior .umi-interior-certificate {
+  background:white;
+  border:1px solid #dae1e7;
+  border-radius:5px;
+  overflow:hidden;
+}
+.umi-mockup .umi-interior .umi-interior-certificate img {
+  display:block;
+  max-height:400px;
+  width:100%;
+  object-fit:contain;
+  background:#f8fafb;
+}
+.umi-mockup .umi-interior .umi-content-band a {
+  text-underline-offset:3px;
+}
+@media (max-width:767px) {
+  .umi-mockup .umi-interior-hero-title { text-wrap:pretty; }
+  .umi-mockup .umi-interior .umi-content-band { padding-block:3rem; }
+  .umi-mockup .umi-interior .umi-content-section-heading h2 { font-size:clamp(2rem,8vw,2.65rem); }
+}
+@media (prefers-reduced-motion:reduce) {
+  .umi-mockup .umi-interior .umi-interior-card img { transition:none; }
+}

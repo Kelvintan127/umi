@@ -39,7 +39,7 @@ export function Band({
     <Tag
       id={id}
       aria-labelledby={ariaLabelledBy}
-      className={cn("py-20 md:py-28", tones[tone], className)}
+      className={cn("umi-content-band py-20 md:py-28", tones[tone], className)}
     >
       <Container>
         <div
@@ -76,7 +76,7 @@ export function SectionHeading({
   if (!title && !lead) return null;
 
   return (
-    <div className={cn("max-w-3xl", align === "center" && "mx-auto text-center")}>
+    <div className={cn("umi-content-section-heading max-w-3xl", align === "center" && "mx-auto text-center")}>
       {eyebrow ? (
         <div className="flex items-center gap-3">
           <span aria-hidden="true" className="h-px w-8 bg-red" />
