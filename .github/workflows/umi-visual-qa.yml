@@ -2,7 +2,7 @@ name: UMI real-app visual QA
 
 on:
   push:
-    branches: [feat/umi-mockup-redesign-20261120, feat/umi-fidelity-assets-rfq-20261120, feat/umi-pixel-fidelity-ruler-facilities-20261120]
+    branches: [feat/umi-mockup-redesign-20261120, feat/umi-fidelity-assets-rfq-20261120, feat/umi-pixel-fidelity-ruler-facilities-20261120, feat/umi-unified-interior-pages-20261121]
   workflow_dispatch:
 
 permissions:
@@ -235,6 +235,10 @@ jobs:
               "CAD upload backend and final certification-status verification remain unresolved.\n"
           )
           PY
+      - name: Capture all interior routes and validate shared design system
+        run: |
+          php -r 'require "vendor/autoload.php"; echo json_encode(array_values(array_map(static fn ($row) => $row["path"], \App\Support\Pages::REGISTRY)), JSON_UNESCAPED_SLASHES);' > visual-qa/public-routes.json
+          node scripts/visual-qa-interior.mjs visual-qa/public-routes.json
       - name: Run Laravel tests
         if: always()
         env:
