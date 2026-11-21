@@ -103,7 +103,7 @@ return [
             [
                 'type' => 'prose',
                 'heading' => '关于我们',
-                'image' => '/images/about/factory.jpg',
+                'image' => '/images/hero/factory.jpg',
                 'paragraphs' => [
                     'PT. UNI METALTECH INDUSTRY (UMI) 是一家精密金属冲压企业，于 2000 年在印度尼西亚 Batam 注册成立，位于 Batam Center 的 Kara Industrial Park。',
                     '本公司生产多种定制金属零件，为电气、电子及汽车行业的领先制造商提供支持。这些金属零件应用于电池组及应用、接线端子、音响系统、称重系统与声响报警装置等产品。',
@@ -223,7 +223,7 @@ return [
             [
                 'type' => 'prose',
                 'heading' => '应用',
-                'image' => '/images/products/battery-contacts.jpg',
+                'image' => '/images/products/assorted-precision-metal-stamping-parts.png',
                 'paragraphs' => [
                     '电池触点由带材冲压而成，满足其所配套的电池组或设备在尺寸与接触电阻方面的要求。',
                     '典型应用包括电池组与便携式电子设备，其中触点的几何形状与材料选择同时决定电气性能与循环寿命。',
@@ -247,7 +247,7 @@ return [
             [
                 'type' => 'prose',
                 'heading' => '应用',
-                'image' => '/images/products/wire-harnessing.jpg',
+                'image' => '/images/products/precision-metal-bar-assembly.png',
                 'paragraphs' => [
                     'UMI 为电气与汽车行业的线束加工应用冲压接线端子。',
                     '端子零件为厂内生产，当项目需要组装成件时，可结合攻牙、铆合与点焊等二次加工。',
@@ -271,7 +271,7 @@ return [
             [
                 'type' => 'prose',
                 'heading' => '应用',
-                'image' => '/images/products/ods-dvd-drive.jpg',
+                'image' => '/images/products/black-coated-sheet-metal-panel-assembly.png',
                 'paragraphs' => [
                     '光盘驱动器组件使用冲压金属零部件，其平面度、尺寸精度与表面状态会影响驱动机构的运动。',
                     '这些零件采用连续模生产，并使用我们生产设施章节所述的测量设备进行验证。',
@@ -296,7 +296,7 @@ return [
             [
                 'type' => 'prose',
                 'heading' => '厂内二次加工',
-                'image' => '/images/products/mechanical-assembly.jpg',
+                'image' => '/images/products/black-coated-sheet-metal-panel-assembly.png',
                 'paragraphs' => [
                     '攻牙、铆合与点焊等增值服务由厂内提供，为客户带来更全面的服务。',
                 ],
@@ -328,7 +328,7 @@ return [
             [
                 'type' => 'prose',
                 'heading' => '应用',
-                'image' => '/images/products/electrical-metal-parts.jpg',
+                'image' => '/images/products/formed-steel-mounting-plate.png',
                 'paragraphs' => [
                     'UMI 生产范围广泛的电气与电子应用定制金属零件，大多按具体项目需求定制。',
                     '应用包括计算机、打印机、电话、微型断路器（MCB）、电源、照明设备与 UPS 产品。',
