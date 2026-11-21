@@ -331,3 +331,85 @@
 @media (prefers-reduced-motion:reduce) {
   .umi-mockup .umi-interior .umi-interior-card img { transition:none; }
 }
+
+
+/* Navigation: native Inertia View Transitions. All routes share a small, calm
+ * crossfade with 8px motion. No third-party animation runtime is required. */
+@keyframes umi-route-out {
+  to { opacity: 0; transform: translateY(-5px); }
+}
+@keyframes umi-route-in {
+  from { opacity: 0; transform: translateY(9px); }
+  to { opacity: 1; transform: translateY(0); }
+}
+@keyframes umi-panel-appear {
+  from { opacity: 0; transform: translateY(10px); }
+  to { opacity: 1; transform: translateY(0); }
+}
+@media (prefers-reduced-motion: no-preference) {
+  ::view-transition-old(root) {
+    animation: 145ms cubic-bezier(.4,0,1,1) both umi-route-out;
+  }
+  ::view-transition-new(root) {
+    animation: 260ms cubic-bezier(.2,.72,.18,1) both umi-route-in;
+  }
+  .umi-mockup .umi-panel-enter {
+    animation: umi-panel-appear 280ms cubic-bezier(.22,1,.36,1) both;
+  }
+  .umi-mockup .umi-nav-link::after {
+    transition: width 200ms ease, opacity 200ms ease, background-color 200ms ease;
+  }
+  .umi-mockup .umi-mobile-drawer {
+    max-height:0;
+    opacity:0;
+    overflow:hidden;
+    pointer-events:none;
+    transition:max-height 290ms cubic-bezier(.22,1,.36,1),opacity 220ms ease;
+  }
+  .umi-mockup .umi-mobile-drawer.is-open {
+    max-height:680px;
+    opacity:1;
+    pointer-events:auto;
+  }
+  .umi-mockup .umi-menu-toggle svg {
+    transition:transform 230ms cubic-bezier(.22,1,.36,1);
+  }
+  .umi-mockup .umi-menu-toggle:hover svg { transform:rotate(7deg); }
+  .umi-mockup .umi-btn-red {
+    transition:background-color 220ms ease,transform 220ms cubic-bezier(.22,1,.36,1),box-shadow 220ms ease;
+  }
+  .umi-mockup .umi-btn-red:hover {
+    box-shadow:0 6px 19px rgba(215,25,32,.2);
+  }
+  .umi-mockup .umi-interior-card,
+  .umi-mockup .umi-interior-spec-item {
+    transition:border-color 240ms ease,box-shadow 240ms ease,transform 240ms cubic-bezier(.22,1,.36,1);
+  }
+  .umi-mockup .umi-interior-card:hover {
+    transform:translateY(-3px);
+    box-shadow:0 10px 28px rgba(7,21,34,.085);
+  }
+  .umi-mockup .umi-facility-tab {
+    transition:background-color 220ms ease,border-color 220ms ease,color 220ms ease;
+  }
+  .umi-mockup .umi-ruler-active {
+    transition:transform 280ms cubic-bezier(.22,1,.36,1);
+  }
+}
+@media (prefers-reduced-motion: reduce) {
+  ::view-transition-old(root),
+  ::view-transition-new(root) { animation:none !important; }
+  .umi-mockup .umi-mobile-drawer {
+    transition:none;
+    max-height:0;
+    opacity:0;
+    overflow:hidden;
+    pointer-events:none;
+  }
+  .umi-mockup .umi-mobile-drawer.is-open {
+    max-height:none;
+    opacity:1;
+    pointer-events:auto;
+  }
+  .umi-mockup .umi-panel-enter { animation:none; }
+}

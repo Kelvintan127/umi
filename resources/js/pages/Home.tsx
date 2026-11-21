@@ -216,8 +216,8 @@ export default function Home() {
         </div>
         <EngineeringRuler variant="facilities" activeIndex={activeFacility} height={32}
           color="#dfe7ed" background="#071522" className="border-b border-white/15" />
-        {selected && <div id="umi-facility-panel" role="tabpanel" aria-labelledby={"umi-facility-tab-" + activeFacility}
-          className="umi-facility-panel mt-5 grid items-start gap-6 lg:grid-cols-[minmax(0,1.62fr)_minmax(0,1fr)]">
+        {selected && <div key={activeFacility} id="umi-facility-panel" role="tabpanel" aria-labelledby={"umi-facility-tab-" + activeFacility}
+          className="umi-facility-panel umi-panel-enter mt-5 grid items-start gap-6 lg:grid-cols-[minmax(0,1.62fr)_minmax(0,1fr)]">
           <div className="overflow-hidden rounded-md">
             {activeFacility === 0
               ? <MockupCrop crop="production-line" alt="Approved AIDA and SEYI production press line"

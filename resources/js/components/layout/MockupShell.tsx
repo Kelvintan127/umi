@@ -10,7 +10,6 @@ export function MockupShell({ active, children }: { active: string; children: Re
   const { chrome, locale, content } = usePage<PageProps>().props;
   const [mobileOpen, setMobileOpen] = useState(false);
   const contact = content.blocks.contact;
-  const jakartaOffice = (contact as typeof contact & { jakarta?: { label: string; lines: string[] } }).jakarta;
 
   useEffect(() => {
     setMobileOpen(false);
@@ -39,7 +38,7 @@ export function MockupShell({ active, children }: { active: string; children: Re
             {chrome.nav.map((item) => (
               <Link key={item.key} href={siteLink(locale, item.path)}
                 aria-current={active === item.key ? "page" : undefined}
-                className={"relative whitespace-nowrap py-7 text-xs font-bold transition-colors hover:text-[#d71920] 2xl:text-sm " +
+                className={"umi-nav-link relative whitespace-nowrap py-7 text-xs font-bold transition-colors hover:text-[#d71920] 2xl:text-sm " +
                   (active === item.key ? "text-[#d71920] after:absolute after:bottom-0 after:left-0 after:h-1 after:w-full after:bg-[#d71920]" : "text-[#071522]")}>
                 {item.label}
               </Link>
@@ -58,18 +57,21 @@ export function MockupShell({ active, children }: { active: string; children: Re
                 </span>
               ))}
             </nav>
-            <Link href={siteLink(locale, "contact")} className="hidden shrink-0 items-center gap-2 rounded bg-[#d71920] px-4 py-3 text-xs font-bold text-white transition-colors hover:bg-[#b9151b] lg:flex">
+            <Link href={siteLink(locale, "contact")} className="umi-btn-red hidden shrink-0 items-center gap-2 rounded bg-[#d71920] px-4 py-3 text-xs font-bold text-white transition-colors hover:bg-[#b9151b] lg:flex">
               {chrome.cta.quote}<ArrowUpRight size={15} aria-hidden="true" />
             </Link>
-            <button type="button" className="flex h-11 w-11 items-center justify-center text-[#071522] xl:hidden"
+            <button type="button" className="umi-menu-toggle flex h-11 w-11 items-center justify-center text-[#071522] xl:hidden"
               aria-label={mobileOpen ? chrome.aria.close : chrome.aria.open} aria-controls="umi-mobile-nav"
               aria-expanded={mobileOpen} onClick={() => setMobileOpen(!mobileOpen)}>
               {mobileOpen ? <X size={26} /> : <Menu size={26} />}
             </button>
           </div>
         </div>
-        {mobileOpen && <nav id="umi-mobile-nav" aria-label="Mobile navigation" className="border-t border-[#e3e8ec] bg-white px-6 py-5 xl:hidden">
-          <div className="mx-auto flex max-w-[1400px] flex-col">
+        <nav id="umi-mobile-nav" aria-label="Mobile navigation"
+          aria-hidden={!mobileOpen} inert={!mobileOpen}
+          data-open={mobileOpen ? "true" : "false"}
+          className={"umi-mobile-drawer border-t border-[#e3e8ec] bg-white xl:hidden " + (mobileOpen ? "is-open" : "")}>
+          <div className="umi-mobile-drawer-inner mx-auto flex max-w-[1400px] flex-col px-6 py-5">
             {chrome.nav.map(item => <Link key={item.key} href={siteLink(locale, item.path)} onClick={() => setMobileOpen(false)}
               aria-current={active === item.key ? "page" : undefined}
               className="flex items-center justify-between border-b border-[#edf0f2] py-3 text-sm font-semibold">
@@ -81,16 +83,18 @@ export function MockupShell({ active, children }: { active: string; children: Re
                   className={language.current ? "text-sm font-bold text-[#d71920]" : "text-sm font-medium text-[#506070]"}>{language.code.toUpperCase()}</Link>)}
             </div>
           </div>
-        </nav>}
+        </nav>
       </header>
       <main id="main">{children}</main>
       <footer className="bg-[#f8fafb]">
-        <div className="mx-auto grid max-w-[1400px] gap-7 px-5 py-7 sm:px-8 md:grid-cols-2 xl:grid-cols-4 xl:px-10">
+        <div className="mx-auto grid max-w-[1400px] gap-7 px-5 py-9 sm:px-8 md:grid-cols-2 xl:grid-cols-4 xl:px-10">
           <div className="flex items-start gap-3"><img src="/images/logo.png" alt="" className="h-14 w-14 object-contain" />
             <b className="pt-2 text-xs font-black leading-4">PT. UNI-METALTECH<br/>INDUSTRY (UMI)</b></div>
-          <div><h2 className="text-sm font-bold">Batam Factory</h2>
+          <div><h2 className="text-sm font-bold">{locale === "id" ? "Pabrik Batam" : locale === "zh" ? "巴淡工厂" : "Batam Factory"}</h2>
             <p className="mt-2 text-xs leading-5 text-[#506070]">{contact.batam.lines.join(", ")}</p></div>
-          <div><h2 className="text-sm font-bold">Sales Office</h2><p className="mt-3 text-sm leading-6 text-[#506070]">{jakartaOffice?.lines.join(", ") ?? "Jababeka Industrial Park, Indonesia"}</p></div>
+          <div><h2 className="text-sm font-bold">{locale === "id" ? "Hubungi Kami" : locale === "zh" ? "联系方式" : "Contact"}</h2>
+            <a href={"tel:" + contact.phone.replace(/\\s/g,"")} className="mt-2 block text-xs leading-5 text-[#506070] hover:text-[#d71920]">{contact.phone}</a>
+            <a href={"mailto:" + contact.email} className="mt-1 block break-all text-xs leading-5 text-[#506070] hover:text-[#d71920]">{contact.email}</a></div>
           <div><h2 className="text-sm font-bold">Quick Links</h2><div className="mt-2 grid grid-cols-2 gap-1.5">
             {chrome.nav.map(item => <Link key={item.key} href={siteLink(locale, item.path)} className="text-xs text-[#506070] hover:text-[#d71920]">{item.label}</Link>)}
           </div></div>
