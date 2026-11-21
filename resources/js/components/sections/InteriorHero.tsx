@@ -77,8 +77,8 @@ export function InteriorHero({
             <path d="M132 50V29H354V50M132 29H354M375 105H400V212H375M120 104H90V212H120"/>
             <path opacity=".7" d="M207 60H278 M207 244H278 M64 152H110 M379 152H421"/>
             <g fill="currentColor" stroke="none" fontFamily="Inter,Arial,sans-serif" fontWeight="700" fontSize="12">
-              <text x="212" y="21">R 24.50</text>
-              <text x="401" y="166" transform="rotate(90 401 166)">± 0.10</text>
+              <text x="212" y="21">TECHNICAL / REF</text>
+              <text x="401" y="166" transform="rotate(90 401 166)">NOT TO SCALE</text>
               <text x="69" y="67">UMI / {pageIndex}</text>
               <text x="319" y="274">DRAWING REF.</text>
             </g>
