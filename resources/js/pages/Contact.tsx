@@ -164,15 +164,14 @@ export default function Contact() {
   const props = usePage<PageProps>().props;
   const { locale, seo, htmlLang, content } = props;
   const { contact } = content.blocks;
-  const [location, setLocation] = useState(0);
   const [interactiveBatamMap, setInteractiveBatamMap] = useState(false);
   const primary = contact.batam;
-  const secondary = (contact as typeof contact & { jakarta?: {label: string; lines: string[]; map?: string} }).jakarta;
-  const locations = [
-    { label: primary.label, address: primary.lines.join(", "), map: primary.map, query: "Kara Industrial Park Batam Center Indonesia" },
-    { label: secondary?.label ?? "Jakarta Sales Office", address: secondary?.lines.join(", ") ?? "Jababeka Industrial Park, Indonesia", map: secondary?.map, query: "Jababeka Industrial Park Cikarang Indonesia" },
-  ];
-  const selected = locations[location];
+  const selected = {
+    label: primary.label,
+    address: primary.lines.join(", "),
+    map: primary.map,
+    query: "Kara Industrial Park Batam Center Indonesia",
+  };
   const mapSearch = "https://www.google.com/maps/search/?api=1&query=" + encodeURIComponent(selected.query);
   const headline = locale === "id" ? "Ada komponen yang ingin diproduksi?" : locale === "zh" ? "有零件需要生产？" : "Have a part to manufacture?";
   const intro = locale === "id" ? "Kirim kebutuhan dan gambar teknik Anda. Tim kami akan meninjau kelayakan, tooling, dan harga." : locale === "zh" ? "向我们发送图纸和要求。我们的团队将评估可制造性、模具及报价。" : "Send us your requirements. Our team will review feasibility, tooling and pricing.";
@@ -213,10 +212,6 @@ export default function Contact() {
             <a href={primary.map || mapSearch} rel="noopener noreferrer" target="_blank" className="mt-5 inline-flex items-center gap-2 text-sm font-black text-[#f44850]">Get directions <ArrowRight size={16}/></a>
           </section>
           <section className="rounded-lg border border-[#d8e0e7] p-6"><div className="umi-mark"/>
-            <p className="text-xs font-bold uppercase text-[#d71920]">Sales office</p>
-            <h2 className="mt-2 text-xl font-black">{locations[1].label}</h2>
-            <p className="mt-4 flex items-start gap-3 text-sm leading-6 text-[#596a7b]"><MapPin size={18}/>{locations[1].address}</p></section>
-          <section className="rounded-lg border border-[#d8e0e7] p-6"><div className="umi-mark"/>
             <h2 className="text-xl font-black">Office hours</h2><p className="mt-4 flex items-center gap-3 text-sm text-[#596a7b]"><Clock3 size={18}/>Contact the office to confirm visiting hours</p></section>
           <section className="rounded-lg border border-[#d8e0e7] p-6"><div className="umi-mark"/>
             <h2 className="text-xl font-black">Certified</h2><p className="mt-4 flex items-center gap-3 text-sm text-[#596a7b]"><ShieldCheck size={18}/>ISO 9001:2015 · ISO 14001:2015</p>
@@ -224,54 +219,56 @@ export default function Contact() {
         </aside>
       </div>
     </section>
-    <section className="bg-[#f6f8fa] py-7 lg:py-7"><div className="mx-auto max-w-[1400px] px-5 sm:px-8 xl:px-10">
-      <div className="flex flex-wrap items-end justify-between gap-6"><div><div className="umi-mark"/><h2 className="umi-heading">Find us</h2>
-        <p className="mt-2 text-sm text-[#566578]">Batam Factory and Jakarta Sales Office.</p></div>
-        <div className="flex border-b border-[#cbd5df]" role="tablist" aria-label="Office locations">
-          {locations.map((item, index) => <button type="button" role="tab" aria-controls="umi-map-panel" aria-selected={location === index} key={index}
-            onClick={() => setLocation(index)} className={"px-4 py-3 text-sm font-bold " + (location === index ? "border-b-4 border-[#d71920] text-[#d71920]" : "text-[#5c6a77]")}>
-            {String(index + 1).padStart(2, "0")} {item.label}</button>)}
+    <section className="bg-[#f6f8fa] py-7 lg:py-7">
+      <div className="mx-auto max-w-[1400px] px-5 sm:px-8 xl:px-10">
+        <div className="flex flex-wrap items-end justify-between gap-5">
+          <div><div className="umi-mark"/>
+            <h2 className="umi-heading">{locale === "id" ? "Temukan Kami" : locale === "zh" ? "联系我们的位置" : "Find us"}</h2>
+            <p className="mt-2 text-sm text-[#566578]">
+              {locale === "id" ? "Pabrik dan kantor pusat UMI di Batam, Kepulauan Riau."
+                : locale === "zh" ? "UMI 位于廖内群岛巴淡岛的工厂和总部。"
+                : "UMI manufacturing factory and headquarters in Batam, Indonesia."}
+            </p>
+          </div>
+          <a href={selected.map || mapSearch} target="_blank" rel="noopener noreferrer"
+            className="umi-btn-red inline-flex items-center gap-2 rounded px-4 py-3 text-xs font-extrabold text-white">
+            {locale === "id" ? "Petunjuk Arah" : locale === "zh" ? "查看路线" : "Get directions"}
+            <ArrowUpRight size={16} aria-hidden="true"/>
+          </a>
+        </div>
+        <div className="relative mt-6 overflow-hidden rounded-lg border border-[#ccd6de] bg-[#dce6eb]">
+          <div className="relative h-[290px] w-full sm:h-[340px]" role="region" aria-label={selected.label}>
+            {interactiveBatamMap ? (
+              <div key="interactive" className="umi-map-stage relative h-full w-full">
+                <iframe title="Interactive Batam factory location map" loading="lazy"
+                  referrerPolicy="no-referrer-when-downgrade"
+                  src={"https://maps.google.com/maps?q=" + encodeURIComponent(selected.query) + "&z=14&output=embed"}
+                  className="h-full w-full border-0"/>
+                <button type="button" onClick={() => setInteractiveBatamMap(false)}
+                  className="absolute bottom-4 right-4 rounded bg-white px-4 py-2 text-xs font-bold text-[#071522] shadow-lg">
+                  {locale === "id" ? "Tampilan awal" : locale === "zh" ? "地图预览" : "Reference view"}
+                </button>
+              </div>
+            ) : (
+              <div key="reference" className="umi-map-stage relative h-full w-full">
+                <a href={selected.map || mapSearch} target="_blank" rel="noopener noreferrer"
+                  aria-label="Open Batam factory location in Google Maps" className="block h-full w-full">
+                  <MockupCrop crop="batam-map" alt="UMI factory location at Kara Industrial Park, Batam" className="h-full w-full" />
+                </a>
+                <button type="button" onClick={() => setInteractiveBatamMap(true)}
+                  className="absolute bottom-4 right-4 rounded bg-white px-4 py-2 text-xs font-bold text-[#071522] shadow-lg hover:bg-[#eaf0f4]">
+                  {locale === "id" ? "Jelajahi peta interaktif" : locale === "zh" ? "查看互动地图" : "Explore interactive map"}
+                </button>
+              </div>
+            )}
+          </div>
+          <div className="flex flex-wrap items-center gap-x-5 gap-y-2 bg-white px-5 py-3 text-xs font-semibold text-[#445568]">
+            <span className="flex items-center gap-2"><MapPin size={15} className="text-[#d71920]"/>{selected.label}</span>
+            <span>{selected.address}</span>
+          </div>
         </div>
       </div>
-      <div id="umi-map-panel" role="tabpanel" className="relative mt-7 h-[290px] overflow-hidden rounded-lg border border-[#ccd6de] bg-[#dce6eb] sm:h-[340px]">
-        {location === 0 ? (
-          interactiveBatamMap ? (
-            <div className="relative h-full w-full">
-              <iframe title="Interactive Batam factory location map" loading="lazy" referrerPolicy="no-referrer-when-downgrade"
-                src={"https://maps.google.com/maps?q=" + encodeURIComponent(selected.query) + "&z=14&output=embed"}
-                className="h-full w-full border-0" />
-              <button type="button" onClick={() => setInteractiveBatamMap(false)}
-                className="absolute bottom-4 right-4 rounded bg-white px-4 py-2 text-xs font-bold text-[#071522] shadow-lg">
-                Reference view
-              </button>
-            </div>
-          ) : (
-            <div className="relative h-full w-full">
-              <a href={selected.map || mapSearch} target="_blank" rel="noopener noreferrer"
-                aria-label="Open Batam factory map in Google Maps" className="block h-full w-full">
-                <MockupCrop crop="batam-map" alt="Approved Batam factory map at Kara Industrial Park" className="h-full w-full" />
-              </a>
-              <button type="button" onClick={() => setInteractiveBatamMap(true)}
-                className="absolute bottom-4 right-4 rounded bg-white px-4 py-2 text-xs font-bold text-[#071522] shadow-lg hover:bg-[#eaf0f4]">
-                Explore interactive map
-              </button>
-            </div>
-          )
-        ) : (
-          <>
-            <iframe key={selected.query} title={selected.label + " map"} loading="lazy" referrerPolicy="no-referrer-when-downgrade"
-              src={"https://maps.google.com/maps?q=" + encodeURIComponent(selected.query) + "&z=13&output=embed"} className="h-full w-full border-0"/>
-            <div className="absolute bottom-5 left-5 max-w-[330px] rounded-lg bg-white/95 p-5 shadow-lg backdrop-blur">
-              <p className="text-xs font-black uppercase tracking-widest text-[#d71920]">Sales Office</p>
-              <h3 className="mt-1 text-lg font-black">{selected.label}</h3>
-              <p className="mt-3 flex items-start gap-2 text-xs leading-5 text-[#536171]"><MapPin size={16} className="shrink-0"/>{selected.address}</p>
-              <a href={selected.map || mapSearch} target="_blank" rel="noopener noreferrer"
-                className="umi-btn-red mt-4 inline-flex items-center gap-2 rounded px-4 py-3 text-xs font-bold text-white">Get directions<ArrowUpRight size={16}/></a>
-            </div>
-          </>
-        )}
-      </div>
-    </div></section>
+    </section>
     <section className="border-y border-[#dce3ea] bg-[#f5f7f9] py-9">
       <div className="mx-auto grid max-w-[1400px] gap-6 px-5 sm:px-8 md:grid-cols-3 xl:px-10">
         {[

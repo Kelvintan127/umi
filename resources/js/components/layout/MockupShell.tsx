@@ -93,7 +93,7 @@ export function MockupShell({ active, children }: { active: string; children: Re
           <div><h2 className="text-sm font-bold">{locale === "id" ? "Pabrik Batam" : locale === "zh" ? "巴淡工厂" : "Batam Factory"}</h2>
             <p className="mt-2 text-xs leading-5 text-[#506070]">{contact.batam.lines.join(", ")}</p></div>
           <div><h2 className="text-sm font-bold">{locale === "id" ? "Hubungi Kami" : locale === "zh" ? "联系方式" : "Contact"}</h2>
-            <a href={"tel:" + contact.phone.replace(/\\s/g,"")} className="mt-2 block text-xs leading-5 text-[#506070] hover:text-[#d71920]">{contact.phone}</a>
+            <a href={"tel:" + contact.phone.replace(/\s/g,"")} className="mt-2 block text-xs leading-5 text-[#506070] hover:text-[#d71920]">{contact.phone}</a>
             <a href={"mailto:" + contact.email} className="mt-1 block break-all text-xs leading-5 text-[#506070] hover:text-[#d71920]">{contact.email}</a></div>
           <div><h2 className="text-sm font-bold">Quick Links</h2><div className="mt-2 grid grid-cols-2 gap-1.5">
             {chrome.nav.map(item => <Link key={item.key} href={siteLink(locale, item.path)} className="text-xs text-[#506070] hover:text-[#d71920]">{item.label}</Link>)}

@@ -413,3 +413,9 @@
   }
   .umi-mockup .umi-panel-enter { animation:none; }
 }
+
+@media (prefers-reduced-motion: no-preference) {
+  .umi-mockup .umi-map-stage {
+    animation: umi-panel-appear 260ms cubic-bezier(.22,1,.36,1) both;
+  }
+}
