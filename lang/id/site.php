@@ -142,22 +142,22 @@ return [
         [
             'title' => 'Otomotif',
             'description' => 'Komponen dan rakitan presisi yang dirancang untuk aplikasi otomotif yang menuntut, tempat konsistensi, daya tahan, dan akurasi dimensi menjadi hal kritis.',
-            'image' => '/images/industries/automotive.jpg',
+            'image' => '/images/products/formed-sheet-metal-mounting-bracket.png',
         ],
         [
             'title' => 'Elektronik',
             'description' => 'Komponen presisi tinggi yang diproduksi untuk aplikasi elektronik yang memerlukan toleransi ketat, konsistensi, dan kinerja produksi yang andal.',
-            'image' => '/images/industries/electronics.jpg',
+            'image' => '/images/products/assorted-precision-metal-stamping-parts.png',
         ],
         [
             'title' => 'Industri',
             'description' => 'Solusi manufaktur yang kokoh untuk aplikasi industri, memadukan keahlian rekayasa dengan produksi yang konsisten dan dapat diskalakan.',
-            'image' => '/images/industries/industrial.jpg',
+            'image' => '/images/facilities/sni-110-mechanical-stamping-press.png',
         ],
         [
             'title' => 'Konsumen',
             'description' => 'Komponen dan rakitan logam yang andal untuk produk konsumen, tempat desain, presisi, dan efisiensi manufaktur berpadu.',
-            'image' => '/images/industries/consumer.jpg',
+            'image' => '/images/products/black-coated-sheet-metal-panel-assembly.png',
         ],
     ],
 
@@ -330,10 +330,10 @@ return [
     ],
 
     'gallery' => [
-        ['title' => 'Lantai produksi', 'label' => 'Lingkungan produksi', 'image' => '/images/gallery/factory-01.jpg'],
-        ['title' => 'Mesin presisi', 'label' => 'Peralatan produksi', 'image' => '/images/gallery/machine-01.jpg'],
-        ['title' => 'Proses produksi', 'label' => 'Kapabilitas manufaktur', 'image' => '/images/gallery/product-01.jpg'],
-        ['title' => 'Detail rekayasa', 'label' => 'Manufaktur presisi', 'image' => '/images/gallery/team-01.jpg'],
+        ['title' => 'Lantai produksi', 'label' => 'Lingkungan produksi', 'image' => '/images/hero/factory.jpg'],
+        ['title' => 'Mesin presisi', 'label' => 'Peralatan produksi', 'image' => '/images/facilities/snc-80-mechanical-stamping-press.png'],
+        ['title' => 'Proses produksi', 'label' => 'Kapabilitas manufaktur', 'image' => '/images/facilities/sheet-metal-laser-cutting-machine.jpg'],
+        ['title' => 'Detail rekayasa', 'label' => 'Manufaktur presisi', 'image' => '/images/products/formed-steel-mounting-plate.png'],
     ],
 
     'news' => [

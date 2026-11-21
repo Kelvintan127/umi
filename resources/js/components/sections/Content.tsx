@@ -125,12 +125,12 @@ export function ContactCta({
   phone: string;
 }) {
   return (
-    <Band tone="ink">
-      <div className="relative grid gap-10 overflow-hidden lg:grid-cols-[1.4fr_1fr] lg:items-end">
+    <Band tone="ink" className="umi-interior-cta">
+      <div className="relative grid gap-6 overflow-hidden lg:grid-cols-[1.4fr_1fr] lg:items-end">
         <span aria-hidden="true" className="pointer-events-none absolute -right-20 -top-32 h-72 w-72 rounded-full border border-white/10" />
         <span aria-hidden="true" className="pointer-events-none absolute -right-8 -top-20 h-48 w-48 rounded-full border border-red/30" />
         <div>
-          <h2 className="text-3xl font-black leading-[1.05] tracking-tight text-white sm:text-4xl lg:text-5xl">
+          <h2 className="text-3xl font-black leading-[1.05] tracking-[-.04em] text-white sm:text-4xl lg:text-5xl">
             {title}
           </h2>
           <p className="mt-6 max-w-xl text-base leading-7 text-white/60">{lead}</p>
@@ -139,7 +139,7 @@ export function ContactCta({
         <div className="lg:justify-self-end">
           <Link
             href={`/${locale}/contact`}
-            className="group inline-flex items-center gap-3 bg-red px-7 py-4 text-sm font-semibold text-white transition-colors hover:bg-red-hover"
+            className="umi-btn-red group inline-flex items-center gap-3 rounded px-6 py-3.5 text-sm font-extrabold text-white"
           >
             {ctaLabel}
             <ArrowUpRight
@@ -171,15 +171,15 @@ export function Legal({
 }) {
   return (
     <Band tone="white">
-      <ol className="max-w-3xl space-y-12">
+      <ol className="umi-interior-legal max-w-4xl space-y-10">
         {clauses.map((clause, index) => (
           <li key={clause.heading}>
-            <h2 className="text-xl font-bold tracking-tight">
+            <h2 className="text-xl font-extrabold tracking-tight">
               <span className="mr-3 tabular-nums text-red">{index + 1}.</span>
               {clause.heading}
             </h2>
             {clause.body.map((paragraph) => (
-              <p key={paragraph} className="mt-4 text-sm leading-7 text-ink/70">
+              <p key={paragraph} className="mt-4 text-base font-medium leading-7 text-ink/70">
                 {paragraph}
               </p>
             ))}
@@ -218,12 +218,12 @@ export function Prose({
   return (
     <>
       <Band tone="white" ariaLabelledBy={heading ? "prose-heading" : undefined}>
-        <div className="grid gap-10 lg:grid-cols-2 lg:gap-16">
+        <div className="umi-interior-prose grid items-center gap-8 lg:grid-cols-[.95fr_1.05fr] lg:gap-10">
           <div>
             <SectionHeading title={heading} id="prose-heading" />
-            <div className="mt-8 space-y-5">
+            <div className="mt-6 space-y-4">
               {paragraphs.map((paragraph) => (
-                <p key={paragraph} className="text-base leading-8 text-ink/70">
+                <p key={paragraph} className="text-base font-medium leading-8 text-ink/70">
                   {paragraph}
                 </p>
               ))}
@@ -235,7 +235,7 @@ export function Prose({
           </div>
 
           {video ? (
-            <div className="group relative aspect-[4/3] overflow-hidden border border-ink/10 bg-band-lighter shadow-sm lg:aspect-auto lg:min-h-[22rem]">
+            <div className="group relative aspect-[4/3] overflow-hidden rounded-md border border-ink/10 bg-band-lighter shadow-sm lg:aspect-auto lg:min-h-[22rem]">
               {!playing ? (
                 <>
                   <img

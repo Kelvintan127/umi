@@ -138,22 +138,22 @@ return [
         [
             'title' => '汽车',
             'description' => '为要求严苛的汽车应用而设计的精密零件与组件，其中一致性、耐久性和尺寸精度至关重要。',
-            'image' => '/images/industries/automotive.jpg',
+            'image' => '/images/products/formed-sheet-metal-mounting-bracket.png',
         ],
         [
             'title' => '电子',
             'description' => '为电子应用制造的高精度零件，要求严格公差、可重复性以及可靠的生产表现。',
-            'image' => '/images/industries/electronics.jpg',
+            'image' => '/images/products/assorted-precision-metal-stamping-parts.png',
         ],
         [
             'title' => '工业',
             'description' => '面向工业应用的稳健制造方案，将工程专业能力与可规模化、稳定一致的生产相结合。',
-            'image' => '/images/industries/industrial.jpg',
+            'image' => '/images/facilities/sni-110-mechanical-stamping-press.png',
         ],
         [
             'title' => '消费品',
             'description' => '支持消费类产品的可靠金属零件与组件，兼顾设计、精密与制造效率。',
-            'image' => '/images/industries/consumer.jpg',
+            'image' => '/images/products/black-coated-sheet-metal-panel-assembly.png',
         ],
     ],
 
@@ -326,10 +326,10 @@ return [
     ],
 
     'gallery' => [
-        ['title' => '生产车间', 'label' => '生产环境', 'image' => '/images/gallery/factory-01.jpg'],
-        ['title' => '精密设备', 'label' => '生产设备', 'image' => '/images/gallery/machine-01.jpg'],
-        ['title' => '生产过程', 'label' => '制造能力', 'image' => '/images/gallery/product-01.jpg'],
-        ['title' => '工程细节', 'label' => '精密制造', 'image' => '/images/gallery/team-01.jpg'],
+        ['title' => '生产车间', 'label' => '生产环境', 'image' => '/images/hero/factory.jpg'],
+        ['title' => '精密设备', 'label' => '生产设备', 'image' => '/images/facilities/snc-80-mechanical-stamping-press.png'],
+        ['title' => '生产过程', 'label' => '制造能力', 'image' => '/images/facilities/sheet-metal-laser-cutting-machine.jpg'],
+        ['title' => '工程细节', 'label' => '精密制造', 'image' => '/images/products/formed-steel-mounting-plate.png'],
     ],
 
     'news' => [

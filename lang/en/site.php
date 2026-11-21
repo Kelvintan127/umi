@@ -139,22 +139,22 @@ return [
         [
             'title' => 'Automotive',
             'description' => 'Precision components and assemblies engineered for demanding automotive applications, where consistency, durability, and dimensional accuracy are critical.',
-            'image' => '/images/industries/automotive.jpg',
+            'image' => '/images/products/formed-sheet-metal-mounting-bracket.png',
         ],
         [
             'title' => 'Electronics',
             'description' => 'High-precision components manufactured for electronics applications requiring tight tolerances, repeatability, and reliable production performance.',
-            'image' => '/images/industries/electronics.jpg',
+            'image' => '/images/products/assorted-precision-metal-stamping-parts.png',
         ],
         [
             'title' => 'Industrial',
             'description' => 'Robust manufacturing solutions for industrial applications, combining engineering expertise with scalable and consistent production.',
-            'image' => '/images/industries/industrial.jpg',
+            'image' => '/images/facilities/sni-110-mechanical-stamping-press.png',
         ],
         [
             'title' => 'Consumer',
             'description' => 'Reliable metal components and assemblies supporting consumer products where design, precision, and manufacturing efficiency come together.',
-            'image' => '/images/industries/consumer.jpg',
+            'image' => '/images/products/black-coated-sheet-metal-panel-assembly.png',
         ],
     ],
 
@@ -327,10 +327,10 @@ return [
     ],
 
     'gallery' => [
-        ['title' => 'Manufacturing floor', 'label' => 'Production environment', 'image' => '/images/gallery/factory-01.jpg'],
-        ['title' => 'Precision machinery', 'label' => 'Production equipment', 'image' => '/images/gallery/machine-01.jpg'],
-        ['title' => 'Production process', 'label' => 'Manufacturing capability', 'image' => '/images/gallery/product-01.jpg'],
-        ['title' => 'Engineering detail', 'label' => 'Precision manufacturing', 'image' => '/images/gallery/team-01.jpg'],
+        ['title' => 'Manufacturing floor', 'label' => 'Production environment', 'image' => '/images/hero/factory.jpg'],
+        ['title' => 'Precision machinery', 'label' => 'Production equipment', 'image' => '/images/facilities/snc-80-mechanical-stamping-press.png'],
+        ['title' => 'Production process', 'label' => 'Manufacturing capability', 'image' => '/images/facilities/sheet-metal-laser-cutting-machine.jpg'],
+        ['title' => 'Engineering detail', 'label' => 'Precision manufacturing', 'image' => '/images/products/formed-steel-mounting-plate.png'],
     ],
 
     'news' => [
