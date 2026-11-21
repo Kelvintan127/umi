@@ -110,7 +110,7 @@ return [
             [
                 'type' => 'prose',
                 'heading' => 'Siapa kami',
-                'image' => '/images/about/factory.jpg',
+                'image' => '/images/hero/factory.jpg',
                 'paragraphs' => [
                     'PT. UNI METALTECH INDUSTRY (UMI) adalah perusahaan stamping logam presisi yang didirikan pada tahun 2000 di Batam, Indonesia, berlokasi di Kara Industrial Park, Batam Center.',
                     'Perusahaan kami memproduksi berbagai jenis komponen logam sesuai pesanan dan mendukung produsen terkemuka di industri listrik, elektronik, dan otomotif. Komponen logam tersebut digunakan pada produk seperti battery pack dan aplikasinya, terminal kabel, sistem audio, sistem penimbangan, serta perangkat peringatan bersuara.',
@@ -230,7 +230,7 @@ return [
             [
                 'type' => 'prose',
                 'heading' => 'Aplikasi',
-                'image' => '/images/products/battery-contacts.jpg',
+                'image' => '/images/products/assorted-precision-metal-stamping-parts.png',
                 'paragraphs' => [
                     'Kontak baterai distamping dari material strip sesuai persyaratan dimensi dan ketahanan kontak dari battery pack atau perangkat yang dilayaninya.',
                     'Aplikasi umumnya mencakup battery pack dan perangkat elektronik portabel, di mana geometri kontak dan pemilihan material menentukan kinerja kelistrikan sekaligus umur siklus.',
@@ -254,7 +254,7 @@ return [
             [
                 'type' => 'prose',
                 'heading' => 'Aplikasi',
-                'image' => '/images/products/wire-harnessing.jpg',
+                'image' => '/images/products/precision-metal-bar-assembly.png',
                 'paragraphs' => [
                     'UMI melakukan stamping terminal kabel untuk aplikasi perakitan kabel di industri listrik dan otomotif.',
                     'Komponen terminal diproduksi secara internal dan dapat dikombinasikan dengan proses sekunder seperti pengetapan, reverting, dan las titik apabila suatu proyek membutuhkan komponen yang telah dirakit.',
@@ -278,7 +278,7 @@ return [
             [
                 'type' => 'prose',
                 'heading' => 'Aplikasi',
-                'image' => '/images/products/ods-dvd-drive.jpg',
+                'image' => '/images/products/black-coated-sheet-metal-panel-assembly.png',
                 'paragraphs' => [
                     'Perakitan optical disc drive menggunakan komponen logam hasil stamping di mana kerataan, ketelitian dimensi, dan kondisi permukaan memengaruhi pergerakan mekanisme drive.',
                     'Komponen ini diproduksi dengan perkakas progresif dan diverifikasi menggunakan peralatan pengukuran yang diuraikan pada bagian fasilitas kami.',
@@ -303,7 +303,7 @@ return [
             [
                 'type' => 'prose',
                 'heading' => 'Proses sekunder, dikerjakan internal',
-                'image' => '/images/products/mechanical-assembly.jpg',
+                'image' => '/images/products/black-coated-sheet-metal-panel-assembly.png',
                 'paragraphs' => [
                     'Layanan bernilai tambah seperti pengetapan, reverting, dan las titik disediakan secara internal untuk memberikan layanan yang lebih menyeluruh kepada pelanggan kami.',
                 ],
@@ -335,7 +335,7 @@ return [
             [
                 'type' => 'prose',
                 'heading' => 'Aplikasi',
-                'image' => '/images/products/electrical-metal-parts.jpg',
+                'image' => '/images/products/formed-steel-mounting-plate.png',
                 'paragraphs' => [
                     'UMI memproduksi berbagai macam komponen logam sesuai pesanan untuk aplikasi kelistrikan dan elektronik, sebagian besar disesuaikan dengan kebutuhan proyek tertentu.',
                     'Aplikasinya mencakup produk komputer, printer, telepon, miniature circuit breaker (MCB), power supply, perangkat pencahayaan, dan UPS.',

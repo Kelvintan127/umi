@@ -1,5 +1,7 @@
 import { useEffect, useState } from "react";
-import { X } from "lucide-react";
+import { ArrowRight, ArrowUpRight, X } from "lucide-react";
+import { Link } from "@inertiajs/react";
+import { MockupCrop } from "@/components/media/MockupCrop";
 import { Band, SectionHeading } from "./Band";
 import type {
   Certification,
@@ -22,30 +24,16 @@ export interface SpecItem {
   image: string;
 }
 
-/** Numbered headline figures. Sourced from lang/{locale}/site.php `stats`. */
+/** Same restrained four-stat strip used on the approved homepage. */
 export function Stats({ stats }: { stats: Stat[] }) {
   return (
-    <Band tone="ink">
-      <dl className="grid gap-px overflow-hidden border border-white/10 bg-white/10 sm:grid-cols-2 lg:grid-cols-4">
+    <Band tone="white">
+      <dl className="umi-interior-stats grid grid-cols-2 border-y border-[#dae2e9] lg:grid-cols-4">
         {stats.map((stat, index) => (
-          <div
-            key={stat.label}
-            className="group relative bg-ink p-7 transition-colors duration-300 hover:bg-white/[0.07] sm:p-8"
-          >
-            <span
-              aria-hidden="true"
-              className="absolute left-0 top-0 h-1 w-10 bg-red transition-[width] duration-500 ease-[var(--ease-out-quint)] group-hover:w-full"
-            />
-            <dt className="sr-only">{stat.label}</dt>
-            <dd>
-              <span className="mb-8 block text-xs font-semibold tabular-nums tracking-[0.2em] text-white/35">
-                {String(index + 1).padStart(2, "0")}
-              </span>
-              <span className="block text-4xl font-black tracking-tight text-white transition-transform duration-500 ease-[var(--ease-out-quint)] group-hover:translate-x-1 sm:text-5xl">
-                {stat.value}
-              </span>
-              <span className="mt-3 block max-w-[14rem] text-sm leading-6 text-white/60">{stat.label}</span>
-            </dd>
+          <div key={stat.label} className="border-r border-[#dce3e9] px-4 py-5 last:border-r-0 sm:px-7">
+            <dt className="order-2 mt-2 text-[11px] font-extrabold uppercase tracking-[.12em] text-[#506273]">{stat.label}</dt>
+            <dd className="order-1 text-[clamp(2rem,3.2vw,3.65rem)] font-black leading-none tracking-[-.055em] text-[#071522]">{stat.value}</dd>
+            <span className="mt-4 block h-[3px] w-10 bg-[#d71920]" aria-hidden="true" />
           </div>
         ))}
       </dl>
@@ -53,23 +41,28 @@ export function Stats({ stats }: { stats: Stat[] }) {
   );
 }
 
-/** The six-stage workflow. */
+/** Original six factory-process illustrations, not substitute Lucide icons. */
 export function Process({ stages, heading }: { stages: ProcessStage[]; heading?: string }) {
+  const icons = [
+    "UMI_Engineering.png", "UMI_Tooling.png", "UMI_Stamping.png",
+    "UMI_Inspection.png", "UMI_Assembly.png", "UMI_Delivery.png",
+  ];
   return (
-    <Band tone="white">
-      <SectionHeading title={heading} />
-      <ol className="motion-stagger mt-14 grid gap-px overflow-hidden border border-ink/10 bg-ink/10 sm:grid-cols-2 lg:grid-cols-3">
+    <Band tone="light" ariaLabelledBy={heading ? "umi-process-section" : undefined}>
+      <SectionHeading title={heading} id="umi-process-section" />
+      <ol className="umi-interior-process mt-8 grid grid-cols-2 gap-x-3 gap-y-9 sm:grid-cols-3 lg:grid-cols-6 lg:gap-x-5">
         {stages.map((stage, index) => (
-          <li
-            key={stage.title}
-            className="group relative bg-white p-8 transition-colors duration-300 hover:bg-band-light"
-          >
-            <span className="flex h-9 w-9 items-center justify-center rounded-full border border-red/30 text-xs font-semibold tabular-nums tracking-[0.1em] text-red transition-colors duration-300 group-hover:bg-red group-hover:text-white">
+          <li key={stage.title} className="relative min-w-0 px-2 text-center">
+            <span className="mx-auto inline-flex rounded-sm bg-[#d71920] px-2.5 py-1 text-[11px] font-extrabold tabular-nums text-white">
               {String(index + 1).padStart(2, "0")}
             </span>
-            <h3 className="mt-6 text-lg font-bold tracking-tight transition-colors duration-300 group-hover:text-red">{stage.title}</h3>
-            <p className="mt-3 text-sm leading-6 text-ink/60">{stage.description}</p>
-            <span aria-hidden="true" className="mt-8 block h-px w-8 bg-red transition-[width] duration-500 ease-[var(--ease-out-quint)] group-hover:w-16" />
+            <img src={"/images/process/"+(icons[index] ?? icons[0])} alt=""
+              aria-hidden="true" loading="lazy" width="96" height="96"
+              className="mx-auto my-3 h-[82px] w-[96px] object-contain"/>
+            <h3 className="text-base font-black tracking-[-.025em] text-[#071522]">{stage.title}</h3>
+            <p className="mt-2 text-xs font-medium leading-5 text-[#536477]">{stage.description}</p>
+            {index<stages.length-1 && <ArrowRight size={18} aria-hidden="true"
+              className="absolute -right-4 top-[50%] hidden text-[#9aaab8] lg:block"/>}
           </li>
         ))}
       </ol>
@@ -77,200 +70,134 @@ export function Process({ stages, heading }: { stages: ProcessStage[]; heading?:
   );
 }
 
-/** Equipment groups: title, summary, spec list, image. */
+/** Dark, image-led industrial equipment layout shared with Home Facilities. */
 export function Specs({ items, heading }: { items: SpecItem[]; heading?: string }) {
-  const headingId = "specs-heading";
-
   return (
-    <Band tone="light" ariaLabelledBy={heading ? headingId : undefined}>
-      <SectionHeading title={heading} id={headingId} />
-
-      <div className="motion-stagger mt-14 space-y-16">
-        {items.map((facility) => (
-          <section
-            key={facility.key}
-            aria-labelledby={`facility-${facility.key}`}
-            className="group/facility"
-          >
-            <div className="grid gap-8 lg:grid-cols-2 lg:gap-14">
-              <div>
-                <h3
-                  id={`facility-${facility.key}`}
-                  className="text-2xl font-black tracking-tight transition-colors duration-300 group-hover/facility:text-red"
-                >
-                  {facility.title}
-                </h3>
-                <p className="mt-4 text-sm leading-7 text-ink/60">{facility.summary}</p>
-
-                {facility.specs.length > 0 ? (
-                  <ul className="mt-6 space-y-2.5">
-                    {facility.specs.map((spec) => (
-                      <li key={spec} className="flex gap-3 text-sm leading-6 text-ink/75">
-                        <span aria-hidden="true" className="mt-2.5 h-1 w-3 shrink-0 bg-red" />
-                        {spec}
-                      </li>
-                    ))}
-                  </ul>
-                ) : null}
-              </div>
-
-              {facility.image ? (
-                <div className="relative aspect-[4/3] overflow-hidden border border-ink/10 bg-white p-5 transition-[border-color,box-shadow,transform] duration-500 ease-[var(--ease-out-quint)] group-hover/facility:-translate-y-1 group-hover/facility:border-red/35 group-hover/facility:shadow-xl sm:p-8">
-                  <img
-                    src={facility.image}
-                    alt={facility.title}
-                    loading="lazy"
-                    decoding="async"
-                    data-gsap-parallax="true"
-                    className="h-full w-full object-contain transition-transform duration-700 ease-[var(--ease-out-quint)] group-hover/facility:scale-[1.05]"
-                  />
-                  <span
-                    aria-hidden="true"
-                    className="pointer-events-none absolute inset-0 bg-gradient-to-t from-ink/10 via-transparent to-transparent opacity-0 transition-opacity duration-500 group-hover/facility:opacity-100"
-                  />
+    <Band tone="ink" ariaLabelledBy={heading ? "umi-specs-heading" : undefined}>
+      <SectionHeading title={heading} id="umi-specs-heading" tone="white"/>
+      <div className="umi-interior-facility-list mt-9 space-y-12">
+        {items.map((facility, index) => {
+          const hasImage = Boolean(facility.image);
+          return (
+            <section key={facility.key}
+              aria-labelledby={"facility-"+facility.key}
+              className="umi-interior-spec-item border-t border-white/20 pt-7 first:border-t-0 first:pt-0">
+              <div className={hasImage ? "grid items-start gap-7 lg:grid-cols-[minmax(0,1.6fr)_minmax(0,1fr)]" : "max-w-4xl"}>
+                {hasImage && <div className="overflow-hidden rounded-md border border-white/15 bg-[#102738]">
+                  {facility.key==="production-machines"
+                    ? <MockupCrop crop="production-line" alt="UMI press production line" className="h-[295px] w-full sm:h-[370px] lg:h-[430px]"/>
+                    : <img src={facility.image} alt={facility.title} loading="lazy"
+                        className="h-[295px] w-full object-cover sm:h-[370px] lg:h-[430px]"/>}
+                </div>}
+                <div className="min-w-0 pt-1">
+                  <h3 id={"facility-"+facility.key}
+                    className="flex flex-wrap items-baseline gap-x-3 gap-y-1 text-[clamp(1.6rem,2.2vw,2.25rem)] font-black uppercase leading-[1.12] tracking-[-.035em]">
+                    <span className="tabular-nums text-[#f14b52]">{String(index+1).padStart(2,"0")}</span>
+                    <span>{facility.title}</span>
+                  </h3>
+                  {facility.summary && <p className="mt-5 text-base font-medium leading-[1.55] text-white/85">{facility.summary}</p>}
+                  {facility.specs.length>0 && <ul className="mt-6 space-y-3">
+                    {facility.specs.map((spec,idx) => <li key={idx} className="flex gap-3 text-sm font-semibold leading-6 text-white/90">
+                      <span aria-hidden="true" className="mt-[.68rem] h-[3px] w-4 shrink-0 bg-[#f1454d]"/>
+                      <span>{spec}</span>
+                    </li>)}
+                  </ul>}
                 </div>
-              ) : null}
-            </div>
-          </section>
-        ))}
+              </div>
+            </section>
+          );
+        })}
       </div>
     </Band>
   );
 }
 
-/** Certification cards. The `labelling` note is rendered whenever it is set. */
+/** Authentic first-page renders of the original UMI PDFs; no blank PDF iframe cards. */
 export function Certifications({
-  items,
-  labelling,
-  heading,
+  items, labelling, heading,
 }: {
   items: Certification[];
   labelling?: string;
   heading?: string;
 }) {
-  const headingId = "certifications-heading";
-  const [selected, setSelected] = useState<Certification | null>(null);
-
-  useEffect(() => {
-    if (!selected) return;
-
-    const onKeyDown = (event: KeyboardEvent) => {
-      if (event.key === "Escape") setSelected(null);
-    };
-
-    document.addEventListener("keydown", onKeyDown);
-    const previousOverflow = document.body.style.overflow;
-    document.body.style.overflow = "hidden";
-
-    return () => {
-      document.removeEventListener("keydown", onKeyDown);
-      document.body.style.overflow = previousOverflow;
-    };
-  }, [selected]);
+  const [selected,setSelected]=useState<Certification|null>(null);
+  useEffect(()=>{
+    if(!selected)return;
+    const onKeyDown=(event:KeyboardEvent)=>{if(event.key==="Escape")setSelected(null);};
+    const before=document.body.style.overflow;
+    document.addEventListener("keydown",onKeyDown);
+    document.body.style.overflow="hidden";
+    return ()=>{document.removeEventListener("keydown",onKeyDown);document.body.style.overflow=before;};
+  },[selected]);
 
   return (
-    <Band tone="white" ariaLabelledBy={heading ? headingId : undefined}>
-      <SectionHeading title={heading} id={headingId} />
-
-      <ul className="mt-14 grid gap-6 lg:grid-cols-3">
-        {items.map((cert) => (
-          <li key={cert.name} className="group flex flex-col border border-ink/10 p-8 transition-[border-color,box-shadow,transform] duration-500 ease-[var(--ease-out-quint)] hover:-translate-y-1 hover:border-red/35 hover:shadow-xl">
-            <p className="text-xs font-semibold uppercase tracking-[0.2em] text-red">{cert.name}</p>
-            <h3 className="mt-4 text-lg font-bold tracking-tight transition-colors duration-300 group-hover:text-red">{cert.title}</h3>
-            <p className="mt-3 flex-1 text-sm leading-6 text-ink/60">{cert.description}</p>
-
-            {cert.document ? (
-              <button
-                type="button"
-                onClick={() => setSelected(cert)}
-                className="group mt-6 block w-full text-left"
-                aria-haspopup="dialog"
-              >
-                <span className="relative block aspect-[3/4] overflow-hidden border border-ink/10 bg-band-lighter transition-colors group-hover:border-red">
-                  <iframe
-                    src={`${cert.document}#toolbar=0&navpanes=0&view=FitH`}
-                    title={`${cert.name} certificate preview`}
-                    tabIndex={-1}
-                    className="pointer-events-none h-full w-full bg-white"
-                  />
-                  <span className="absolute inset-x-0 bottom-0 bg-ink/75 px-3 py-2 text-center text-xs font-semibold text-white">
-                    View certificate
-                  </span>
-                </span>
-                <span className="sr-only">View certificate — {cert.name}</span>
-              </button>
-            ) : null}
-          </li>
-        ))}
+    <Band tone="white" ariaLabelledBy={heading ? "umi-cert-heading" : undefined}>
+      <SectionHeading title={heading} id="umi-cert-heading"/>
+      <ul className="mt-8 grid gap-5 md:grid-cols-2">
+        {items.map(cert=>{
+          const preview=cert.name.includes("9001")
+            ? "/images/certifications/preview-iso-9001.jpg"
+            : "/images/certifications/preview-iso-14001.jpg";
+          return <li key={cert.name} className="umi-interior-certificate flex min-w-0 flex-col p-5 sm:p-7">
+            <span className="text-xs font-extrabold uppercase tracking-[.13em] text-[#d71920]">{cert.name}</span>
+            <h3 className="mt-1 text-xl font-black leading-tight tracking-[-.03em] text-[#071522] sm:text-2xl">{cert.title}</h3>
+            <button type="button" onClick={()=>setSelected(cert)}
+              aria-label={"Preview "+cert.name+" certificate"}
+              className="group mt-5 flex h-[310px] w-full items-center justify-center overflow-hidden rounded border border-[#dfe5eb] bg-[#f8fafb] sm:h-[365px]">
+              <img src={preview} alt={cert.name+" original certificate first page"}
+                width={700} height={990} loading="lazy"
+                className="h-full w-full object-contain transition-transform duration-300 group-hover:scale-[1.025]"/>
+            </button>
+            <p className="mt-4 flex-1 text-sm font-medium leading-6 text-[#536273]">{cert.description}</p>
+            {cert.document && <div className="mt-5 flex flex-wrap gap-3">
+              <a href={cert.document} target="_blank" rel="noopener noreferrer"
+                className="inline-flex items-center gap-2 rounded border border-[#b3c0cc] px-4 py-3 text-xs font-extrabold text-[#071522] hover:border-[#d71920]">
+                View PDF<ArrowUpRight size={15} aria-hidden="true"/>
+              </a>
+              <a href={cert.document} download
+                className="umi-btn-red inline-flex items-center gap-2 rounded px-4 py-3 text-xs font-extrabold text-white">
+                Download PDF<ArrowRight size={15} aria-hidden="true"/>
+              </a>
+            </div>}
+          </li>;
+        })}
       </ul>
-
-      {labelling ? (
-        <p className="mt-10 max-w-3xl border-l-2 border-red pl-5 text-sm leading-6 text-ink/60">
-          {labelling}
-        </p>
-      ) : null}
-
-      {selected ? (
-        <div
-          className="fixed inset-0 z-[100] flex items-center justify-center bg-ink/80 p-4 backdrop-blur-sm"
-          role="dialog"
-          aria-modal="true"
-          aria-labelledby="certificate-dialog-title"
-          onMouseDown={(event) => {
-            if (event.target === event.currentTarget) setSelected(null);
-          }}
-        >
-          <div className="flex h-[min(90vh,900px)] w-full max-w-5xl flex-col bg-white shadow-2xl">
-            <div className="flex items-center justify-between border-b border-ink/10 px-5 py-4">
-              <h2 id="certificate-dialog-title" className="text-sm font-bold">
-                {selected.name} — {selected.title}
-              </h2>
-              <button
-                type="button"
-                onClick={() => setSelected(null)}
-                aria-label="Close certificate preview"
-                className="flex h-9 w-9 items-center justify-center text-ink/60 transition-colors hover:bg-ink/5 hover:text-ink"
-              >
-                <X size={20} aria-hidden="true" />
-              </button>
-            </div>
-            <iframe
-              src={selected.document}
-              title={`${selected.name} certificate`}
-              className="min-h-0 flex-1"
-            />
+      {labelling && <p className="mt-7 max-w-4xl border-l-[3px] border-[#d71920] pl-4 text-sm leading-6 text-[#506273]">{labelling}</p>}
+      {selected && <div role="dialog" aria-modal="true" aria-labelledby="cert-dialog-title"
+        className="fixed inset-0 z-[100] flex items-center justify-center bg-[#071522]/90 p-4"
+        onMouseDown={e=>{if(e.currentTarget===e.target)setSelected(null);}}>
+        <div className="flex h-[min(90vh,900px)] w-full max-w-5xl flex-col rounded-md bg-white shadow-2xl">
+          <div className="flex items-center justify-between border-b border-[#dae1e8] px-5 py-4">
+            <h2 id="cert-dialog-title" className="text-sm font-black">{selected.name+" — "+selected.title}</h2>
+            <button type="button" onClick={()=>setSelected(null)} aria-label="Close certificate preview"
+              className="flex h-10 w-10 items-center justify-center rounded hover:bg-[#edf0f3]">
+              <X size={20} aria-hidden="true"/>
+            </button>
           </div>
+          <iframe src={selected.document} title={selected.name+" original PDF"} className="min-h-0 flex-1"/>
         </div>
-      ) : null}
+      </div>}
     </Band>
   );
 }
 
-/** The published quality and environmental policy, as an ordered commitment list. */
-export function Policy({
-  policy,
-  heading,
-}: {
-  policy: ContentBlocks["policy"];
-  heading?: string;
+/** Published quality and environmental policy; copy remains data-driven. */
+export function Policy({policy,heading}:{
+  policy:ContentBlocks["policy"];heading?:string;
 }) {
-  return (
-    <Band tone="white">
-      <SectionHeading title={heading ?? policy.heading} />
-      <p className="mt-8 text-base text-ink/60">{policy.intro}</p>
-
-      <ol className="mt-10 grid gap-px border border-ink/10 bg-ink/10 md:grid-cols-2">
-        {policy.items.map((item, index) => (
-          <li key={item} className="group flex gap-5 bg-white p-7 transition-colors duration-300 hover:bg-band-light">
-          <span className="flex h-8 w-8 shrink-0 items-center justify-center rounded-full bg-red/10 text-sm font-semibold tabular-nums text-red transition-colors duration-300 group-hover:bg-red group-hover:text-white">
-              {String(index + 1).padStart(2, "0")}
-            </span>
-          <p className="text-sm leading-6 text-ink/75 transition-colors duration-300 group-hover:text-ink">{item}</p>
-          </li>
-        ))}
-      </ol>
-    </Band>
-  );
+  return <Band tone="light">
+    <SectionHeading title={heading ?? policy.heading}/>
+    <p className="mt-6 text-base font-medium leading-7 text-[#506273]">{policy.intro}</p>
+    <ol className="mt-7 grid gap-4 md:grid-cols-2">
+      {policy.items.map((item,index)=>
+        <li key={item} className="flex items-start gap-4 rounded border border-[#dce3e9] bg-white p-5 sm:p-6">
+          <span className="w-10 shrink-0 border-b-[3px] border-[#d71920] pb-2 text-2xl font-black tabular-nums text-[#d71920]">
+            {String(index+1).padStart(2,"0")}
+          </span>
+          <p className="text-sm font-semibold leading-7 text-[#35495b]">{item}</p>
+        </li>)}
+    </ol>
+  </Band>;
 }
 
 /** Factory gallery grid. */
