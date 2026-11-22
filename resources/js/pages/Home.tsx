@@ -159,7 +159,7 @@ export default function Home() {
       </div>
     </section>
 
-    <section className="bg-[#f3f5f6] py-16 lg:py-8">
+    <section id="umi-products" className="bg-[#f3f5f6] py-16 lg:py-8">
       <div className="mx-auto max-w-[1400px] px-5 sm:px-8 xl:px-10">
         <div className="mb-10 grid gap-5 lg:grid-cols-2">
           <div><div className="umi-mark"/><h2 className="umi-heading">{c.products}</h2></div>
