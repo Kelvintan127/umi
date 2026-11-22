@@ -1,7 +1,7 @@
 import { EngineeringRuler } from "@/components/layout/EngineeringRuler";
 import { Link, usePage } from "@inertiajs/react";
 import { ArrowRight, ArrowUpRight, Play, X } from "lucide-react";
-import { MockupCrop, type MockupCropKey } from "@/components/media/MockupCrop";
+import { MockupCrop } from "@/components/media/MockupCrop";
 import { useState } from "react";
 import { MockupShell } from "@/components/layout/MockupShell";
 import { PageHead } from "@/components/layout/PageHead";
@@ -41,7 +41,6 @@ const copy = {
 };
 
 const processIconNames = ["UMI_Engineering.png", "UMI_Tooling.png", "UMI_Stamping.png", "UMI_Inspection.png", "UMI_Assembly.png", "UMI_Delivery.png"];
-const productCrops: MockupCropKey[] = ["battery-contacts", "cable-terminals", "mechanical-assembly", "other-metal-parts"];
 
 const approvedProductionSpecsEn = [
   "C-frame presses 15–160 T — Seyi, Aida, Amada",
@@ -102,7 +101,10 @@ export default function Home() {
           <div className="pointer-events-none absolute left-8 top-7 h-4 w-4 border-l border-t border-white/40" aria-hidden="true" />
           <div className="pointer-events-none absolute bottom-7 right-8 h-4 w-4 border-b border-r border-white/40" aria-hidden="true" />
           <div className="absolute inset-0 bg-[radial-gradient(circle_at_center,rgba(162,190,207,0.16),transparent_62%)]" />
-          <MockupCrop crop="hero" alt="Approved precision stamped battery contact with engineering measurement overlays" className="relative z-10 h-full w-full" />
+          <img src="/images/hero/precision-metal-component.webp"
+            alt="Isolated precision metal stamped component" width={1400} height={933}
+            fetchPriority="high" decoding="async"
+            className="relative z-10 h-full w-full object-contain drop-shadow-[0_18px_30px_rgba(0,0,0,.35)]" />
         </div>
       </div>
     </section>
@@ -165,7 +167,7 @@ export default function Home() {
         </div>
         <div className="grid gap-5 sm:grid-cols-2 xl:grid-cols-4">
           {blocks.products.slice(0, 4).map((product, productIndex) => <article key={product.key} className="overflow-hidden rounded-lg border border-[#dde3e8] bg-white shadow-sm">
-            <Link href={"/" + locale + "/products"} className="block overflow-hidden bg-[#e9edef]"><MockupCrop crop={productCrops[productIndex]} alt={"Approved mockup image: " + product.title} className="h-44 w-full" /></Link>
+            <Link href={"/" + locale + "/products"} className="block overflow-hidden bg-[#e9edef]"><img src={product.image} alt={"UMI product image: " + product.title} loading="lazy" decoding="async" className="h-44 w-full object-contain p-3" /></Link>
             <div className="p-5"><h3 className="text-xl font-extrabold tracking-tight">{product.title}</h3><p className="umi-product-description mt-2 line-clamp-3 min-h-[4.5rem] text-sm leading-6 text-[#546376]">{product.description}</p>
               <Link href={"/" + locale + "/products"} className="mt-5 inline-flex items-center gap-2 text-xs font-black uppercase tracking-wider text-[#d71920]">{c.view}<ArrowRight size={16}/></Link>
             </div>
@@ -219,11 +221,7 @@ export default function Home() {
         {selected && <div key={activeFacility} id="umi-facility-panel" role="tabpanel" aria-labelledby={"umi-facility-tab-" + activeFacility}
           className="umi-facility-panel umi-panel-enter mt-5 grid items-start gap-6 lg:grid-cols-[minmax(0,1.62fr)_minmax(0,1fr)]">
           <div className="overflow-hidden rounded-md">
-            {activeFacility === 0
-              ? <MockupCrop crop="production-line" alt="Approved AIDA and SEYI production press line"
-                  className="umi-facility-photo h-[310px] w-full sm:h-[400px] lg:h-[455px]"/>
-              : <img src={selected.image} alt={selected.title} loading="lazy"
-                  className="umi-facility-photo h-[310px] w-full object-cover sm:h-[400px] lg:h-[455px]"/>}
+            <img src={selected.image} alt={"UMI manufacturing equipment: " + selected.title} loading="lazy" decoding="async" className="umi-facility-photo h-[310px] w-full object-contain bg-[#102738] sm:h-[400px] lg:h-[455px]"/>
           </div>
           <div className="umi-facility-details pt-1">
             <div className="umi-facility-main-title flex items-baseline gap-3">
