@@ -1,7 +1,6 @@
 import { useEffect, useState } from "react";
 import { ArrowRight, ArrowUpRight, X } from "lucide-react";
 import { Link } from "@inertiajs/react";
-import { MockupCrop } from "@/components/media/MockupCrop";
 import { Band, SectionHeading } from "./Band";
 import type {
   Certification,
@@ -84,10 +83,7 @@ export function Specs({ items, heading }: { items: SpecItem[]; heading?: string 
               className="umi-interior-spec-item border-t border-white/20 pt-7 first:border-t-0 first:pt-0">
               <div className={hasImage ? "grid items-start gap-7 lg:grid-cols-[minmax(0,1.6fr)_minmax(0,1fr)]" : "max-w-4xl"}>
                 {hasImage && <div className="overflow-hidden rounded-md border border-white/15 bg-[#102738]">
-                  {facility.key==="production-machines"
-                    ? <MockupCrop crop="production-line" alt="UMI press production line" className="h-[295px] w-full sm:h-[370px] lg:h-[430px]"/>
-                    : <img src={facility.image} alt={facility.title} loading="lazy"
-                        className="h-[295px] w-full object-cover sm:h-[370px] lg:h-[430px]"/>}
+                  <img src={facility.image} alt={"UMI equipment: " + facility.title} loading="lazy" decoding="async" className="h-[295px] w-full object-contain bg-[#102738] sm:h-[370px] lg:h-[430px]"/>
                 </div>}
                 <div className="min-w-0 pt-1">
                   <h3 id={"facility-"+facility.key}

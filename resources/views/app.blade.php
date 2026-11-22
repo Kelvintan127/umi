@@ -10,7 +10,10 @@
         here would ship a second, wrong <title> on every page.
     --}}
 
-    <link rel="icon" href="/favicon.ico" sizes="any">
+    {{-- Use the existing official company-logo PNG rather than the empty favicon.ico. --}}
+    <link rel="icon" type="image/png" href="/images/logo.png" sizes="any">
+    <link rel="apple-touch-icon" href="/images/logo.png">
+    <meta name="theme-color" content="#071522">
 
     @viteReactRefresh
     @vite(['resources/js/app.tsx'])
