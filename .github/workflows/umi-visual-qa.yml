@@ -2,7 +2,7 @@ name: UMI real-app visual QA
 
 on:
   push:
-    branches: [feat/umi-mockup-redesign-20261120, feat/umi-fidelity-assets-rfq-20261120, feat/umi-pixel-fidelity-ruler-facilities-20261120, feat/umi-unified-interior-pages-20261121, feat/umi-smooth-motion-batam-only-20261121]
+    branches: [feat/umi-mockup-redesign-20261120, feat/umi-fidelity-assets-rfq-20261120, feat/umi-pixel-fidelity-ruler-facilities-20261120, feat/umi-unified-interior-pages-20261121, feat/umi-smooth-motion-batam-only-20261121, feat/umi-crisp-photos-favicon-20261121]
   workflow_dispatch:
 
 permissions:
@@ -241,6 +241,8 @@ jobs:
           node scripts/visual-qa-interior.mjs visual-qa/public-routes.json
       - name: Verify smooth navigation and Batam-only contact UI
         run: node scripts/visual-qa-motion.mjs
+      - name: Verify authentic high-resolution homepage media and favicon
+        run: node scripts/visual-qa-media.mjs
       - name: Run Laravel tests
         if: always()
         env:
